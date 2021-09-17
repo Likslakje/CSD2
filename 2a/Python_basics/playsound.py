@@ -16,7 +16,7 @@ timesSample = int(timesSampleInput) #maakt van de input string een interger
 print('Alright, I will play ' + sampleAnswer['sample'] + ' ' + timesSampleInput + ' times!')
 
 import simpleaudio as sa
-wave_obj = sa.WaveObject.from_wave_file("/Users/mila/Documents/Muziek_en_Technologie/MT_jaar_2/CSD2/Python_basics/" + sampleAnswer['sample'] + ".wav")
+wave_obj = sa.WaveObject.from_wave_file("/Users/mila/Documents/Muziek_en_Technologie/MT_jaar_2/CSD2/2a/Python_basics/" + sampleAnswer['sample'] + ".wav")
 for x in range (timesSample):
     play_obj = wave_obj.play()
     play_obj.wait_done()
