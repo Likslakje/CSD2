@@ -12,14 +12,13 @@ durationStepsArray = [] #maak een lege array om het ritme in op te slaan
 for x in range(numberSteps): #een forloop zolang als het aantal steps
     durationStepsInput = input() #vraag nu voor elke element in de lijst (zolang als numberSteps) een input (duration)
     durationSteps = float(durationStepsInput) #omzetten naar float want komma getallen
-    durationStepsArray.append(durationSteps)
+    durationStepsArray.append(durationSteps) #voeg aan het einde van de lege array (durationArraySteps) steeds de input toe
     x =+ 1
 
 import simpleaudio as sa
 import time
 wave_obj = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 for x in range(numberSteps):
-    play_obj = wave_obj.play()
-    time.sleep(bpmSeconds * durationStepsArray[x])
-    print(bpmSeconds * durationStepsArray[x])
+    play_obj = wave_obj.play() #speel sample zovaak als numberSteps af
+    time.sleep(bpmSeconds * durationStepsArray[x]) #ritme bepaald door bpm in sec * de nootwaarde op de plek van x
     x =+ 1
