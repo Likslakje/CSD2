@@ -1,5 +1,3 @@
-
-
 print("beetje later")
 print("What BPM should the sequence be?")
 bpmInput = input()
@@ -24,5 +22,5 @@ for x in range(numberSteps):
     play_obj = wave_obj.play()
     play_obj.wait_done()
     import time
-    time.sleep(bpmSeconds * x)
+    time.sleep(bpmSeconds * durationSteps[x])
     x =+ 1
