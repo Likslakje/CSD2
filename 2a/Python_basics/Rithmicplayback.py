@@ -1,4 +1,3 @@
-print("beetje later")
 print("What BPM should the sequence be?")
 bpmInput = input()
 bpm = int(bpmInput)
@@ -17,10 +16,10 @@ for x in range(numberSteps): #een forloop zolang als het aantal steps
     x =+ 1
 
 import simpleaudio as sa
+import time
 wave_obj = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 for x in range(numberSteps):
     play_obj = wave_obj.play()
-    play_obj.wait_done()
-    import time
-    time.sleep(bpmSeconds * durationSteps[x])
+    time.sleep(bpmSeconds * durationStepsArray[x])
+    print(bpmSeconds * durationStepsArray[x])
     x =+ 1
