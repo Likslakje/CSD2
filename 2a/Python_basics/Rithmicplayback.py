@@ -1,3 +1,6 @@
+import simpleaudio as sa
+import time
+
 print("What BPM should the sequence be?")
 bpmInput = input()
 bpm = int(bpmInput)
@@ -15,8 +18,6 @@ for x in range(numberSteps): #een forloop zolang als het aantal steps
     durationStepsArray.append(durationSteps) #voeg aan het einde van de lege array (durationArraySteps) steeds de input toe
     x =+ 1
 
-import simpleaudio as sa
-import time
 wave_obj = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 for x in range(numberSteps):
     play_obj = wave_obj.play() #speel sample zovaak als numberSteps af
