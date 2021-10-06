@@ -14,14 +14,13 @@ def choice(): #maak een functie voor de y/n vraag voor bpm
         choice() #als input niet matched dan voer de functie choice opnieuw uit
 bpm = choice() #bpm is gelijk aan het resultaat van de functie choice
 
-print("How many steps shoukd the sequence have?")
+print("How many steps should the sequence have?")
 numberNotes = int(input())
 
 print("choose " + str(numberNotes) + " note durations")
 noteDurations = []
 for i in range(numberNotes):
     noteDurations.append(float(input()))#voeg telkens de ingeven waarde toe aan de array
-print(noteDurations)
 
 timeStamps16th = [] #een inital 0 voor de eerste step in de sequence
 def durationsToTimestamps16th(_noteDurations): #nieuwe naam want we willen een array passen (noteDuration)
@@ -30,6 +29,7 @@ def durationsToTimestamps16th(_noteDurations): #nieuwe naam want we willen een a
         timeStamps16th.append(int(sum / 0.25)) #voeg aan timeStamps16th steeds de optelleing van de lijst noteDurations toe. Deel die door een 16de (0.25) en  maar er een int van, dit is de step
         sum = sum + noteDurations[i]
 durationsToTimestamps16th(noteDurations) #pass de lijst met noteDurations naar de functie durationsToTimestamps16th
+print(timeStamps16th)
 
 timeStamps = []
 def sixteenthTimeStampsToSeconds (_timeStamps16th, _bpm): #_timeStamps16th (andere naam) want je wil de lijst timeStamps16th passen naar de functie
@@ -39,6 +39,17 @@ def sixteenthTimeStampsToSeconds (_timeStamps16th, _bpm): #_timeStamps16th (ande
         timeStamps.append(i * sixteenthnoetDuration)
 sixteenthTimeStampsToSeconds(timeStamps16th, bpm) #pass de lijst met timeStamps16th naar de functie sixteenthTimeStampsToSeconds
 print(timeStamps)
+# timeStamps = [0.0, 0.25, 0.75, 0.875, 1.125, 1.625, 1.75, 1.875]
 
+kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 timeZero = time.time()
-timeEalepsed = 0
+i = 0
+while True:
+    timeCurrent = time.time() - timeZero
+    if(timeCurrent >= float(timeStamps[i])):
+        kick.play()
+        i += 1
+        print (i)
+        if(i == len(timeStamps)):
+         break
+    time.sleep(000.1)
