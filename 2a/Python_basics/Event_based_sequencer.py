@@ -32,15 +32,26 @@ hihat_event = {
 bpm = 120
 noteDurations = [0.5, 1, 2, 1, 2]
 
-noteDuration16th = []
-def make_note_durations_16th(_noteDurations):
+def duration_16th_note(_bpm):
+    return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
+noteDuration16th = duration_16th_note(bpm)
+
+noteDurationArray16th = []
+def noteDurations_to_noteDurations16th(_noteDurations):
+    # zet voor het aantal elementen in noteDurations elk element om in een 16de
     i = 0
     for i in range(len(noteDurations)):
-        noteDuration16th.append(float(_noteDurations[i]) / 0.25)
+        noteDurationArray16th.append(float(_noteDurations[i]) / 0.25)
         i += 1
-make_note_durations_16th(noteDurations)
+noteDurations_to_noteDurations16th(noteDurations)
 
-print(noteDuration16th)
+timeStamps = []
+def noteDurations16th_to_timeStamps(_noteDurationArray16th):
+    #sum = 0
+    for i in range(len(noteDurations)):
+        timeStamps.append(float(_noteDurationArray16th[i] * noteDuration16th))
+noteDurations16th_to_timeStamps(noteDurationArray16th)
+print(timeStamps)
 
 # def handle_sample_event(event):
 #     print(event['instrumentname'])
