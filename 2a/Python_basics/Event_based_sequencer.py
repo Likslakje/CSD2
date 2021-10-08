@@ -47,9 +47,13 @@ noteDurations_to_noteDurations16th(noteDurations)
 
 timeStamps = []
 def noteDurations16th_to_timeStamps(_noteDurationArray16th):
-    #sum = 0
+    timeStamps16th = []
+    sum = 0
     for i in range(len(noteDurations)):
-        timeStamps.append(float(_noteDurationArray16th[i] * noteDuration16th))
+        timeStamps16th.append(float(_noteDurationArray16th[i] * noteDuration16th))
+        sum = sum + timeStamps16th[i]
+        timeStamps.append(sum)
+        print(sum)
 noteDurations16th_to_timeStamps(noteDurationArray16th)
 print(timeStamps)
 
