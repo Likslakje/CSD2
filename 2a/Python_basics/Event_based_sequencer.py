@@ -37,21 +37,22 @@ hihat_event = {
 }
 
 allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_event} # dit is een nested dictionary
-bpm = 120
+
+# bpm = 120
 
 def bpm_choice(): 
     #functie voor de y/n vraag voor bpm
-    bpmChoice = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+    
+    print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+    bpmChoice = input()
+    global bpm
     if bpmChoice == "n" :
         bpm = 120
-        return bpm
     elif bpmChoice == "y" :
         bpm = int(input("Enter a new BPM: " ))
-        return bpm
     else :
         print("Please enter valid input, 'y' or 'n' only")
         bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
-bpm = bpm_choice() #bpm is gelijk aan het resultaat van de functie choice
 
 def duration_16th_note(_bpm):
     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
@@ -62,12 +63,14 @@ def instrumentname_choice():
     # multiple choice voor de instrumentname
     instrumentChoiceQuestion = [
         inquirer.List('instrumentname', 
-                       message = 'Choose instrument',
-                       choices = ['kick', 'snare', 'hihat'],
-                       carousel = True)] # zorgt voor infinite scroll
-    instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion)
-    return instrumentChoiceAnswer['instrumentname']
-instrumentnameChoiceAnswer = instrumentname_choice()
+                    message = 'Which sample would you like to edit?',
+                    choices = ['kick', 'snare', 'hihat'],
+                    carousel = True)] # zorgt voor infinite scroll
+    instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion) 
+    global instrumentnameChoiceAnswer
+    instrumentnameChoiceAnswer = instrumentChoiceAnswer['instrumentname']
+
+
 
 def numberSteps_noteDurations_input():
     # stop het ingegeven rithme in de juiste sample dictionary
@@ -80,7 +83,7 @@ def numberSteps_noteDurations_input():
         for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
             allSampleDict[instrumentnameChoiceAnswer]['noteDurations'].append(float(input()))
             i += 1
-numberSteps_noteDurations_input()
+
 
 def noteDurations_to_noteDurations16th(_noteDurations):
     # zet voor elke step de noteDurations input, van het gekozen sample_event, om in een 16de
@@ -88,7 +91,7 @@ def noteDurations_to_noteDurations16th(_noteDurations):
     for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
         allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(_noteDurations[i]) / 0.25)
         i += 1
-noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+
 
 def noteDurations16th_to_timeStamps(_noteDurations16th):
     # zet noteDuration16th om naar tijdswaardes van 16de noten in milisecondes, daarna tel deze waardes bij elkaar op voor timeStamps
@@ -99,8 +102,7 @@ def noteDurations16th_to_timeStamps(_noteDurations16th):
         sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
         allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
         print(sum)
-noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-print(allSampleDict[instrumentnameChoiceAnswer])
+
 
 def sample_player(waveSample):
     playSample = waveSample.play()
@@ -112,7 +114,20 @@ def sample_player(waveSample):
         if(timeCurrent >= float(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'][i])):
             waveSample.play()
             i += 1
-            if i == allSampleDict[instrumentnameChoiceAnswer]['numberSteps']:
-                playSample.wait_done()
+        playSample.wait_done()
         time.sleep(000.1)
-sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'])
+
+def do_everything():
+    instrumentname_choice()
+    numberSteps_noteDurations_input()
+    noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+    noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+    sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'])
+
+print("Type 'sample.edit' to start programming a drumline\nType 'bpm.edit' to change the bpm")
+if str(input()) == 'sample.edit':
+    do_everything()
+
+if str(input()) == 'bpm.edit':
+        print('were in bois')
+        bpm_choice()
