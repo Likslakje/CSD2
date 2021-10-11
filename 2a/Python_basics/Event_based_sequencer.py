@@ -114,11 +114,13 @@ def sample_player(waveSample):
         if(timeCurrent >= float(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'][i])):
             waveSample.play()
             i += 1
-        playSample.wait_done()
-        time.sleep(000.1)
+        if i == allSampleDict[instrumentnameChoiceAnswer]['numberSteps']:
+            i = 0
+
+    #time.sleep(000.1)
 
 def do_everything():
-    # voer alle functies in relatie tot het afspeleb van de samples uit
+    # voer alle functies in relatie tot het afspelen van de samples uit
     instrumentname_choice()
     numberSteps_noteDurations_input()
     noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
