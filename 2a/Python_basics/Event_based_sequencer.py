@@ -38,21 +38,22 @@ hihat_event = {
 
 allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_event} # dit is een nested dictionary
 
-# bpm = 120
+bpm = 120
 
 def bpm_choice(): 
     #functie voor de y/n vraag voor bpm
-    
     print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
     bpmChoice = input()
-    global bpm
     if bpmChoice == "n" :
         bpm = 120
+        return bpm
     elif bpmChoice == "y" :
         bpm = int(input("Enter a new BPM: " ))
+        return bpm
     else :
         print("Please enter valid input, 'y' or 'n' only")
         bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
+bpm_choice()
 
 def duration_16th_note(_bpm):
     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
@@ -101,7 +102,6 @@ def noteDurations16th_to_timeStamps(_noteDurations16th):
         allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'].append(float(_noteDurations16th[i] * noteDuration16th))
         sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
         allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
-        print(sum)
 
 
 def sample_player(waveSample):
@@ -118,16 +118,21 @@ def sample_player(waveSample):
         time.sleep(000.1)
 
 def do_everything():
+    # voer alle functies in relatie tot het afspeleb van de samples uit
     instrumentname_choice()
     numberSteps_noteDurations_input()
     noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
     noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
     sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'])
 
-print("Type 'sample.edit' to start programming a drumline\nType 'bpm.edit' to change the bpm")
-if str(input()) == 'sample.edit':
-    do_everything()
-
-if str(input()) == 'bpm.edit':
-        print('were in bois')
+def handle_input(_input):
+    # afhangkelijk van de het ingeven commando, voer bepaalde functies uit
+    if _input == 'sample.edit':
+        do_everything()
+    elif _input == 'bpm.edit':
+        print("we gaan die bpm editten a niffau")
         bpm_choice()
+    else:
+        print("Please use a valid command")
+        handle_input()
+handle_input(str(input("Type 'sample.edit' to start programming a drumline\nType 'bpm.edit' to change the bpm\n")))
