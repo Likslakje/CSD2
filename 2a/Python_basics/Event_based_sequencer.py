@@ -1,7 +1,7 @@
 import simpleaudio as sa # audio functionaliteiten
 import inquirer # user input functionaliteiten
 import time # time
-import keyboard #voor user input
+import threading # voor multithreading
 
 kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
@@ -41,37 +41,36 @@ allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_eve
 bpm = 120
 loopinput = 1
 
-# def bpm_choice(): 
-#     #functie voor de y/n vraag voor bpm
-#     print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
-#     bpmChoice = input()
-#     if bpmChoice == "n" :
-#         bpm = 120
-#         return bpm
-#     elif bpmChoice == "y" :
-#         bpm = int(input("Enter a new BPM: " ))
-#         return bpm
-#     else :
-#         print("Please enter valid input, 'y' or 'n' only")
-#         bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
-# bpm_choice()
 
-def duration_16th_note(_bpm):
-    # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
-    return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
-noteDuration16th = duration_16th_note(bpm)
+def bpm_choice(): 
+    #functie voor de y/n vraag voor bpm
+    print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+    bpmChoice = input()
+    if bpmChoice == "n" :
+        bpm = 120
+    elif bpmChoice == "y" :
+        bpm = int(input("Enter a new BPM: " ))
+    else :
+        print("Please enter valid input, 'y' or 'n' only")
+        bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
+    return bpm
+    
+
+# def duration_16th_note(_bpm):
+#     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
+#     return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
+# noteDuration16th = duration_16th_note(bpm)
 
 def instrumentname_choice():
     # multiple choice voor de instrumentname
     instrumentChoiceQuestion = [
         inquirer.List('instrumentname', 
-                    message = 'Which sample would you like to edit?',
+                    message = 'Choose sample ',
                     choices = ['kick', 'snare', 'hihat'],
                     carousel = True)] # zorgt voor infinite scroll
     instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion) 
     global instrumentnameChoiceAnswer
     instrumentnameChoiceAnswer = instrumentChoiceAnswer['instrumentname']
-
 
 
 def numberSteps_noteDurations_input():
@@ -120,12 +119,55 @@ def sample_player(waveSample, _loopinput):
             timeZero = time.time()
         time.sleep(0.0001)
 
+class UserInputThread(threading.Thread):
+    def __init__(self, threadID, name, user):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+        self.user = user
 
-instrumentname_choice()
-numberSteps_noteDurations_input()
-noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'], loopinput)
+    def printen(self):
+        print(allSampleDict[self.user]['instrumentname'])
+
+    def WhatInput(self):
+        if self.user == 'edit':
+            instrumentname_choice() #retrunt de gekozen sample in instrumentnameChoiceAnswer
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+                print('lets edit ' + instrumentnameChoiceAnswer)
+        elif self.user == 'play':
+            instrumentname_choice()
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+                print('lets play ' + instrumentnameChoiceAnswer)
+        elif self.user == 'stop':
+            instrumentname_choice()
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+                print('lets stop ' + instrumentnameChoiceAnswer)
+        elif self.user == 'bpm':
+            bpm = bpm_choice()
+            print(bpm)
+
+
+class AudioThread(threading.Thread):
+    def __init__(self, threadID, name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+
+    def printen(self):
+        print(self.threadID, self.name)
+
+userInput = UserInputThread(1, "input", str(input("Type edit, play, stop or bpm : ")))
+#userInput.printen()
+userInput.WhatInput()
+
+everythingAudio = AudioThread(2, "audio")
+
+
+# instrumentname_choice()
+# numberSteps_noteDurations_input()
+# noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+# noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+# sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'], loopinput)
 
 # def fill_sample_dict():
 #     # voer alle functies in relatie tot het afspelen van de samples uit
