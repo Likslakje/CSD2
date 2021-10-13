@@ -56,10 +56,11 @@ def bpm_choice():
     return bpm
     
 
-# def duration_16th_note(_bpm):
-#     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
-#     return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
-# noteDuration16th = duration_16th_note(bpm)
+def duration_16th_note(_bpm):
+    # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
+    return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
+noteDuration16th = duration_16th_note(bpm)
+print(noteDuration16th)
 
 def instrumentname_choice():
     # multiple choice voor de instrumentname
@@ -144,6 +145,7 @@ class UserInputThread(threading.Thread):
                 print('lets stop ' + instrumentnameChoiceAnswer)
         elif self.user == 'bpm':
             bpm = bpm_choice()
+            duration_16th_note(bpm)
             print(bpm)
 
 
