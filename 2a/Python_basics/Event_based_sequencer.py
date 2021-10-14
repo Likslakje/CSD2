@@ -15,6 +15,7 @@ kick_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
+    'loop' : 1
 }
 
 snare_event = {
@@ -25,6 +26,7 @@ snare_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
+    'loop' : 1
 }
 
 hihat_event = {
@@ -35,13 +37,13 @@ hihat_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
+    'loop' : 1
 }
 
 allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_event} # dit is een nested dictionary
-bpm = 120
 loopinput = 1
 
-
+bpm = 120
 def bpm_choice(): 
     #functie voor de y/n vraag voor bpm
     print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
@@ -54,13 +56,13 @@ def bpm_choice():
         print("Please enter valid input, 'y' or 'n' only")
         bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
     return bpm
-    
+
 
 def duration_16th_note(_bpm):
     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
     return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
-noteDuration16th = duration_16th_note(bpm)
-print(noteDuration16th)
+noteDuration16th = duration_16th_note(bpm) #voer functie uit met default bpm waarde
+
 
 def instrumentname_choice():
     # multiple choice voor de instrumentname
@@ -104,90 +106,63 @@ def noteDurations16th_to_timeStamps(_noteDurations16th):
         sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
         allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
 
+def sample_loop():
+    print("Type 1 to loop or 0 to unloop \nCurrent loopstate for " + instrumentnameChoiceAnswer + " is set to " + str(allSampleDict[instrumentnameChoiceAnswer]['loop']))
+    loopInput = int(input())
+    allSampleDict[instrumentnameChoiceAnswer]['loop'] = loopInput # stop ingevoerde loopstatus in de dictionary
 
-def sample_player(waveSample, _loopinput):
-    print("Default loop is on: \n Type l to loop \n Type ^l to unloop")
-    timeZero = time.time()
-    i = 0
-    while True:
-        timeCurrent = time.time() - timeZero
-        if(timeCurrent >= float(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'][i])):
-            waveSample.play()
-            i += 1
-        if i == allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] and _loopinput == 1:
-            #
-            i = 0
-            timeZero = time.time()
-        time.sleep(0.0001)
-
-class UserInputThread(threading.Thread):
-    def __init__(self, threadID, name, user):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.name = name
-        self.user = user
-
-    def printen(self):
-        print(allSampleDict[self.user]['instrumentname'])
-
-    def WhatInput(self):
-        if self.user == 'edit':
-            instrumentname_choice() #retrunt de gekozen sample in instrumentnameChoiceAnswer
-            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-                print('lets edit ' + instrumentnameChoiceAnswer)
-        elif self.user == 'play':
-            instrumentname_choice()
-            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-                print('lets play ' + instrumentnameChoiceAnswer)
-        elif self.user == 'stop':
-            instrumentname_choice()
-            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-                print('lets stop ' + instrumentnameChoiceAnswer)
-        elif self.user == 'bpm':
-            bpm = bpm_choice()
-            duration_16th_note(bpm)
-            print(bpm)
-
-
-class AudioThread(threading.Thread):
+class AudioPlayThread(threading.Thread):
     def __init__(self, threadID, name):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
 
     def printen(self):
-        print(self.threadID, self.name)
+        print(allSampleDict[instrumentnameChoiceAnswer]['instrumentname'])
 
-userInput = UserInputThread(1, "input", str(input("Type edit, play, stop or bpm : ")))
-#userInput.printen()
-userInput.WhatInput()
+    def sample_player(self):
+        self.timeZero = time.time()
+        self.i = 0
+        while True:
+            self.timeCurrent = time.time() - self.timeZero
+            if(self.timeCurrent >= float(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'][self.i])):
+                allSampleDict[instrumentnameChoiceAnswer]['filename'].play()
+                self.i += 1
+            if self.i == allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] and allSampleDict[instrumentnameChoiceAnswer]['loop'] == 1:
+                self.i = 0
+                self.timeZero = time.time()
+            time.sleep(0.0001)
+playAudio = AudioPlayThread(1, "AudioThread")
 
-everythingAudio = AudioThread(2, "audio")
+while True:
+    userInput = str(input("Type edit, play, loop, stop, bpm or exit : "))
+    if userInput == 'edit':
+            instrumentname_choice() #retrunt de gekozen sample in instrumentnameChoiceAnswer
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: # als de gekozen sample voor komt in de allSampleDict dictionary dan...
+                numberSteps_noteDurations_input() # voer deze functie uit (-> bepaald het aantal steps en notedurations)
+                noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations']) # zet de noteDuartions uit de dictionary om naar 16de noten
+                noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th']) # zet de noteDurations16th om naar timestamps
+                print(allSampleDict)
+    elif userInput == 'play':
+        instrumentname_choice()
+        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            playAudio.sample_player()
+    elif userInput == 'loop':
+        instrumentname_choice()
+        sample_loop()
+        print(allSampleDict)
+    elif userInput == 'stop':
+        instrumentname_choice()
+        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            print('lets stop ' + instrumentnameChoiceAnswer)
+    elif userInput == 'bpm':
+        bpm = bpm_choice()
+        noteDuration16th = duration_16th_note(bpm)
+        print(bpm)
+        print(noteDuration16th)
+    elif userInput == 'exit':
+        break
+    else:
+        print("Please use a valid input")
 
 
-# instrumentname_choice()
-# numberSteps_noteDurations_input()
-# noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-# noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-# sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'], loopinput)
-
-# def fill_sample_dict():
-#     # voer alle functies in relatie tot het afspelen van de samples uit
-#     instrumentname_choice()
-#     numberSteps_noteDurations_input()
-#     noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-#     noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-    
-# def handle_input(_input):
-#     # afhangkelijk van de het ingeven commando, voer bepaalde functies uit
-#     if _input == 'sample.edit':
-#         fill_sample_dict()
-#     elif _input == str(instrumentnameChoiceAnswer)+'.play':
-#         sample_player(allSampleDict[instrumentnameChoiceAnswer]['filename'])
-#     elif _input == 'bpm.edit':
-#         print("we gaan die bpm editten a niffau")
-#         # bpm_choice()
-#     else:
-#         print("Please use a valid command")
-#         handle_input()
-# handle_input(str(input("Type 'sample.edit' to start programming a drumline\nType 'bpm.edit' to change the bpm\n")))
