@@ -57,12 +57,10 @@ def bpm_choice():
         bpm_choice() #als input niet matched dan voer de functie choice opnieuw uit
     return bpm
 
-
 def duration_16th_note(_bpm):
     # de lengte van 1 16de noot wordt uitgereknd aan de hand van het bpm
     return((60 / _bpm) / 4)# hele noot = 60/bpm, 16de = 1/4 van een hele noot
 noteDuration16th = duration_16th_note(bpm) #voer functie uit met default bpm waarde
-
 
 def instrumentname_choice():
     # multiple choice voor de instrumentname
@@ -74,7 +72,6 @@ def instrumentname_choice():
     instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion) 
     global instrumentnameChoiceAnswer
     instrumentnameChoiceAnswer = instrumentChoiceAnswer['instrumentname']
-
 
 def numberSteps_noteDurations_input():
     # stop het ingegeven rithme in de juiste sample dictionary
@@ -88,14 +85,12 @@ def numberSteps_noteDurations_input():
             allSampleDict[instrumentnameChoiceAnswer]['noteDurations'].append(float(input()))
             i += 1
 
-
 def noteDurations_to_noteDurations16th(_noteDurations):
     # zet voor elke step de noteDurations input, van het gekozen sample_event, om in een 16de
     i = 0
     for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
         allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(_noteDurations[i]) / 0.25)
         i += 1
-
 
 def noteDurations16th_to_timeStamps(_noteDurations16th):
     # zet noteDuration16th om naar tijdswaardes van 16de noten in milisecondes, daarna tel deze waardes bij elkaar op voor timeStamps
@@ -117,8 +112,8 @@ class AudioPlayThread(threading.Thread):
         self.threadID = threadID
         self.name = name
 
-    def printen(self):
-        print(allSampleDict[instrumentnameChoiceAnswer]['instrumentname'])
+    # def printen(self):
+    #     print(allSampleDict[instrumentnameChoiceAnswer]['instrumentname'])
 
     def sample_player(self):
         self.timeZero = time.time()
@@ -133,6 +128,14 @@ class AudioPlayThread(threading.Thread):
                 self.timeZero = time.time()
             time.sleep(0.0001)
 playAudio = AudioPlayThread(1, "AudioThread")
+playAudio.start()
+
+class UserInputThread(threading.Thread):
+    def __init__(self, threadID, name):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.name = name
+awaitUserInput = UserInputThread(2, "UserThread")
 
 while True:
     userInput = str(input("Type edit, play, loop, stop, bpm or exit : "))
