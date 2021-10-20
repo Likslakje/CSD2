@@ -8,7 +8,7 @@ import random
 
 kickLength = 8
 sixteenthNote = 0.125 # 1 mesure had 16 sixteenth notes
-eightthNote = 0.5
+eighthNote = 0.5
 quarterNote = 1
 kick = []
 kickPatern = [1, 0.5, 1, 0.125, 1, 0.5, 1, 0.125]
@@ -34,26 +34,50 @@ newKickPatern = []
 #                         a 1 is followed by a 0
 #                         a 1 is followed by a 1
 
-sixteenthNote_sixteenthNote = 0
-sixteenthNote_eigtthNote = 0
-sixteenthNote_quarterNote = 0
-eightthNote_sixteenthNote = 0
-eightthNote_eightthNote = 0
-eightthNote_quarterNote = 0
-quarterNote_sixteenthNote = 0
-quarterNote_eightthNote = 0
-quarterNote_quarterNote = 0
+note_to_note_transistion_times = {
+    'sixteenthNote_sixteenthNote' : 0,
+    'sixteenthNote_eighthNote' : 0,
+    'sixteenthNote_quarterNote' : 0,
+    'eighthNote_sixteenthNote' : 0,
+    'eighthNote_eighthNote' : 0,
+    'eighthNote_quarterNote' : 0,
+    'quarterNote_sixteenthNote' : 0,
+    'quarterNote_eighthNote' : 0,
+    'quarterNote_quarterNote' : 0
+}
 
-sixteenthNote_sixteenthNote_per = 0
-sixteenthNote_eigtthNote_per = 0
-sixteenthNote_quarterNote_per = 0
-eightthNote_sixteenthNote_per = 0
-eightthNote_eightthNote_per = 0
-eightthNote_quarterNote_per = 0
-quarterNote_sixteenthNote_per = 0
-quarterNote_eightthNote_per = 0
-quarterNote_quarterNote_per = 0
+note_to_note_transistion_per = {
+    'sixteenthNote_sixteenthNote_per' : 0,
+    'sixteenthNote_eighthNote_per' : 0,
+    'sixteenthNote_quarterNote_per' : 0,
+    'eighthNote_sixteenthNote_per' : 0,
+    'eighthNote_eighthNote_per' : 0,
+    'eighthNote_quarterNote_per ': 0,
+    'quarterNote_sixteenthNote_per' : 0,
+    'quarterNote_eighthNote_per' : 0,
+    'quarterNote_quarterNote_per' : 0
+}
 
-for i in range(len(kickPatern)):
+for i in range(len(kickPatern) - 1):
+    print(kickPatern[i], kickPatern[i + 1])
     if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == sixteenthNote:
-        sixteenthNote_sixteenthNote += 1
+        note_to_note_transistion_times['sixteenthNote_sixteenthNote'] += 1
+    if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == eighthNote:
+        note_to_note_transistion_times['sixteenthNote_eighthNote'] += 1
+    if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == quarterNote:
+        note_to_note_transistion_times['sixteenthNote_quarterNote'] += 1
+
+    if kickPatern[i] == eighthNote and kickPatern[i + 1] == sixteenthNote:
+        note_to_note_transistion_times['eighthNote_sixteenthNote'] += 1
+    if kickPatern[i] == eighthNote and kickPatern[i + 1] == eighthNote:
+        note_to_note_transistion_times['eighthNote_eighthNote'] += 1
+    if kickPatern[i] == eighthNote and kickPatern[i + 1] == quarterNote:
+        note_to_note_transistion_times['eighthNote_quarterNote'] += 1
+
+    if kickPatern[i] == quarterNote and kickPatern[i + 1] == sixteenthNote:
+        note_to_note_transistion_times['quarterNote_sixteenthNote'] += 1
+    if kickPatern[i] == quarterNote and kickPatern[i + 1] == eighthNote:
+        note_to_note_transistion_times['quarterNote_eighthNote'] += 1
+    if kickPatern[i] == quarterNote and kickPatern[i + 1] == quarterNote:
+        note_to_note_transistion_times['quarterNote_quarterNote'] += 1
+print(note_to_note_transistion_times)
