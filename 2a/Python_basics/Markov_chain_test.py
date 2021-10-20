@@ -7,23 +7,26 @@
 import random
 
 kickLength = 8
+sixteenthNote = 0.125 # 1 mesure had 16 sixteenth notes
+eightthNote = 0.5
+quarterNote = 1
 kick = []
-kickPatern = []
+kickPatern = [1, 0.5, 1, 0.125, 1, 0.5, 1, 0.125]
 newKickPatern = []
 
 # put a number (defined by kickLength) of ranfom values in the kick array
 # EX: <5 = no kick, >5 = play kick
-for i in range(kickLength):
-    kick.append(round(random.random(), 2))
-print(kick)
+# for i in range(kickLength):
+#     kick.append(random.randrange(1, 16))
+# print(kick)
 
 # make the random values into a fake step on/off patern
-for i in range(kickLength):
-    if kick[i] < 0.5:
-        kickPatern.append(0)
-    elif kick[i] >= 0.5:
-        kickPatern.append(1)
-print(kickPatern)
+# for i in range(kickLength):
+#     if kick[i] < 0.5:
+#         kickPatern.append(0)
+#     elif kick[i] >= 0.5:
+#         kickPatern.append(1)
+# print(kickPatern)
 
 # analasys to feed to markovchain
 # What's the chance that: a 0 is followed by a 0
@@ -31,42 +34,26 @@ print(kickPatern)
 #                         a 1 is followed by a 0
 #                         a 1 is followed by a 1
 
-zeroZero = 0
-zeroOne = 0
-oneZero = 0
-oneOne = 0
+sixteenthNote_sixteenthNote = 0
+sixteenthNote_eigtthNote = 0
+sixteenthNote_quarterNote = 0
+eightthNote_sixteenthNote = 0
+eightthNote_eightthNote = 0
+eightthNote_quarterNote = 0
+quarterNote_sixteenthNote = 0
+quarterNote_eightthNote = 0
+quarterNote_quarterNote = 0
 
-zeroZeroPer = 0
-zeroOnePer = 0
-oneZeroPer = 0
-oneOnePer = 0
+sixteenthNote_sixteenthNote_per = 0
+sixteenthNote_eigtthNote_per = 0
+sixteenthNote_quarterNote_per = 0
+eightthNote_sixteenthNote_per = 0
+eightthNote_eightthNote_per = 0
+eightthNote_quarterNote_per = 0
+quarterNote_sixteenthNote_per = 0
+quarterNote_eightthNote_per = 0
+quarterNote_quarterNote_per = 0
 
-for i in range(kickLength - 1): # -1 because the last element doesnt have anything to compare to
-    if kickPatern[i] == 0 and kickPatern[i + 1] == 0:
-            zeroZero += 1
-            zeroZeroPer = (zeroZero/kickLength) * 100
-    elif kickPatern[i] == 0 and kickPatern[i + 1] == 1:
-            zeroOne += 1
-            zeroOnePer = (zeroOne/kickLength) * 100
-    elif kickPatern[i] == 1 and kickPatern[i + 1] == 0:
-            oneZero += 1
-            OneZeroPer = (oneZero/kickLength) * 100
-    elif kickPatern[i] == 1 and kickPatern[i + 1] == 1:
-            oneOne += 1
-            oneOnePer = (oneOne/kickLength) * 100
-
-# Make a new kick patern with the chance for each step
-# First we give the new kick patern a random starting value, so the chance algorythm can start
-newKickPatern.append(random.randrange(0, 2))
-i = 0
-for i in range(kickLength):
-    if newKickPatern[i] == 0:
-        chanceChoice = random.randrange(0, zeroZeroPer + zeroOnePer) # pick a number
-        if chanceChoice < zeroZeroPer:
-            newKickPatern.append(0)
-        elif chanceChoice >= zeroZeroPer:
-            newKickPatern.append(1)
-    elif newKickPatern[i] == 1:
-        chanceChoice = random.randrange(0, oneZeroPer + oneOnePer)
-        #if chanceChoice < on
-    i += 1
+for i in range(len(kickPatern)):
+    if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == sixteenthNote:
+        sixteenthNote_sixteenthNote += 1

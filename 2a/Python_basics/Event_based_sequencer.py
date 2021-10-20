@@ -112,12 +112,13 @@ class AudioPlayThread(threading.Thread):
         self.threadID = threadID
         self.name = name
         self.playCheck = playCheck
+        self.isPlaying = True
         print(playCheck)
 
-    def sample_player(self):
+    def run (self):
         self.timeZero = time.time()
         self.i = 0
-        while True:
+        while self.isPlaying:
             self.timeCurrent = time.time() - self.timeZero
             if(self.timeCurrent >= float(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'][self.i])):
                 allSampleDict[instrumentnameChoiceAnswer]['filename'].play()
@@ -126,8 +127,7 @@ class AudioPlayThread(threading.Thread):
                 self.i = 0
                 self.timeZero = time.time()
             time.sleep(0.0001)
-playAudio = AudioPlayThread(1, "AudioThread", 0)
-playAudio.start()
+
 
 # class UserInputThread(threading.Thread):
 #     def __init__(self, threadID, name):
@@ -181,7 +181,8 @@ while True:
     elif userInput == 'play':
         instrumentname_choice()
         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-            playAudio.sample_player()
+            playAudio = AudioPlayThread(1, "AudioThread", 0)
+            playAudio.start()
     elif userInput == 'loop':
         instrumentname_choice()
         sample_loop()
@@ -196,6 +197,8 @@ while True:
         print(bpm)
         print(noteDuration16th)
     elif userInput == 'exit':
+        playAudio.join()
+        playAudio.isPlaying = False
         break
     else:
         print("Please use a valid input")
