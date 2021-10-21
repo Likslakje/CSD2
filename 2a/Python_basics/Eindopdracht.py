@@ -48,6 +48,21 @@ hihat_event = {
 
 allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_event} #This is a nested dictionary
 
+def measure():
+    numerator = input('set numerator ')
+    if numerator.isnumeric():
+        print('we cool')
+    else:
+        print('Please enter valid input, numbers only')
+        measure()
+    denominator = input('set denominator ')
+    if denominator.isnumeric():
+        print('we cool')
+    else:
+        print('Please enter valid input, numbers only')
+        measure()
+measure()
+    
 bpm = 120
 def bpm_choice(): 
     #this function let's you choose a BPM, the default is set to 120
@@ -147,53 +162,53 @@ class AudioPlayThread(threading.Thread):
             time.sleep(0.0001)
 
 
-while True:
-    #This loop keeps expecting an user input
-    userInput = str(input("Type edit, play, loop, stop, bpm or exit : "))
-    if userInput == 'edit':
-            instrumentname_choice() #We can choose a sample_event here
-            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
-                numberSteps_noteDurations_input()
-                noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-                noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-    elif userInput == 'play':
-        instrumentname_choice()
-        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-            playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-            threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
-            instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-            timeStamps = allSampleDict[instrumentnameChoiceAnswer]['timeStamps']
-            filename = allSampleDict[instrumentnameChoiceAnswer]['filename']
-            numberSteps = allSampleDict[instrumentnameChoiceAnswer]['numberSteps']
-            loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
-            playCheck = allSampleDict[instrumentnameChoiceAnswer]['playCheck']
-            playAudioInstrument = AudioPlayThread(threadID, timeStamps, filename, numberSteps, loop, playCheck)
-            playAudioInstrument.playCheck = True
-            playAudioInstrument.start()
-    elif userInput == 'loop':
-        instrumentname_choice()
-        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-            sample_loop()
-            playAudioInstrument.loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
-    elif userInput == 'stop':
-        instrumentname_choice()
-        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-            allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = False
-            playAudioInstrument.playCheck = False
-    elif userInput == 'bpm':
-        bpm = bpm_choice()
-        noteDuration16th = duration_16th_note(bpm)
-        print(bpm)
-        print(noteDuration16th)
-    elif userInput == 'exit':
-        # playAudio.join()
-        # playAudio.isPlaying = False
-        for i in range(len(allSampleDict)):
-            #playAudio + allSampleDict[].join()
-            pass
-        break
-    else:
-        print("Please use a valid input")
+# while True:
+#     #This loop keeps expecting an user input
+#     userInput = str(input("Type edit, play, loop, stop, bpm or exit : "))
+#     if userInput == 'edit':
+#             instrumentname_choice() #We can choose a sample_event here
+#             if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
+#                 numberSteps_noteDurations_input()
+#                 noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+#                 noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+#     elif userInput == 'play':
+#         instrumentname_choice()
+#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+#             playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
+#             threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
+#             instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
+#             timeStamps = allSampleDict[instrumentnameChoiceAnswer]['timeStamps']
+#             filename = allSampleDict[instrumentnameChoiceAnswer]['filename']
+#             numberSteps = allSampleDict[instrumentnameChoiceAnswer]['numberSteps']
+#             loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
+#             playCheck = allSampleDict[instrumentnameChoiceAnswer]['playCheck']
+#             playAudioInstrument = AudioPlayThread(threadID, timeStamps, filename, numberSteps, loop, playCheck)
+#             playAudioInstrument.playCheck = True
+#             playAudioInstrument.start()
+#     elif userInput == 'loop':
+#         instrumentname_choice()
+#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+#             sample_loop()
+#             playAudioInstrument.loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
+#     elif userInput == 'stop':
+#         instrumentname_choice()
+#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+#             allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = False
+#             playAudioInstrument.playCheck = False
+#     elif userInput == 'bpm':
+#         bpm = bpm_choice()
+#         noteDuration16th = duration_16th_note(bpm)
+#         print(bpm)
+#         print(noteDuration16th)
+#     elif userInput == 'exit':
+#         # playAudio.join()
+#         # playAudio.isPlaying = False
+#         for i in range(len(allSampleDict)):
+#             #playAudio + allSampleDict[].join()
+#             pass
+#         break
+#     else:
+#         print("Please use a valid input")
 
 
 
