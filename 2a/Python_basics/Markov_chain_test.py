@@ -6,7 +6,7 @@
 
 import random
 
-kickLength = 8
+kickLength = 4
 sixteenthNote = 0.125 # 1 mesure had 16 sixteenth notes
 eighthNote = 0.5
 quarterNote = 1
@@ -51,7 +51,6 @@ for i in range(kickLength):
         kickPatern.append(halfNote)
     elif noteValuePick > (1/5)*4:
         kickPatern.append(wholeNote)
-print(kickPatern)
 
 note_to_note_transistion_times = {
     '0.125_0.125': 0,
@@ -82,61 +81,84 @@ note_to_note_transistion_times = {
 }
 
 note_to_note_transistion_per = {
-    'sixteenthNote_sixteenthNote_per' : 0,
-    'sixteenthNote_eighthNote_per' : 0,
-    'sixteenthNote_quarterNote_per' : 0,
-    'eighthNote_sixteenthNote_per' : 0,
-    'eighthNote_eighthNote_per' : 0,
-    'eighthNote_quarterNote_per ': 0,
-    'quarterNote_sixteenthNote_per' : 0,
-    'quarterNote_eighthNote_per' : 0,
-    'quarterNote_quarterNote_per' : 0
+    '0.125_0.125': 0,
+    '0.125_0.5': 0,
+    '0.125_1': 0,
+    '0.125_2': 0,
+    '0.125_4': 0,
+    '0.5_0.125': 0,
+    '0.5_0.5': 0,
+    '0.5_1': 0,
+    '0.5_2': 0,
+    '0.5_4': 0,
+    '1_0.125': 0,
+    '1_0.5': 0,
+    '1_1': 0,
+    '1_2': 0,
+    '1_4': 0,
+    '2_0.125': 0,
+    '2_0.5': 0,
+    '2_1': 0,
+    '2_2': 0,
+    '2_4': 0,
+    '4_0.125': 0,
+    '4_0.5': 0,
+    '4_1': 0,
+    '4_2': 0,
+    '4_4': 0
 }
 
-kickPaternIndex = 0
-for kickPaternIndex in range(len(kickPatern) - 1):
-    print('kickParn', kickPatern[kickPaternIndex], kickPatern[kickPaternIndex + 1])
+def probability_per_note_times():
+    #This function calculates the probability of a transition from a note value to the next note value
+    #First we take an element and the next element out of the kickPatern array
+    #We compare the transition between these two elements and add a +1 one to the right dictionary key
+    #This function works with a slow loop (kickPatern)
+    #an intermediate loop (noteValueFist)
+    #and a fast loop (noteValueSecond)
+    kickPaternIndex = 0
     noteValueFirst = 0
-    print('noteOptionFirst', noteOptions[noteValueFirst])
-    for noteValueSecond in range(len(noteOptions)):
-        print('noteOptionSecond', noteOptions[noteValueSecond])
-        if kickPatern[kickPaternIndex] == noteOptions[noteValueFirst] and kickPatern[kickPaternIndex + 1] == noteOptions[noteValueSecond]:
-            dictKey = str(noteOptions[noteValueFirst]) + "_" + str(noteOptions[noteValueSecond])
-            note_to_note_transistion_times[dictKey] += 1
+    noteValueSecond = 0
+    for kickPaternIndex in range(len(kickPatern) - 1):
+        #print('kickParn', kickPatern[kickPaternIndex], kickPatern[kickPaternIndex + 1])
+        for noteValueFirst in range(len(noteOptions)):
+            #print('noteOptionFirst', noteOptions[noteValueFirst])
+            for noteValueSecond in range(len(noteOptions)):
+                #print('noteOptionSecond', noteOptions[noteValueSecond])
+                if kickPatern[kickPaternIndex] == noteOptions[noteValueFirst] and kickPatern[kickPaternIndex + 1] == noteOptions[noteValueSecond]:
+                    dictKey = str(noteOptions[noteValueFirst]) + "_" + str(noteOptions[noteValueSecond])
+                    note_to_note_transistion_times[dictKey] += 1
+                    noteValueSecond += 1
         noteValueFirst += 1
     kickPaternIndex += 1
-print(note_to_note_transistion_times)
+probability_per_note_times()
 
-    # if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == sixteenthNote:
-    #     note_to_note_transistion_times['sixteenthNote_sixteenthNote'] += 1
-    # if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == eighthNote:
-    #     note_to_note_transistion_times['sixteenthNote_eighthNote'] += 1
-    # if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == quarterNote:
-    #     note_to_note_transistion_times['sixteenthNote_quarterNote'] += 1
-    # if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == halfNote:
-    #     note_to_note_transistion_times['sixteenthNote_halfNote'] += 1
-    # if kickPatern[i] == sixteenthNote and kickPatern[i + 1] == halfNote:
-    #     note_to_note_transistion_times['sixteenthNote_halfNote'] += 1
+def probability_per_note_per():
+    #This fuction transforms the number of times a note_to_note transistion occurs, to a precentage
+    for i in range(len(note_to_note_transistion_times)):
+        transistionTimesKey = list(note_to_note_transistion_times.keys())[i]
+        transistionTimesValue = list(note_to_note_transistion_times.values())[i]
+        note_to_note_transistion_per[transistionTimesKey] = (transistionTimesValue / (kickLength - 1)) * 100
+probability_per_note_per()
+
+def new_patern():
+    newNoteValuePick = random.random()
+    if newNoteValuePick <= 1/5:
+        newKickPatern.append(sixteenthNote)
+    elif newNoteValuePick > 1/5 and newNoteValuePick <= (1/5)*2:
+        newKickPatern.append(eighthNote)
+    elif newNoteValuePick > (1/5)*2 and newNoteValuePick <= (1/5)*3:
+        newKickPatern.append(quarterNote)
+    elif newNoteValuePick > (1/5)*3 and newNoteValuePick <= (1/5)*4:
+        newKickPatern.append(halfNote)
+    elif newNoteValuePick > (1/5)*4:
+        newKickPatern.append(wholeNote)
     
+    for i in range(kickLength):
+        pass
 
-    # if kickPatern[i] == eighthNote and kickPatern[i + 1] == sixteenthNote:
-    #     note_to_note_transistion_times['eighthNote_sixteenthNote'] += 1
-    # if kickPatern[i] == eighthNote and kickPatern[i + 1] == eighthNote:
-    #     note_to_note_transistion_times['eighthNote_eighthNote'] += 1
-    # if kickPatern[i] == eighthNote and kickPatern[i + 1] == quarterNote:
-    #     note_to_note_transistion_times['eighthNote_quarterNote'] += 1
+new_patern()
 
-    # if kickPatern[i] == quarterNote and kickPatern[i + 1] == sixteenthNote:
-    #     note_to_note_transistion_times['quarterNote_sixteenthNote'] += 1
-    # if kickPatern[i] == quarterNote and kickPatern[i + 1] == eighthNote:
-    #     note_to_note_transistion_times['quarterNote_eighthNote'] += 1
-    # if kickPatern[i] == quarterNote and kickPatern[i + 1] == quarterNote:
-    #     note_to_note_transistion_times['quarterNote_quarterNote'] += 1
-
-    # if kickPatern[i] == halfNote and kickPatern[i + 1] == sixteenthNote:
-    #     note_to_note_transistion_times['halfNote_sixteenthNote'] += 1
-    # if kickPatern[i] == halfNote and kickPatern[i + 1] == eighthNote:
-    #     note_to_note_transistion_times['halfNote_eighthNote'] += 1
-    # if kickPatern[i] == halfNote and kickPatern[i + 1] == quarterNote:
-    #     note_to_note_transistion_times['halfNote_quarterNote'] += 1
 print(note_to_note_transistion_times)
+print(note_to_note_transistion_per)
+print(newKickPatern)
+print(len(note_to_note_transistion_times))
