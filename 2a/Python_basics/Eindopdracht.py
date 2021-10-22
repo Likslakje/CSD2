@@ -199,8 +199,6 @@ class AudioPlayThread(threading.Thread):
     def __init__(self, sampleEvent):
         threading.Thread.__init__(self)
         #get the sample_event dictionary and 'unpack' it
-        self.running = True
-
         self.sampleEvent = sampleEvent
         self.filename = self.sampleEvent['filename']
         self.instrumentname = self.sampleEvent['instrumentname']
@@ -213,16 +211,13 @@ class AudioPlayThread(threading.Thread):
         self.loop = self.sampleEvent['loop']
         self.playCheck = self.sampleEvent['playCheck']
 
-    def terminate(self):
-        self.running = False
-
     def run (self):
         #This is a build in function to run the thread
         self.timeZero = time.time() #Get the current time
         self.i = 0
         #While playCheck for the choosen sample_event is True
         #check if it is time to play an event and check if the choosen sample_event should loop
-        while self.running and self.playCheck: 
+        while self.playCheck: 
             self.timeCurrent = time.time() - self.timeZero
             if(self.timeCurrent >= float(self.timeStamps[self.i])):
                 self.filename.play()
@@ -283,7 +278,6 @@ while True:
             print(playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].is_alive())
     elif userInput == 'exit':
         for i in range(len(allSampleDict)):
-            playAudioInstrument[allSampleDict[i]['threadID']].terminate()
             playAudioInstrument[allSampleDict[i]['threadID']].join()
         break
     else:
