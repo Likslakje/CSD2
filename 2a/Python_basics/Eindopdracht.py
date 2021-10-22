@@ -134,30 +134,44 @@ def instrumentname_choice():
 def numberSteps_noteDurations_input():
     #This function put the user rythm input in the right sample dictionary
     print("Choose number of steps for " + str(instrumentnameChoiceAnswer) + " drumline")
-    allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] = int(input())
+    noteDurations = allSampleDict[instrumentnameChoiceAnswer]['noteDurations']
+
+    #First clear the default noteDurations list
+    for i in range(len(noteDurations)):
+        noteDurations.pop()
+        print(noteDurations)
+
+    #Set the number of steps
     #Check if the choosen directory excits
+    numberSteps = int(input())
+    allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] = numberSteps
+    print(allSampleDict[instrumentnameChoiceAnswer]['numberSteps'])
     if instrumentnameChoiceAnswer in allSampleDict :
         print("Type rythmic patern for " + str(instrumentnameChoiceAnswer) + " drumline")
         #Add as many elements (as there are numberSteps) to the noteDurations array of the sample_event within the allSampleDict
-        for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
-            allSampleDict[instrumentnameChoiceAnswer]['noteDurations'].append(float(input()))
+        for i in range(numberSteps):
+            noteDurations.append(float(input()))
             i += 1
 
-def noteDurations_to_noteDurations16th(_noteDurations):
+def noteDurations_to_noteDurations16th():
     #This function transforms each element in noteDurations (of the choosen sample_event) into sixteenth notes
+    # elementsInNoteDurations = 
+    # print(elementsInNoteDurations)
+    noteDurations = allSampleDict[instrumentnameChoiceAnswer]['noteDurations']
     i = 0
-    for i in range(len(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])):
+    for i in range(len(noteDurations)):
         #We use float() here because we want to devide by a float number
-        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(_noteDurations[i]) / 0.25)
+        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(noteDurations[i]) / 0.25)
         i += 1
 
-def noteDurations16th_to_timeStamps(_noteDurations16th):
+def noteDurations16th_to_timeStamps():
     #This function transforms the noteDuration16th (of the choosen sample_event) in to time values in milliseconds
     #then it adds these timevalues to one and other, and puts them in the timeStamps array (of the choosen sample_event)
     noteDuration16th = duration_16th_note(bpm)
+    noteDurations16thArray =  allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th']
     sum = 0
     for i in range(len(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])):
-        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'].append(float(_noteDurations16th[i] * noteDuration16th))
+        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'].append(float(noteDurations16thArray[i] * noteDuration16th))
         sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
         allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
 
@@ -202,9 +216,9 @@ class AudioPlayThread(threading.Thread):
             if(self.timeCurrent >= float(self.timeStamps[self.i])):
                 self.filename.play()
                 self.i += 1
-            if self.i == self.numberSteps and self.loop == 0:
-                self.filename.wait.done()
-            if self.i == self.numberSteps and self.loop == 1:
+            # if self.i == self.numberSteps and self.loop == 0:
+            #     self.filename.wait.done()
+            if self.i == len(self.timeStamps) and self.loop == 1:
                 self.i = 0
                 self.timeZero = time.time()
             time.sleep(0.0001)
@@ -222,13 +236,12 @@ while True:
             instrumentnameChoiceAnswer = instrumentname_choice() #We can choose a sample_event here
             if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
                 numberSteps_noteDurations_input()
-                noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-                noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
     elif userInput == 'play':
         instrumentnameChoiceAnswer = instrumentname_choice()
         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-            noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-            noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+            noteDurations_to_noteDurations16th()
+            noteDurations16th_to_timeStamps()
+            print(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'])
             playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
             threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
             instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
