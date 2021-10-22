@@ -16,7 +16,7 @@ kick_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
-    'threadID': 1,
+    'threadID': 0,
     'loop': 1,
     'playCheck': True
 }
@@ -29,7 +29,7 @@ snare_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
-    'threadID': 2,
+    'threadID': 1,
     'loop': 1,
     'playCheck' : True
 }
@@ -42,12 +42,13 @@ hihat_event = {
     'noteDurations16th': [],
     'noteDurations16thMilis': [],
     'timeStamps': [],
-    'threadID': 3,
+    'threadID': 2,
     'loop': 1,
     'playCheck' : True
 }
 
 allSampleDict = {'kick' : kick_event, 'snare' : snare_event, 'hihat' : hihat_event} #This is a nested dictionary
+
 bpm = 120
 # def bpm_choice(): 
 #     #this function let's you choose a BPM, the default is set to 120
@@ -139,7 +140,6 @@ def numberSteps_noteDurations_input():
     #First clear the default noteDurations list
     for i in range(len(noteDurations)):
         noteDurations.pop()
-        print(noteDurations)
 
     #Set the number of steps
     #Check if the choosen directory excits
@@ -194,16 +194,27 @@ def sample_loop():
         sample_loop()
 
 class AudioPlayThread(threading.Thread):
-    #This class makes a thread that is used to play audio
+    #This class makes a thread which is used to play audio
     #we get the nessesary arguments from the allSamplesDict
-    def __init__(self, threadID, timeStamps, filename, numberSteps, loop, playCheck):
+    def __init__(self, sampleEvent):
         threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.timeStamps = timeStamps
-        self.filename = filename
-        self.numberSteps = numberSteps
-        self.loop = loop
-        self.playCheck = playCheck
+        #get the sample_event dictionary and 'unpack' it
+        self.running = True
+
+        self.sampleEvent = sampleEvent
+        self.filename = self.sampleEvent['filename']
+        self.instrumentname = self.sampleEvent['instrumentname']
+        self.numberSteps = self.sampleEvent['numberSteps']
+        self.noteDurations = self.sampleEvent['noteDurations']
+        self.noteDurations16th = self.sampleEvent['noteDurations16th']
+        self.noteDurations16thMilis = self.sampleEvent['noteDurations16thMilis']
+        self.timeStamps = self.sampleEvent['timeStamps']
+        self.threadID = self.sampleEvent['threadID']
+        self.loop = self.sampleEvent['loop']
+        self.playCheck = self.sampleEvent['playCheck']
+
+    def terminate(self):
+        self.running = False
 
     def run (self):
         #This is a build in function to run the thread
@@ -211,7 +222,7 @@ class AudioPlayThread(threading.Thread):
         self.i = 0
         #While playCheck for the choosen sample_event is True
         #check if it is time to play an event and check if the choosen sample_event should loop
-        while self.playCheck: 
+        while self.running and self.playCheck: 
             self.timeCurrent = time.time() - self.timeZero
             if(self.timeCurrent >= float(self.timeStamps[self.i])):
                 self.filename.play()
@@ -222,6 +233,16 @@ class AudioPlayThread(threading.Thread):
                 self.i = 0
                 self.timeZero = time.time()
             time.sleep(0.0001)
+
+def make_thread_per_Instrument():
+    #This function prepares the threads for each sample_event
+    playAudioKick = AudioPlayThread(allSampleDict['kick'])
+    playAudioSnare = AudioPlayThread(allSampleDict['snare'])
+    playAudioHihat = AudioPlayThread(allSampleDict['hihat'])
+    playAudioInstrument = [playAudioKick, playAudioSnare, playAudioHihat]
+    return playAudioInstrument
+playAudioInstrument = make_thread_per_Instrument()
+
 
 while True:
     #This loop keeps expecting an user input
@@ -239,36 +260,31 @@ while True:
     elif userInput == 'play':
         instrumentnameChoiceAnswer = instrumentname_choice()
         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            print('1 play', playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].is_alive())
             noteDurations_to_noteDurations16th()
             noteDurations16th_to_timeStamps()
-            print(allSampleDict[instrumentnameChoiceAnswer]['timeStamps'])
-            playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-            threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
-            instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-            timeStamps = allSampleDict[instrumentnameChoiceAnswer]['timeStamps']
-            filename = allSampleDict[instrumentnameChoiceAnswer]['filename']
-            numberSteps = allSampleDict[instrumentnameChoiceAnswer]['numberSteps']
-            loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
-            playCheck = allSampleDict[instrumentnameChoiceAnswer]['playCheck']
-            playAudioInstrument = AudioPlayThread(threadID, timeStamps, filename, numberSteps, loop, playCheck)
-            playAudioInstrument.playCheck = True
-            playAudioInstrument.start()
+            allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = True
+            playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].playCheck = True
+            if playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].is_alive():
+                pass
+            else:
+                playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].start()
+            print('2 play', playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].is_alive())
     elif userInput == 'loop':
         instrumentnameChoiceAnswer = instrumentname_choice()
         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
             sample_loop()
-            playAudioInstrument.loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
+            playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
     elif userInput == 'stop':
         instrumentnameChoiceAnswer = instrumentname_choice()
         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
             allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = False
-            playAudioInstrument.playCheck = False
+            playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].playCheck = False
+            print(playAudioInstrument[allSampleDict[instrumentnameChoiceAnswer]['threadID']].is_alive())
     elif userInput == 'exit':
-        # playAudio.join()
-        # playAudio.isPlaying = False
         for i in range(len(allSampleDict)):
-            #playAudio + allSampleDict[].join()
-            pass
+            playAudioInstrument[allSampleDict[i]['threadID']].terminate()
+            playAudioInstrument[allSampleDict[i]['threadID']].join()
         break
     else:
         print("Please use a valid input")
