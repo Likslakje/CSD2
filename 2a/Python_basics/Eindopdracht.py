@@ -90,168 +90,175 @@ def duration_16th_note(_bpm):
  
 
 def random_rythm():
+    #This function fills the sample_evnt dictionaries with a random rythm
     noteDurationsTypes = [1, 2, 4 , 8 ,16] #whole, half, quarter, eighth and sixteenth notes
     noteDurationsValues = [] #This array stores the note values (of noteDurationsTypes) depending on the set bpm
     numberSixteenthSteps = numerator * denominator #Number of sixteenth steps within a measure
     noteDuration16th = duration_16th_note(bpm) #Execute the function with a default BPM value
-    kickArray = []
+    keys = list(allSampleDict.keys())
     totalTimeNoteValues = numberSixteenthSteps * noteDuration16th #Calculate the maximum time depending on the value of one 16th note and the set measure
+    #Fill the noteDurationsValues array with the time (depending on the bpm) of a note
     for i in noteDurationsTypes:
         noteDurationsValues.append(noteDuration16th * i)
+
     #Pick a random number
     #then check what note value it corolates with
-    #append this note value to the choosen sample_event dictionary
-    sum = 0
-    randomNoteValue = random.random()
-    for j in range(len(noteDurationsTypes)):
-        if randomNoteValue >= (1 * j)/len(noteDurationsTypes) and randomNoteValue <= (1 * (j + 1))/len(noteDurationsTypes):
-            kickArray.append(noteDurationsValues[j])
-            sum = sum + noteDurationsValues[j]
-
-    print(totalTimeNoteValues)
-    print(noteDurationsValues)
-    print(kickArray)
-    print(sum)
-        
-
-
+    #for the numberSixteenthSteps with a maesure, append this note value to every sample_event dictionary
+    max = totalTimeNoteValues
+    while True:
+        for l in range(len(keys)):
+            randomNoteValue = random.random()
+            for j in range(len(noteDurationsTypes)):
+                if randomNoteValue >= (1 * j)/len(noteDurationsValues) and randomNoteValue <= (1 * (j + 1))/len(noteDurationsValues):
+                    allSampleDict[keys[l]]['noteDurations'].append(noteDurationsValues[j])
+                    max = max - noteDurationsValues[j]
+                    j += 1 
+            l += 1
+        if max <= 0:
+            break
+    print(allSampleDict[keys[0]]['noteDurations'])
+    print(allSampleDict[keys[1]]['noteDurations'])
+    print(allSampleDict[keys[2]]['noteDurations'])
 random_rythm()
 
-# def instrumentname_choice():
-#     #User input multiple choice to set the instrumentname inside the dictionary
-#     instrumentChoiceQuestion = [
-#         inquirer.List('instrumentname', 
-#                     message = 'Choose sample ',
-#                     choices = ['kick', 'snare', 'hihat'],
-#                     carousel = True)] #Makes scroll infinite
-#     instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion)
-#     return instrumentChoiceAnswer['instrumentname']
+def instrumentname_choice():
+    #User input multiple choice to set the instrumentname inside the dictionary
+    instrumentChoiceQuestion = [
+        inquirer.List('instrumentname', 
+                    message = 'Choose sample ',
+                    choices = ['kick', 'snare', 'hihat'],
+                    carousel = True)] #Makes scroll infinite
+    instrumentChoiceAnswer = inquirer.prompt(instrumentChoiceQuestion)
+    return instrumentChoiceAnswer['instrumentname']
 
-# def numberSteps_noteDurations_input():
-#     #This function put the user rythm input in the right sample dictionary
-#     print("Choose number of steps for " + str(instrumentnameChoiceAnswer) + " drumline")
-#     allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] = int(input())
-#     #Check if the choosen directory excits
-#     if instrumentnameChoiceAnswer in allSampleDict :
-#         print("Type rythmic patern for " + str(instrumentnameChoiceAnswer) + " drumline")
-#         #Add as many elements (as there are numberSteps) to the noteDurations array of the sample_event within the allSampleDict
-#         for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
-#             allSampleDict[instrumentnameChoiceAnswer]['noteDurations'].append(float(input()))
-#             i += 1
+def numberSteps_noteDurations_input():
+    #This function put the user rythm input in the right sample dictionary
+    print("Choose number of steps for " + str(instrumentnameChoiceAnswer) + " drumline")
+    allSampleDict[instrumentnameChoiceAnswer]['numberSteps'] = int(input())
+    #Check if the choosen directory excits
+    if instrumentnameChoiceAnswer in allSampleDict :
+        print("Type rythmic patern for " + str(instrumentnameChoiceAnswer) + " drumline")
+        #Add as many elements (as there are numberSteps) to the noteDurations array of the sample_event within the allSampleDict
+        for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
+            allSampleDict[instrumentnameChoiceAnswer]['noteDurations'].append(float(input()))
+            i += 1
 
-# def noteDurations_to_noteDurations16th(_noteDurations):
-#     #This function transforms each element in noteDurations (of the choosen sample_event) into sixteenth notes
-#     i = 0
-#     for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
-#         #We use float() here because we want to devide by a float number
-#         allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(_noteDurations[i]) / 0.25)
-#         i += 1
+def noteDurations_to_noteDurations16th(_noteDurations):
+    #This function transforms each element in noteDurations (of the choosen sample_event) into sixteenth notes
+    i = 0
+    for i in range(len(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])):
+        #We use float() here because we want to devide by a float number
+        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'].append(float(_noteDurations[i]) / 0.25)
+        i += 1
 
-# def noteDurations16th_to_timeStamps(_noteDurations16th):
-#     #This function transforms the noteDuration16th (of the choosen sample_event) in to time values in milliseconds
-#     #then it adds these timevalues to one and other, and puts them in the timeStamps array (of the choosen sample_event)
-#     sum = 0
-#     for i in range(allSampleDict[instrumentnameChoiceAnswer]['numberSteps']):
-#         allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'].append(float(_noteDurations16th[i] * noteDuration16th))
-#         sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
-#         allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
+def noteDurations16th_to_timeStamps(_noteDurations16th):
+    #This function transforms the noteDuration16th (of the choosen sample_event) in to time values in milliseconds
+    #then it adds these timevalues to one and other, and puts them in the timeStamps array (of the choosen sample_event)
+    noteDuration16th = duration_16th_note(bpm)
+    sum = 0
+    for i in range(len(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])):
+        allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'].append(float(_noteDurations16th[i] * noteDuration16th))
+        sum = sum + allSampleDict[instrumentnameChoiceAnswer]['noteDurations16thMilis'][i]
+        allSampleDict[instrumentnameChoiceAnswer]['timeStamps'].append(sum)
 
-# def edit_rythm():
-#     editRythmQuestion = [
-#         inquirer.List('editChoice',
-#                     message = 'What would you like to do?',
-#                     choices = ['generate new', 'overwrite'],
-#                     carousel = True)]
-#     editRythmAnswer = inquirer.prompt(editRythmQuestion)
-#     return editRythmAnswer['editChoice']
+def edit_rythm():
+    editRythmQuestion = [
+        inquirer.List('editChoice',
+                    message = 'What would you like to do?',
+                    choices = ['generate new', 'overwrite'],
+                    carousel = True)]
+    editRythmAnswer = inquirer.prompt(editRythmQuestion)
+    return editRythmAnswer['editChoice']
 
-# def sample_loop():
-#     print("Type 1 to loop or 0 to unloop \nCurrent loopstate for " + instrumentnameChoiceAnswer + " is set to " + str(allSampleDict[instrumentnameChoiceAnswer]['loop']))
-#     loopAnswer = int(input())
-#     if loopAnswer == 0 or loopAnswer == 1:
-#         allSampleDict[instrumentnameChoiceAnswer]['loop'] = loopAnswer
-#     else:
-#         print('Please enter valid input, 0 or 1 only')
-#         sample_loop()
+def sample_loop():
+    print("Type 1 to loop or 0 to unloop \nCurrent loopstate for " + instrumentnameChoiceAnswer + " is set to " + str(allSampleDict[instrumentnameChoiceAnswer]['loop']))
+    loopAnswer = int(input())
+    if loopAnswer == 0 or loopAnswer == 1:
+        allSampleDict[instrumentnameChoiceAnswer]['loop'] = loopAnswer
+    else:
+        print('Please enter valid input, 0 or 1 only')
+        sample_loop()
 
-# class AudioPlayThread(threading.Thread):
-#     #This class makes a thread that is used to play audio
-#     #we get the nessesary arguments from the allSamplesDict
-#     def __init__(self, threadID, timeStamps, filename, numberSteps, loop, playCheck):
-#         threading.Thread.__init__(self)
-#         self.threadID = threadID
-#         self.timeStamps = timeStamps
-#         self.filename = filename
-#         self.numberSteps = numberSteps
-#         self.loop = loop
-#         self.playCheck = playCheck
+class AudioPlayThread(threading.Thread):
+    #This class makes a thread that is used to play audio
+    #we get the nessesary arguments from the allSamplesDict
+    def __init__(self, threadID, timeStamps, filename, numberSteps, loop, playCheck):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.timeStamps = timeStamps
+        self.filename = filename
+        self.numberSteps = numberSteps
+        self.loop = loop
+        self.playCheck = playCheck
 
-    # def run (self):
-    #     #This is a build in function to run the thread
-    #     self.timeZero = time.time() #Get the current time
-    #     self.i = 0
-    #     #While playCheck for the choosen sample_event is True
-    #     #check if it is time to play an event and check if the choosen sample_event should loop
-    #     while self.playCheck: 
-    #         self.timeCurrent = time.time() - self.timeZero
-    #         if(self.timeCurrent >= float(self.timeStamps[self.i])):
-    #             self.filename.play()
-    #             self.i += 1
-    #         if self.i == self.numberSteps and self.loop == 0:
-    #             self.filename.wait.done()
-    #         if self.i == self.numberSteps and self.loop == 1:
-    #             self.i = 0
-    #             self.timeZero = time.time()
-    #         time.sleep(0.0001)
+    def run (self):
+        #This is a build in function to run the thread
+        self.timeZero = time.time() #Get the current time
+        self.i = 0
+        #While playCheck for the choosen sample_event is True
+        #check if it is time to play an event and check if the choosen sample_event should loop
+        while self.playCheck: 
+            self.timeCurrent = time.time() - self.timeZero
+            if(self.timeCurrent >= float(self.timeStamps[self.i])):
+                self.filename.play()
+                self.i += 1
+            if self.i == self.numberSteps and self.loop == 0:
+                self.filename.wait.done()
+            if self.i == self.numberSteps and self.loop == 1:
+                self.i = 0
+                self.timeZero = time.time()
+            time.sleep(0.0001)
 
-# while True:
-#     #This loop keeps expecting an user input
-#     userInput = str(input("Type edit, play, loop, stop or exit : "))
-#     if userInput == 'edit':
-#         editAnswer = edit_rythm()
-#         if editAnswer == 'generate new':
-#             instrumentnameChoiceAnswer = instrumentname_choice() #We can choose a sample_event here
-#             if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-#                 pass
-#         elif editAnswer == 'overwrite':
-#             instrumentnameChoiceAnswer = instrumentname_choice() #We can choose a sample_event here
-#             if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
-#                 numberSteps_noteDurations_input()
-#                 noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
-#                 noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
-#     elif userInput == 'play':
-#         instrumentnameChoiceAnswer = instrumentname_choice()
-#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-#             playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-#             threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
-#             instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
-#             timeStamps = allSampleDict[instrumentnameChoiceAnswer]['timeStamps']
-#             filename = allSampleDict[instrumentnameChoiceAnswer]['filename']
-#             numberSteps = allSampleDict[instrumentnameChoiceAnswer]['numberSteps']
-#             loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
-#             playCheck = allSampleDict[instrumentnameChoiceAnswer]['playCheck']
-#             playAudioInstrument = AudioPlayThread(threadID, timeStamps, filename, numberSteps, loop, playCheck)
-#             playAudioInstrument.playCheck = True
-#             playAudioInstrument.start()
-#     elif userInput == 'loop':
-#         instrumentnameChoiceAnswer = instrumentname_choice()
-#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-#             sample_loop()
-#             playAudioInstrument.loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
-#     elif userInput == 'stop':
-#         instrumentnameChoiceAnswer = instrumentname_choice()
-#         if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
-#             allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = False
-#             playAudioInstrument.playCheck = False
-#     elif userInput == 'exit':
-#         # playAudio.join()
-#         # playAudio.isPlaying = False
-#         for i in range(len(allSampleDict)):
-#             #playAudio + allSampleDict[].join()
-#             pass
-#         break
-#     else:
-#         print("Please use a valid input")
+while True:
+    #This loop keeps expecting an user input
+    userInput = str(input("Type edit, play, loop, stop or exit : "))
+    if userInput == 'edit':
+        editAnswer = edit_rythm()
+        if editAnswer == 'generate new':
+            instrumentnameChoiceAnswer = instrumentname_choice() #We can choose a sample_event here
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+                pass
+        elif editAnswer == 'overwrite':
+            instrumentnameChoiceAnswer = instrumentname_choice() #We can choose a sample_event here
+            if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
+                numberSteps_noteDurations_input()
+                noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+                noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+    elif userInput == 'play':
+        instrumentnameChoiceAnswer = instrumentname_choice()
+        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            noteDurations_to_noteDurations16th(allSampleDict[instrumentnameChoiceAnswer]['noteDurations'])
+            noteDurations16th_to_timeStamps(allSampleDict[instrumentnameChoiceAnswer]['noteDurations16th'])
+            playAudioInstrument = "playAudio" + allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
+            threadID = allSampleDict[instrumentnameChoiceAnswer]['threadID']
+            instrumentname = allSampleDict[instrumentnameChoiceAnswer]['instrumentname']
+            timeStamps = allSampleDict[instrumentnameChoiceAnswer]['timeStamps']
+            filename = allSampleDict[instrumentnameChoiceAnswer]['filename']
+            numberSteps = allSampleDict[instrumentnameChoiceAnswer]['numberSteps']
+            loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
+            playCheck = allSampleDict[instrumentnameChoiceAnswer]['playCheck']
+            playAudioInstrument = AudioPlayThread(threadID, timeStamps, filename, numberSteps, loop, playCheck)
+            playAudioInstrument.playCheck = True
+            playAudioInstrument.start()
+    elif userInput == 'loop':
+        instrumentnameChoiceAnswer = instrumentname_choice()
+        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            sample_loop()
+            playAudioInstrument.loop = allSampleDict[instrumentnameChoiceAnswer]['loop']
+    elif userInput == 'stop':
+        instrumentnameChoiceAnswer = instrumentname_choice()
+        if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']:
+            allSampleDict[instrumentnameChoiceAnswer]['playCheck'] = False
+            playAudioInstrument.playCheck = False
+    elif userInput == 'exit':
+        # playAudio.join()
+        # playAudio.isPlaying = False
+        for i in range(len(allSampleDict)):
+            #playAudio + allSampleDict[].join()
+            pass
+        break
+    else:
+        print("Please use a valid input")
 
 
 
