@@ -3,6 +3,7 @@ import inquirer #user input functions
 import random #random functions
 import time #time functions
 import threading #multithreading
+import array #to aort arrays
 
 kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
@@ -103,7 +104,9 @@ class AudioPlayThread(threading.Thread):
     def sort_event():
         #this function sorts every intrument based on its timestamp
         #make dictionaries of the timestamp arrays, this way they will have a key(instrumentname) per timestamp
+        event_names_unsorted = []
         events_unsorted = {}
+        event_timestamps = []
         for i in range(len(events)):
             for j in range(len(events[i]['timestamps'])):
                 #print(events[i]['instrumentname'], events[i]['timestamps'][j])
@@ -111,6 +114,7 @@ class AudioPlayThread(threading.Thread):
                 events_unsorted[new_key] = events[i]['timestamps'][j]
         events_sorted = dict(sorted(events_unsorted.items(), key=lambda item: item[1]))
         return events_sorted
+
     # def restart(self):
     #     self.i = 0
     #     self.is_playing = True
