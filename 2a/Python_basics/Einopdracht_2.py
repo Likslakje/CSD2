@@ -105,15 +105,18 @@ class AudioPlayThread(threading.Thread):
         #this function sorts every intrument based on its timestamp
         #make dictionaries of the timestamp arrays, this way they will have a key(instrumentname) per timestamp
         event_names_unsorted = []
-        events_unsorted = {}
-        event_timestamps = []
+        event_timestamps_unsorted = []
+        
         for i in range(len(events)):
             for j in range(len(events[i]['timestamps'])):
                 #print(events[i]['instrumentname'], events[i]['timestamps'][j])
-                new_key = events[i]['instrumentname'] + str(j)
-                events_unsorted[new_key] = events[i]['timestamps'][j]
-        events_sorted = dict(sorted(events_unsorted.items(), key=lambda item: item[1]))
-        return events_sorted
+                 event_names_unsorted.append(events[i]['instrumentname'])
+                 event_timestamps_unsorted.append(events[i]['timestamps'][j])
+        print('event_names_unsorted', event_names_unsorted, 'event_timestamps_unsorted', event_timestamps_unsorted)
+        event_names_sorted = []
+        event_timestamps_sorted = []
+    sort_event()
+        
 
     # def restart(self):
     #     self.i = 0
