@@ -3,7 +3,7 @@ import inquirer #user input functions
 import random #random functions
 import time #time functions
 import threading #multithreading
-import array #to aort arrays
+import numpy as np #to sort arrays
 
 kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
@@ -103,18 +103,29 @@ class AudioPlayThread(threading.Thread):
 
     def sort_event():
         #this function sorts every intrument based on its timestamp
-        #make dictionaries of the timestamp arrays, this way they will have a key(instrumentname) per timestamp
-        event_names_unsorted = []
-        event_timestamps_unsorted = []
+        def split_name_timestamp():
+            #make an arry with timestamps of every event
+            #and an arry with names of every event
+            event_names= []
+            event_timestamps = []
+            for i in range(len(events)):
+                for j in range(len(events[i]['timestamps'])):
+                    event_names.append(events[i]['instrumentname'])
+                    event_timestamps.append(events[i]['timestamps'][j])
+            print(event_timestamps, event_names)
+            return event_names, event_timestamps
+        event_names_unsorted, event_timestamps_unsorted = np.array(split_name_timestamp())
         
-        for i in range(len(events)):
-            for j in range(len(events[i]['timestamps'])):
-                #print(events[i]['instrumentname'], events[i]['timestamps'][j])
-                 event_names_unsorted.append(events[i]['instrumentname'])
-                 event_timestamps_unsorted.append(events[i]['timestamps'][j])
-        print('event_names_unsorted', event_names_unsorted, 'event_timestamps_unsorted', event_timestamps_unsorted)
-        event_names_sorted = []
-        event_timestamps_sorted = []
+        
+        def selection_sort(ts, names):
+            #sort the timestamp array from small to big 
+            #also sort the names arry wih the same index
+            for i in range(len(ts)):
+                swap = i + np.argmin(ts[i:])
+                (ts[i], ts[swap]) = (ts[swap], ts[i])
+                (names[i], names[swap]) = (names[swap], names[i])
+            return ts, names
+        event_timestamps_sorted, event_names_sorted= selection_sort(event_timestamps_unsorted, event_names_unsorted)
     sort_event()
         
 
