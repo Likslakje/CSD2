@@ -20,30 +20,60 @@ def create_event(filename, instrumentname, timestamps, threadID):
 
 def bpm_choice(): 
     #this function let's you choose a BPM, the default is set to 120
-    print("Default BPM is set to 120, would you like to change the BPM (y/n): ")
-    bpmChoice = input()
-    if bpmChoice == "n" :
-        bpm = 120
-    elif bpmChoice == "y" :
-        bpm = int(input("Enter a new BPM: " ))
-    else :
-        print("Please enter valid input, 'y' or 'n' only")
-        bpm_choice() #If the user input doesn't match then execute the function again
+    #Class is used for a custom try -> exceptions
+    class BpmQuestionError(Exception):
+        pass
+
+    class BpmNumberError(Exception):
+        pass
+    
+    def bpm_question_yes():
+        #This function is used if the bpmQuestion equals yes because we can't put a Try While loop within a Try While loop
+        while True:
+            try:
+                bpm_number = input("Enter a new BPM: " )
+                if bpm_number.isnumeric() and int(bpm_number) >= 10 and int(bpm_number) <= 400:
+                    bpm = int(bpm_number)
+                    break
+                else:
+                    raise BpmNumberError
+            except BpmNumberError:
+                print("Please enter a valid input, intergers between 10 and 400 only")
+        return bpm
+        
+    while True:
+            try:
+                bpm_question = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+                if bpm_question == 'n':
+                    bpm = 120
+                    break
+                elif bpm_question == 'y':
+                    bpm = bpm_question_yes()
+                    break
+                else:
+                    raise BpmQuestionError
+            except BpmQuestionError:
+                print("Please enter valid input, 'y' or 'n' only")
+    print(bpm)
     return bpm
-bpm = bpm_choice()
+        
+
+
 
 def rythm_generation(instrumentname):
+    bpm = bpm_choice()
     while True:
         try:
-            numerator, denominator = input('set numerator and denominator for ' + instrumentname + ' ').split()
+            numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
             if numerator.isnumeric() and denominator.isnumeric():
                 numerator = int(numerator)
                 denominator = int(denominator)
+                #if numerator >= 1
                 break
             else:
                 raise ValueError
         except ValueError:
-            print('Please enter valid input, integers only \nMIN is 1 \nMAX is 8')
+            print('Please enter valid input, integers only \nMIN : 2 \nMAX : don`t go too crazy please')
             continue
     # simple euclidean example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/blob/master/csd2a/theorie/6_euclidean_norotation.py)
     num_pulses = numerator
@@ -133,7 +163,12 @@ def sort_event():
         return ts, names
     event_timestamps_sorted, event_names_sorted = selection_sort(event_timestamps_unsorted, event_names_unsorted)
     return event_timestamps_sorted, event_names_sorted 
+
+    def mute_instrument():
+        pass
+
 event_timestamps_sorted, event_names_sorted = sort_event()
+
 print(event_timestamps_sorted, event_names_sorted)
         
 
