@@ -54,14 +54,12 @@ def bpm_choice():
                     raise BpmQuestionError
             except BpmQuestionError:
                 print("Please enter valid input, 'y' or 'n' only")
-    print(bpm)
     return bpm
-        
+bpm = bpm_choice()
 
 
 
 def rythm_generation(instrumentname):
-    bpm = bpm_choice()
     while True:
         try:
             numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
