@@ -4,19 +4,11 @@ import random #random functions
 import time #time functions
 import threading #multithreading
 import numpy as np #to sort arrays
+from midiutil import MIDIFile #to write midi file to disk
 
 kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
 hihat = sa.WaveObject.from_wave_file("../samples/Hihat.wav")
-
-def create_event(filename, instrumentname, timestamps, threadID):
-    return {
-    'filename': filename,
-    'instrumentname': instrumentname,
-    'timestamps':timestamps,
-    'threadID': threadID,
-    'playcheck' : True 
-    }
 
 def bpm_choice(): 
     #this function let's you choose a BPM, the default is set to 120
@@ -56,8 +48,6 @@ def bpm_choice():
                 print("Please enter valid input, 'y' or 'n' only")
     return bpm
 bpm = bpm_choice()
-
-
 
 def rythm_generation(instrumentname):
     while True:
@@ -99,6 +89,14 @@ def rythm_generation(instrumentname):
     print(timestamps)
     return timestamps
 
+def create_event(filename, instrumentname, timestamps, threadID):
+    return {
+    'filename': filename,
+    'instrumentname': instrumentname,
+    'timestamps':timestamps,
+    'threadID': threadID,
+    'playcheck' : True 
+    }
 
 events = []
 events.append(create_event(kick, 'kick', rythm_generation('kick'), 0))
@@ -108,6 +106,41 @@ events.append(create_event(hihat, 'hihat', rythm_generation('hihat'), 2))
 #             {'filename': snare, 'timestamps': [0.5, 1.5, 2.5, 3.5, 4]},
 #             {'filename': hihat, 'timestamps': [1, 1.5, 2, 2.5]}
 #         ]
+
+def sort_event():
+    #this function sorts every intrument based on its timestamp
+    def split_files_timestamp():
+        #make an array with timestamps of every event
+        #and an array with files of every event
+        event_files = []
+        event_names = []
+        event_timestamps = []
+        for i in range(len(events)):
+            for j in range(len(events[i]['timestamps'])):
+                event_files.append(events[i]['filename'])
+                event_names.append(events[i]['instrumentname'])
+                event_timestamps.append(events[i]['timestamps'][j])
+        return event_files, event_timestamps, event_names
+    event_files_unsorted, event_timestamps_unsorted, event_names_unsorted = np.array(split_files_timestamp())
+    
+    
+    def selection_sort(ts, files, names):
+        #https://jakevdp.github.io/PythonDataScienceHandbook/02.08-sorting.html
+        #sort the timestamp array from small to big 
+        #also sort the file arry with the same index
+        for i in range(len(ts)):
+            swap = i + np.argmin(ts[i:])
+            (ts[i], ts[swap]) = (ts[swap], ts[i])
+            (files[i], files[swap]) = (files[swap], files[i])
+            (names[i], names[swap]) = (names[swap], names[i])
+        return ts, files, names
+    event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(event_timestamps_unsorted, event_files_unsorted, event_names_unsorted)
+    return event_timestamps_sorted, event_files_sorted, event_names_sorted
+
+    def mute_instrument():
+        pass
+event_timestamps_sorted, event_files_sorted, event_names_sorted = sort_event()
+print(event_timestamps_sorted, event_files_sorted, event_names_sorted)
 
 class AudioPlayThread(threading.Thread):
     #This class makes a thread which is used to play audio
@@ -132,47 +165,52 @@ class AudioPlayThread(threading.Thread):
                 self.names[self.i].play()
                 self.i += 1
             time.sleep(0.001)
-
-
-
-def sort_event():
-    #this function sorts every intrument based on its timestamp
-    def split_name_timestamp():
-        #make an arry with timestamps of every event
-        #and an arry with names of every event
-        event_names= []
-        event_timestamps = []
-        for i in range(len(events)):
-            for j in range(len(events[i]['timestamps'])):
-                event_names.append(events[i]['filename'])
-                event_timestamps.append(events[i]['timestamps'][j])
-        return event_names, event_timestamps
-    event_names_unsorted, event_timestamps_unsorted = np.array(split_name_timestamp())
-    
-    
-    def selection_sort(ts, names):
-        #https://jakevdp.github.io/PythonDataScienceHandbook/02.08-sorting.html
-        #sort the timestamp array from small to big 
-        #also sort the names arry wih the same index
-        for i in range(len(ts)):
-            swap = i + np.argmin(ts[i:])
-            (ts[i], ts[swap]) = (ts[swap], ts[i])
-            (names[i], names[swap]) = (names[swap], names[i])
-        return ts, names
-    event_timestamps_sorted, event_names_sorted = selection_sort(event_timestamps_unsorted, event_names_unsorted)
-    return event_timestamps_sorted, event_names_sorted 
-
-    def mute_instrument():
-        pass
-
-event_timestamps_sorted, event_names_sorted = sort_event()
-
-print(event_timestamps_sorted, event_names_sorted)
         
 
     # def restart(self):
     #     self.i = 0
     #     self.is_playing = True
 
-playAudio = AudioPlayThread(events, event_timestamps_sorted, event_names_sorted)
+playAudio = AudioPlayThread(events, event_timestamps_sorted, event_files_sorted)
 playAudio.start()
+
+def create_midi_file():
+    #example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2a/theorie/6_writeMIDI)
+    # create your MIDI object
+    mf = MIDIFile(1)     # only 1 track
+    track = 0   # the only track
+    time = 0    # start at the beginning
+    mf.addTrackName(track, time, "Drumloop Track")
+    mf.addTempo(track, time, bpm)
+
+
+    # add some notes
+    channel = 0
+    volume = 60
+    print("Volume:",volume)
+
+    pitch = 60           # C4 (middle C)
+    time = 0             # start on beat 0
+    duration = 1         # 1 beat long
+    mf.addNote(track, channel, pitch, time, duration, volume)
+
+    volume += 30
+    print("Volume:",volume)
+
+    pitch = 64           # E4
+    time = 2             # start on beat 2
+    duration = 1         # 1 beat long
+    mf.addNote(track, channel, pitch, time, duration, volume)
+
+    volume += 30
+    print("Volume:",volume)
+
+    pitch = 67           # G4
+    time = 4             # start on beat 4
+    duration = 1         # 1 beat long
+    mf.addNote(track, channel, pitch, time, duration, volume)
+
+    # write it to disk
+    with open("drumloop.mid",'wb') as outf:
+        mf.writeFile(outf)
+
