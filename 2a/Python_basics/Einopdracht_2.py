@@ -4,7 +4,6 @@ import random # random functions
 import time #t ime functions
 import threading # multithreading
 import numpy as np #to sort arrays
-from collections import deque # to rotate lists
 from midiutil import MIDIFile # to write midi file to disk
 
 kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
@@ -76,8 +75,8 @@ def rythm_generation(instrumentname):
     for i in range(rest_value):
         sequence[i] += 1
 
-    #Whole note = 60/bpm, a sixteenth note = 1/4 of a whole note
-    sixteenthnote = (60 / bpm) / 4 
+    #Whole note = 60/bpm, a sixteenth note = 1/16 of a whole note
+    sixteenthnote = (60 / bpm) / 16 
     sum = 0
     timestamps = []
     for i in range(len(sequence)):
@@ -85,7 +84,6 @@ def rythm_generation(instrumentname):
         #first it takes an element from sequence[] ten transforms this elemnt into 16th then into a 16th timestamp 
         timestamps.append(sum)
         sum = sum + ((sequence[i] / 0.25) * sixteenthnote)
-    print(timestamps)
     return timestamps
 
 def create_event(filename, instrumentname, midi_number, timestamps, threadID):
@@ -102,11 +100,6 @@ events = []
 events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
 events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
 events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
-# bpm = 120
-# events = [{'filename': kick, 'instrumentname': 'kick', 'timestamps': [0, 2, 3.5, 4], 'midinumber': 36 },
-#             {'filename': snare, 'instrumentname': 'snare', 'timestamps': [0, 2, 2.5, 3, 4.5], 'midinumber': 38},
-#             {'filename': hihat, 'instrumentname': 'hihat', 'timestamps': [0, 3, 3.5, 4, 4.5, 5], 'midinumber': 44}
-#         ]
 
 def split_files_timestamp():
     #make an array with timestamps of every event
@@ -122,7 +115,6 @@ def split_files_timestamp():
     return event_files, event_timestamps, event_names
 event_files_unsorted, event_timestamps_unsorted, event_names_unsorted = np.array(split_files_timestamp())
 
-
 def selection_sort(ts, files, names):
     #https://jakevdp.github.io/PythonDataScienceHandbook/02.08-sorting.html
     #sort the timestamp array from small to big 
@@ -135,7 +127,6 @@ def selection_sort(ts, files, names):
     return ts, files, names
 event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(
             event_timestamps_unsorted, event_files_unsorted, event_names_unsorted)
-
 
 def instrumentname_choice():
     #User input multiple choice
@@ -152,7 +143,7 @@ def edit_rythm_choice():
     edit_rythm_choice_question = [
         inquirer.List('algorythm', 
                     message = 'Choose algorythm ',
-                    choices = ['rotate', 'pass to next', 'chaos', 'back to normal'],
+                    choices = ['rotate', 'chaos', 'back to normal'],
                     carousel = True)] #Makes scroll infinite
     edit_rythm_choice_answer = inquirer.prompt(edit_rythm_choice_question)
     return edit_rythm_choice_answer['algorythm']
@@ -166,7 +157,6 @@ def edit_rythm():
                     # Convert np.array to list with .tolist()
                     event_files_rotated = event_files_sorted.tolist()
                     event_names_rotated = event_names_sorted.tolist()
-                    print(event_names_rotated)
                     if num_rotations.isnumeric():
                         num_rotations = int(num_rotations)
                         if(num_rotations < len(event_files_rotated)):
@@ -185,8 +175,6 @@ def edit_rythm():
                     print("Please enter a valid input, intergers between 0 and " + str(len(event_files_rotated) - 1))
                     continue
             return event_timestamps_sorted, event_files_rotated, event_names_rotated
-        elif algorythm == 'pass to next':
-            pass
         elif algorythm == 'chaos':
             # Chaos randomly shuffles the index of the event_files_sorted,
             # This way the timestamps stay in place but a different sample is played at the index
@@ -200,8 +188,6 @@ def edit_rythm():
         elif algorythm == 'back to normal':
             return event_timestamps_sorted, event_files_sorted, event_names_sorted
 
-
-
 class AudioPlayThread(threading.Thread):
     #This class makes a thread which is used to play audio
     #we get the nessesary arguments from the allSamplesDict
@@ -214,6 +200,7 @@ class AudioPlayThread(threading.Thread):
         self.i = 0
         self.playCheck = False
         self.exit = False
+        self.wait = True
         #Get the current time
         self.timeZero = time.time()
 
@@ -235,12 +222,17 @@ class AudioPlayThread(threading.Thread):
                     # so we can execute the wait_done() function
                     # Then we reset the index of i and timeZero
                     # so the loop can start over again
-                    self.files_wait_done = self.files[- 1].play()
-                    self.files_wait_done.wait_done()
-                    self.i = 0
-                    self.files_wait_done = 0
-                    self.timeZero = time.time()
+                    if self.wait:
+                        self.files_wait_done = self.files[- 1].play()
+                        self.files_wait_done.wait_done()
+                        self.i = 0
+                        self.files_wait_done = 0
+                        self.timeZero = time.time()
+                    else:
+                        self.i = 0
+                        self.timeZero = time.time()
                 if self.exit:
+                    # On exit wait untill the last sample is finished playing
                     self.files_wait_done = self.files[self.i].play()
                     self.files_wait_done.wait_done()
                     break
@@ -320,6 +312,12 @@ while True:
         playAudio.playCheck = True
     elif user_input == 'stop':
         playAudio.playCheck = False
+    elif user_input == 'wait':
+        # If else toggles between wait = True of False
+        if playAudio.wait:
+            playAudio.wait = False
+        else:
+            playAudio.wait = True
     elif user_input == 'save':
         # Get the current info for the events before creating a midi file
         # this is nessecary because whenever the edit function is used, the values for these events change
@@ -335,6 +333,7 @@ while True:
         print("Type :\t'edit' to edit the rythm of a sample")
         print("\t'play' to start playing a sample")
         print("\t'stop' to stop playing a sample")
+        print("\t'wait' toggles between waitng for the last sample to end")
         print("\t'save' to write the MIDI file to disk")
         print("\t'exit' will stop the program")
     else:
