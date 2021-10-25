@@ -10,102 +10,105 @@ kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
 hihat = sa.WaveObject.from_wave_file("../samples/Hihat.wav")
 
-def bpm_choice(): 
-    #this function let's you choose a BPM, the default is set to 120
-    #Class is used for a custom try -> exceptions
-    class BpmQuestionError(Exception):
-        pass
+# def bpm_choice(): 
+#     #this function let's you choose a BPM, the default is set to 120
+#     #Class is used for a custom try -> exceptions
+#     class BpmQuestionError(Exception):
+#         pass
 
-    class BpmNumberError(Exception):
-        pass
+#     class BpmNumberError(Exception):
+#         pass
     
-    def bpm_question_yes():
-        #This function is used if the bpmQuestion equals yes because we can't put a Try While loop within a Try While loop
-        while True:
-            try:
-                bpm_number = input("Enter a new BPM: " )
-                if bpm_number.isnumeric() and int(bpm_number) >= 10 and int(bpm_number) <= 400:
-                    bpm = int(bpm_number)
-                    break
-                else:
-                    raise BpmNumberError
-            except BpmNumberError:
-                print("Please enter a valid input, intergers between 10 and 400 only")
-        return bpm
+#     def bpm_question_yes():
+#         #This function is used if the bpmQuestion equals yes because we can't put a Try While loop within a Try While loop
+#         while True:
+#             try:
+#                 bpm_number = input("Enter a new BPM: " )
+#                 if bpm_number.isnumeric() and int(bpm_number) >= 10 and int(bpm_number) <= 400:
+#                     bpm = int(bpm_number)
+#                     break
+#                 else:
+#                     raise BpmNumberError
+#             except BpmNumberError:
+#                 print("Please enter a valid input, intergers between 10 and 400 only")
+#         return bpm
         
-    while True:
-            try:
-                bpm_question = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
-                if bpm_question == 'n':
-                    bpm = 120
-                    break
-                elif bpm_question == 'y':
-                    bpm = bpm_question_yes()
-                    break
-                else:
-                    raise BpmQuestionError
-            except BpmQuestionError:
-                print("Please enter valid input, 'y' or 'n' only")
-    return bpm
-bpm = bpm_choice()
+#     while True:
+#             try:
+#                 bpm_question = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+#                 if bpm_question == 'n':
+#                     bpm = 120
+#                     break
+#                 elif bpm_question == 'y':
+#                     bpm = bpm_question_yes()
+#                     break
+#                 else:
+#                     raise BpmQuestionError
+#             except BpmQuestionError:
+#                 print("Please enter valid input, 'y' or 'n' only")
+#     return bpm
+# bpm = bpm_choice()
 
-def rythm_generation(instrumentname):
-    while True:
-        try:
-            numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
-            if numerator.isnumeric() and denominator.isnumeric():
-                numerator = int(numerator)
-                denominator = int(denominator)
-                #if numerator >= 1
-                break
-            else:
-                raise ValueError
-        except ValueError:
-            print('Please enter valid input, integers only \nMIN : 2 \nMAX : don`t go too crazy please')
-            continue
-    # simple euclidean example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/blob/master/csd2a/theorie/6_euclidean_norotation.py)
-    num_pulses = numerator
-    num_notes = denominator
-    # calculate duration of a note, expressed in 16th
-    dur = int(num_pulses / num_notes)
-    # fill list num_notes times with the duration value
-    sequence = [dur] * num_notes
-    # calculate the rest value and distribute these amongst the stored durations
-    rest_value = num_pulses - (num_notes * dur)
-    for i in range(rest_value):
-        sequence[i] += 1
-    #print(sequence)
+# def rythm_generation(instrumentname):
+#     while True:
+#         try:
+#             numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
+#             if numerator.isnumeric() and denominator.isnumeric():
+#                 numerator = int(numerator)
+#                 denominator = int(denominator)
+#                 #if numerator >= 1
+#                 break
+#             else:
+#                 raise ValueError
+#         except ValueError:
+#             print('Please enter valid input, integers only \nMIN : 2 \nMAX : don`t go too crazy please')
+#             continue
+#     # simple euclidean example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/blob/master/csd2a/theorie/6_euclidean_norotation.py)
+#     num_pulses = numerator
+#     num_notes = denominator
+#     # calculate duration of a note, expressed in 16th
+#     dur = int(num_pulses / num_notes)
+#     # fill list num_notes times with the duration value
+#     sequence = [dur] * num_notes
+#     # calculate the rest value and distribute these amongst the stored durations
+#     rest_value = num_pulses - (num_notes * dur)
+#     for i in range(rest_value):
+#         sequence[i] += 1
+#     print(sequence)
 
-    #Whole note = 60/bpm, a sixteenth note = 1/4 of a whole note
-    sixteenthnote = (60 / bpm) / 4 
-    #print(sixteenthnote)
-    sum = 0
-    timestamps = []
-    for i in range(len(sequence)):
-        #formula appends sum to timestamps array
-        #first it takes an element from sequence[] ten transforms this elemnt into 16th then into a 16th timestamp 
-        sum = sum + ((sequence[i] / 0.25) * sixteenthnote)
-        timestamps.append(sum)
-    print(timestamps)
-    return timestamps
+#     #Whole note = 60/bpm, a sixteenth note = 1/4 of a whole note
+#     bpm = 120
+#     sixteenthnote = (60 / bpm) / 4 
+#     #print(sixteenthnote)
+#     sum = 0
+#     timestamps = []
+#     for i in range(len(sequence)):
+#         #formula appends sum to timestamps array
+#         #first it takes an element from sequence[] ten transforms this elemnt into 16th then into a 16th timestamp 
+#         timestamps.append(sum)
+#         sum = sum + ((sequence[i] / 0.25) * sixteenthnote)
+#     print(timestamps)
+#     return timestamps
 
-def create_event(filename, instrumentname, timestamps, threadID):
-    return {
-    'filename': filename,
-    'instrumentname': instrumentname,
-    'timestamps':timestamps,
-    'threadID': threadID,
-    'playcheck' : True 
-    }
+# def create_event(filename, instrumentname, midi_number, timestamps, threadID):
+#     return {
+#     'filename': filename,
+#     'instrumentname': instrumentname,
+#     'midinumber': midi_number,
+#     'timestamps':timestamps,
+#     'threadID': threadID,
+#     'playcheck' : True 
+#     }
 
-events = []
-events.append(create_event(kick, 'kick', rythm_generation('kick'), 0))
-events.append(create_event(snare, 'snare', rythm_generation('snare'), 1))
-events.append(create_event(hihat, 'hihat', rythm_generation('hihat'), 2))
-# events = [{'filename': kick, 'timestamps': [1.5, 2, 2.5, 3]},
-#             {'filename': snare, 'timestamps': [0.5, 1.5, 2.5, 3.5, 4]},
-#             {'filename': hihat, 'timestamps': [1, 1.5, 2, 2.5]}
-#         ]
+# events = []
+# events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
+# events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
+# events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
+bpm = 120
+events = [{'filename': kick, 'instrumentname': 'kick', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 36 },
+            {'filename': snare, 'instrumentname': 'snare', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 38},
+            {'filename': hihat, 'instrumentname': 'hihat', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 44}
+        ]
 
 def sort_event():
     #this function sorts every intrument based on its timestamp
@@ -176,41 +179,35 @@ playAudio.start()
 
 def create_midi_file():
     #example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2a/theorie/6_writeMIDI)
-    # create your MIDI object
+    #create MIDI object
     mf = MIDIFile(1)     # only 1 track
     track = 0   # the only track
-    time = 0    # start at the beginning
-    mf.addTrackName(track, time, "Drumloop Track")
-    mf.addTempo(track, time, bpm)
+    channel = 0 # midi channel 1
+    time_beginning = 0    # start at the beginning
+    velocity = 127
+    kick_midi_number = 36 # midi numbers for each instrument
+    snare_midi_number = 38
+    hihat_midi_number = 44
+    midi_number = [kick_midi_number, snare_midi_number, hihat_midi_number]
 
+    mf.addTrackName(track, time_beginning, "Drumloop Track")
+    mf.addTempo(track, time_beginning, bpm)
 
-    # add some notes
-    channel = 0
-    volume = 60
-    print("Volume:",volume)
-
-    pitch = 60           # C4 (middle C)
-    time = 0             # start on beat 0
-    duration = 1         # 1 beat long
-    mf.addNote(track, channel, pitch, time, duration, volume)
-
-    volume += 30
-    print("Volume:",volume)
-
-    pitch = 64           # E4
-    time = 2             # start on beat 2
-    duration = 1         # 1 beat long
-    mf.addNote(track, channel, pitch, time, duration, volume)
-
-    volume += 30
-    print("Volume:",volume)
-
-    pitch = 67           # G4
-    time = 4             # start on beat 4
-    duration = 1         # 1 beat long
-    mf.addNote(track, channel, pitch, time, duration, volume)
-
+    for i in range(len(events)):
+        # this loop adds midi notes to the midi file
+        # it loops as many times as there are events
+        # within this loop it also scrolls through the timestamps related to the event
+        time = 0
+        dur = 0
+        for j in range(len(events[i]['timestamps'])):
+            if j < len(events[i]['timestamps']) - 1:
+                print('klein genoeg', j)
+                time = events[i]['timestamps'][j] # timestamp is directly added to midi file
+                dur = events[i]['timestamps'][j + 1] - events[i]['timestamps'][j] # the duration is calculated and then added
+                mf.addNote(track, channel, midi_number[i], time, dur, velocity)
+                time = time + dur
+                print(time, dur)
     # write it to disk
     with open("drumloop.mid",'wb') as outf:
         mf.writeFile(outf)
-
+create_midi_file()
