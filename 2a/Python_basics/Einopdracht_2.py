@@ -155,7 +155,7 @@ class AudioPlayThread(threading.Thread):
         self.names_wait_done = 0
         self.i = 0
         self.playCheck = False
-        self.stop = False
+        self.exit = False
         #Get the current time
         self.timeZero = time.time()
         print(self.timestamps)
@@ -172,7 +172,7 @@ class AudioPlayThread(threading.Thread):
                         # Play the sample from the names array at the index of i
                         self.names[self.i].play()
                         self.i += 1
-                elif self.stop == False:
+                elif self.exit == False:
                     # If the last element in the timestamps array is reached
                     # Make a new play object is made from the last element in the names array
                     # so we can execute the wait_done() function
@@ -183,7 +183,9 @@ class AudioPlayThread(threading.Thread):
                     self.i = 0
                     self.names_wait_done = 0
                     self.timeZero = time.time()
-            if self.stop:
+            if self.exit:
+                self.names_wait_done = self.names[self.i].play()
+                self.names_wait_done.wait_done()
                 break
             else:
                 time.sleep(0.001)
@@ -255,7 +257,7 @@ while True:
     elif userInput == 'save':
         create_midi_file()
     elif userInput == 'exit':
-        playAudio.stop = True
+        playAudio.exit = True
         playAudio.join()
         break
     elif userInput == 'help':
