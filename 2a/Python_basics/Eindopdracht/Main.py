@@ -98,11 +98,9 @@ def create_event(filename, instrumentname, midi_number, timestamps, threadID):
 
 def event_dict_arr():
     events = []
-    print('voor', events)
     events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
     events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
     events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
-    print('na', events)
     return events
 events = event_dict_arr()
 
@@ -234,7 +232,6 @@ def create_midi_file(ts, files, names):
                 # the duartion of a note equals the next timestamp minus the current timestamp
                 dur = intrument_ts[k][l + 1] - intrument_ts[k][l] 
                 mf.addNote(track, channel, midi_number[k], time, dur, velocity)
-                print(midi_number[k], time, dur)
     # Finally, write the MIDI file to disk
     with open("drumloop.mid",'wb') as outf:
         mf.writeFile(outf)
