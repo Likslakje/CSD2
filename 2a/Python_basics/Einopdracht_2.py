@@ -137,7 +137,8 @@ def sort_event():
             (files[i], files[swap]) = (files[swap], files[i])
             (names[i], names[swap]) = (names[swap], names[i])
         return ts, files, names
-    event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(event_timestamps_unsorted, event_files_unsorted, event_names_unsorted)
+    event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(
+        event_timestamps_unsorted, event_files_unsorted, event_names_unsorted)
     return event_timestamps_sorted, event_files_sorted, event_names_sorted
 
     def mute_instrument():
@@ -155,11 +156,11 @@ class AudioPlayThread(threading.Thread):
         self.i = 0
         self.playCheck = True
         self.stop = False
+        #Get the current time
+        self.timeZero = time.time()
 
     def run (self):
         #This is a build in function to run the thread
-        #Get the current time
-        self.timeZero = time.time()
         #While playCheck is True
         #check if it is time to play a sample at the index of i
         while True: 
@@ -232,6 +233,11 @@ while True:
         #     if instrumentnameChoiceAnswer == allSampleDict[instrumentnameChoiceAnswer]['instrumentname']: #Check if the choosen sample_event exists
         #         numberSteps_noteDurations_input()
     elif userInput == 'play':
+        # If play: the index of i is 0 so it will start at the beginning of the note sequence
+        # Then we set the timeZero so we can check the timestamps later (in the AudioPlayThread class)
+        # (Defining both i and timeZero only become relevant after the sequence had been stoped once)
+        playAudio.i = 0
+        playAudio.timeZero = time.time()
         playAudio.playCheck = True
     elif userInput == 'stop':
         playAudio.playCheck = False
