@@ -10,105 +10,105 @@ kick = sa.WaveObject.from_wave_file("../samples/Kick.wav")
 snare = sa.WaveObject.from_wave_file("../samples/Snare.wav")
 hihat = sa.WaveObject.from_wave_file("../samples/Hihat.wav")
 
-# def bpm_choice(): 
-#     #this function let's you choose a BPM, the default is set to 120
-#     #Class is used for a custom try -> exceptions
-#     class BpmQuestionError(Exception):
-#         pass
+def bpm_choice(): 
+    #this function let's you choose a BPM, the default is set to 120
+    #Class is used for a custom try -> exceptions
+    class BpmQuestionError(Exception):
+        pass
 
-#     class BpmNumberError(Exception):
-#         pass
+    class BpmNumberError(Exception):
+        pass
     
-#     def bpm_question_yes():
-#         #This function is used if the bpmQuestion equals yes because we can't put a Try While loop within a Try While loop
-#         while True:
-#             try:
-#                 bpm_number = input("Enter a new BPM: " )
-#                 if bpm_number.isnumeric() and int(bpm_number) >= 10 and int(bpm_number) <= 400:
-#                     bpm = int(bpm_number)
-#                     break
-#                 else:
-#                     raise BpmNumberError
-#             except BpmNumberError:
-#                 print("Please enter a valid input, intergers between 10 and 400 only")
-#         return bpm
+    def bpm_question_yes():
+        #This function is used if the bpmQuestion equals yes because we can't put a Try While loop within a Try While loop
+        while True:
+            try:
+                bpm_number = input("Enter a new BPM: " )
+                if bpm_number.isnumeric() and int(bpm_number) >= 10 and int(bpm_number) <= 400:
+                    bpm = int(bpm_number)
+                    break
+                else:
+                    raise BpmNumberError
+            except BpmNumberError:
+                print("Please enter a valid input, intergers between 10 and 400 only")
+        return bpm
         
-#     while True:
-#             try:
-#                 bpm_question = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
-#                 if bpm_question == 'n':
-#                     bpm = 120
-#                     break
-#                 elif bpm_question == 'y':
-#                     bpm = bpm_question_yes()
-#                     break
-#                 else:
-#                     raise BpmQuestionError
-#             except BpmQuestionError:
-#                 print("Please enter valid input, 'y' or 'n' only")
-#     return bpm
-# bpm = bpm_choice()
+    while True:
+            try:
+                bpm_question = input("Default BPM is set to 120, would you like to change the BPM (y/n): ")
+                if bpm_question == 'n':
+                    bpm = 120
+                    break
+                elif bpm_question == 'y':
+                    bpm = bpm_question_yes()
+                    break
+                else:
+                    raise BpmQuestionError
+            except BpmQuestionError:
+                print("Please enter valid input, 'y' or 'n' only")
+    return bpm
+bpm = bpm_choice()
 
-# def rythm_generation(instrumentname):
-#     while True:
-#         try:
-#             numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
-#             if numerator.isnumeric() and denominator.isnumeric():
-#                 numerator = int(numerator)
-#                 denominator = int(denominator)
-#                 #if numerator >= 1
-#                 break
-#             else:
-#                 raise ValueError
-#         except ValueError:
-#             print('Please enter valid input, integers only \nMIN : 2 \nMAX : don`t go too crazy please')
-#             continue
-#     # simple euclidean example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/blob/master/csd2a/theorie/6_euclidean_norotation.py)
-#     num_pulses = numerator
-#     num_notes = denominator
-#     # calculate duration of a note, expressed in 16th
-#     dur = int(num_pulses / num_notes)
-#     # fill list num_notes times with the duration value
-#     sequence = [dur] * num_notes
-#     # calculate the rest value and distribute these amongst the stored durations
-#     rest_value = num_pulses - (num_notes * dur)
-#     for i in range(rest_value):
-#         sequence[i] += 1
-#     print(sequence)
+def rythm_generation(instrumentname):
+    while True:
+        try:
+            numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
+            if numerator.isnumeric() and denominator.isnumeric():
+                numerator = int(numerator)
+                denominator = int(denominator)
+                #if numerator >= 1
+                break
+            else:
+                raise ValueError
+        except ValueError:
+            print('Please enter valid input, integers only \nMIN : 2 \nMAX : don`t go too crazy please')
+            continue
+    # simple euclidean example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/blob/master/csd2a/theorie/6_euclidean_norotation.py)
+    num_pulses = numerator
+    num_notes = denominator
+    # calculate duration of a note, expressed in 16th
+    dur = int(num_pulses / num_notes)
+    # fill list num_notes times with the duration value
+    sequence = [dur] * num_notes
+    # calculate the rest value and distribute these amongst the stored durations
+    rest_value = num_pulses - (num_notes * dur)
+    for i in range(rest_value):
+        sequence[i] += 1
+    print(sequence)
 
-#     #Whole note = 60/bpm, a sixteenth note = 1/4 of a whole note
-#     bpm = 120
-#     sixteenthnote = (60 / bpm) / 4 
-#     #print(sixteenthnote)
-#     sum = 0
-#     timestamps = []
-#     for i in range(len(sequence)):
-#         #formula appends sum to timestamps array
-#         #first it takes an element from sequence[] ten transforms this elemnt into 16th then into a 16th timestamp 
-#         timestamps.append(sum)
-#         sum = sum + ((sequence[i] / 0.25) * sixteenthnote)
-#     print(timestamps)
-#     return timestamps
+    #Whole note = 60/bpm, a sixteenth note = 1/4 of a whole note
+    bpm = 120
+    sixteenthnote = (60 / bpm) / 4 
+    #print(sixteenthnote)
+    sum = 0
+    timestamps = []
+    for i in range(len(sequence)):
+        #formula appends sum to timestamps array
+        #first it takes an element from sequence[] ten transforms this elemnt into 16th then into a 16th timestamp 
+        timestamps.append(sum)
+        sum = sum + ((sequence[i] / 0.25) * sixteenthnote)
+    print(timestamps)
+    return timestamps
 
-# def create_event(filename, instrumentname, midi_number, timestamps, threadID):
-#     return {
-#     'filename': filename,
-#     'instrumentname': instrumentname,
-#     'midinumber': midi_number,
-#     'timestamps':timestamps,
-#     'threadID': threadID,
-#     'playcheck' : True 
-#     }
+def create_event(filename, instrumentname, midi_number, timestamps, threadID):
+    return {
+    'filename': filename,
+    'instrumentname': instrumentname,
+    'midinumber': midi_number,
+    'timestamps':timestamps,
+    'threadID': threadID,
+    'playcheck' : True 
+    }
 
-# events = []
-# events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
-# events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
-# events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
-bpm = 120
-events = [{'filename': kick, 'instrumentname': 'kick', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 36 },
-            {'filename': snare, 'instrumentname': 'snare', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 38},
-            {'filename': hihat, 'instrumentname': 'hihat', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 44}
-        ]
+events = []
+events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
+events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
+events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
+# bpm = 120
+# events = [{'filename': kick, 'instrumentname': 'kick', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 36 },
+#             {'filename': snare, 'instrumentname': 'snare', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 38},
+#             {'filename': hihat, 'instrumentname': 'hihat', 'timestamps': [0, 1, 2, 3, 4], 'midinumber': 44}
+#         ]
 
 def sort_event():
     #this function sorts every intrument based on its timestamp
@@ -144,7 +144,6 @@ def sort_event():
     def mute_instrument():
         pass
 event_timestamps_sorted, event_files_sorted, event_names_sorted = sort_event()
-print(event_timestamps_sorted, event_files_sorted, event_names_sorted)
 
 class AudioPlayThread(threading.Thread):
     #This class makes a thread which is used to play audio
@@ -153,29 +152,41 @@ class AudioPlayThread(threading.Thread):
         threading.Thread.__init__(self)
         self.timestamps = timestamps
         self.names = names
+        self.names_wait_done = 0
         self.i = 0
-        self.playCheck = True
+        self.playCheck = False
         self.stop = False
         #Get the current time
         self.timeZero = time.time()
+        print(self.timestamps)
 
     def run (self):
-        #This is a build in function to run the thread
-        #While playCheck is True
-        #check if it is time to play a sample at the index of i
+        # This is a build in function to run the thread
+        # While playCheck is True
+        # check if it is time to play a sample at the index of i
         while True: 
             if self.playCheck:
                 timeCurrent = time.time() - self.timeZero
-                if timeCurrent >= float(self.timestamps[self.i]):
-                    self.names[self.i].play()
-                    self.i += 1
-                    if self.i == len(self.timestamps):
-                        self.i = 0
-                        self.timeZero = time.time()
-                time.sleep(0.001)
+                if self.i < len(self.timestamps):
+                    if timeCurrent >= float(self.timestamps[self.i]):
+                        # Play the sample from the names array at the index of i
+                        self.names[self.i].play()
+                        self.i += 1
+                elif self.stop == False:
+                    # If the last element in the timestamps array is reached
+                    # Make a new play object is made from the last element in the names array
+                    # so we can execute the wait_done() function
+                    # Then we reset the index of i and timeZero
+                    # so the loop can start over again
+                    self.names_wait_done = self.names[- 1].play()
+                    self.names_wait_done.wait_done()
+                    self.i = 0
+                    self.names_wait_done = 0
+                    self.timeZero = time.time()
             if self.stop:
                 break
-        
+            else:
+                time.sleep(0.001)
 
     # def restart(self):
     #     self.i = 0
