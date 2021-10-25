@@ -96,10 +96,15 @@ def create_event(filename, instrumentname, midi_number, timestamps, threadID):
     'playcheck' : True 
     }
 
-events = []
-events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
-events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
-events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
+def event_dict_arr():
+    events = []
+    print('voor', events)
+    events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
+    events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
+    events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
+    print('na', events)
+    return events
+events = event_dict_arr()
 
 def split_files_timestamp():
     #make an array with timestamps of every event
@@ -188,7 +193,6 @@ def edit_rythm():
         elif algorythm == 'back to normal':
             return event_timestamps_sorted, event_files_sorted, event_names_sorted
 
-
 playAudio = apt.AudioPlayThread(event_timestamps_sorted, event_files_sorted, event_names_sorted)
 playAudio.start()
 
@@ -262,6 +266,23 @@ while True:
             playAudio.wait = False
         else:
             playAudio.wait = True
+    elif user_input == 'reset':
+        # First make sure no audio is being played
+        # Then empty the events array 
+        # this is done because the append finction is used, to add to this array
+        # if we would not empty it first, the function would keep appending to it
+        # and it would become too long.
+        # Then re-execute the initial setup functions
+        # At last they're givven back to the AudioPlayThread
+        playAudio.i = 0
+        playAudio.timeZero = time.time()
+        playAudio.playCheck = False
+        events.clear()
+        bpm = bpm_choice()
+        events = event_dict_arr()
+        event_files_unsorted, event_timestamps_unsorted, event_names_unsorted = np.array(split_files_timestamp())
+        event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(
+            event_timestamps_unsorted, event_files_unsorted, event_names_unsorted)
     elif user_input == 'save':
         # Get the current info for the events before creating a midi file
         # this is nessecary because whenever the edit function is used, the values for these events change
@@ -278,6 +299,7 @@ while True:
         print("\t'play' to start playing a sample")
         print("\t'stop' to stop playing a sample")
         print("\t'wait' toggles between waitng for the last sample to end")
+        print("\t'reset' let`s you reset the initial values")
         print("\t'save' to write the MIDI file to disk")
         print("\t'exit' will stop the program")
     else:
