@@ -47,9 +47,9 @@ def bpm_choice():
             except BpmQuestionError:
                 print("Please enter valid input, 'y' or 'n' only")
     return bpm
-bpm = bpm_choice()
 
-def rythm_generation(instrumentname):
+
+def rythm_generation(instrumentname, bpm):
     while True:
         try:
             numerator, denominator = input('set numerator ["space"] denominator for ' + instrumentname + ' ').split()
@@ -97,12 +97,13 @@ def create_event(filename, instrumentname, midi_number, timestamps, threadID):
     }
 
 def event_dict_arr():
+    bpm = bpm_choice()
     events = []
-    events.append(create_event(kick, 'kick', 36, rythm_generation('kick'), 0))
-    events.append(create_event(snare, 'snare', 38, rythm_generation('snare'), 1))
-    events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat'), 2))
-    return events
-events = event_dict_arr()
+    events.append(create_event(kick, 'kick', 36, rythm_generation('kick', bpm), 0))
+    events.append(create_event(snare, 'snare', 38, rythm_generation('snare', bpm), 1))
+    events.append(create_event(hihat, 'hihat', 44, rythm_generation('hihat', bpm), 2))
+    return events, bpm
+events, bpm = event_dict_arr()
 
 def split_files_timestamp():
     #make an array with timestamps of every event
@@ -275,7 +276,7 @@ while True:
         playAudio.timeZero = time.time()
         playAudio.playCheck = False
         events.clear()
-        bpm = bpm_choice()
+        #bpm = bpm_choice()
         events = event_dict_arr()
         event_files_unsorted, event_timestamps_unsorted, event_names_unsorted = np.array(split_files_timestamp())
         event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(
