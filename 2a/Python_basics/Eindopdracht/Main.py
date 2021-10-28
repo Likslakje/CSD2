@@ -192,7 +192,7 @@ def edit_rythm():
         elif algorythm == 'back to normal':
             return event_timestamps_sorted, event_files_sorted, event_names_sorted
 
-playAudio = apt.AudioPlayThread(event_timestamps_sorted, event_files_sorted, event_names_sorted)
+playAudio = apt.AudioPlayThread(event_timestamps_sorted, event_files_sorted, event_names_sorted, bpm)
 playAudio.start()
 
 def create_midi_file(ts, files, names):
