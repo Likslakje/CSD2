@@ -75,7 +75,6 @@ def measure():
                 numerator = int(numerator)
                 denominator = int(denominator)
                 if numerator >= 1 and numerator <= 8 and denominator >= 1 and denominator <= 8:
-                    print('we cool')
                     break
                 else:
                     raise ValueError
@@ -101,25 +100,31 @@ def random_rythm():
     #Fill the noteDurationsValues array with the time (depending on the bpm) of a note
     for i in noteDurationsTypes:
         noteDurationsValues.append(noteDuration16th * i)
-
     #Pick a random number
     #then check what note value it corolates with
-    #for the numberSixteenthSteps with a maesure, append this note value to every sample_event dictionary
-    max = totalTimeNoteValues
-    while True:
+    # for the numberSixteenthSteps with a maesure, append this note value to every sample_event dictionary
+    # while True:
+    print(totalTimeNoteValues)
+    for k in range(3):
         for l in range(len(keys)):
-            randomNoteValue = random.random()
+            print('l', l)
             for j in range(len(noteDurationsTypes)):
+                print('j', j)
+                max = totalTimeNoteValues
+                randomNoteValue = random.random()
                 if randomNoteValue >= (1 * j)/len(noteDurationsValues) and randomNoteValue <= (1 * (j + 1))/len(noteDurationsValues):
+                    print('noteValue', noteDurationsValues[j])
                     allSampleDict[keys[l]]['noteDurations'].append(noteDurationsValues[j])
                     max = max - noteDurationsValues[j]
-                    j += 1 
-            l += 1
+                    print('max', max)
+            j += 1
         if max <= 0:
-            break
-    print(allSampleDict[keys[0]]['noteDurations'])
-    print(allSampleDict[keys[1]]['noteDurations'])
-    print(allSampleDict[keys[2]]['noteDurations'])
+            l += 1
+        # if l >= len(keys):
+        #     break
+    # print(allSampleDict[keys[0]]['noteDurations'])
+    # print(allSampleDict[keys[1]]['noteDurations'])
+    # print(allSampleDict[keys[2]]['noteDurations'])
 random_rythm()
 
 def instrumentname_choice():
