@@ -5,8 +5,8 @@ public:
     int horn;
     int tattoo;
     double lightsaber; // ;)
-    Darth_maul_legs(std::string _quote);
-    ~Darth_maul_legs();
+    Darth_maul_legs(std::string _quote); // legs
+    ~Darth_maul_legs(); // no legs
     void duel_on_Naboo();
     std::string quote;
 };
