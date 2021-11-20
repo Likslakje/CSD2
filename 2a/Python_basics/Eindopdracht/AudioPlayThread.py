@@ -4,11 +4,12 @@ import threading # multithreading
 class AudioPlayThread(threading.Thread):
     #This class makes a thread which is used to play audio
     #we get the nessesary arguments from the allSamplesDict
-    def __init__(self, timestamps, files, names):
+    def __init__(self, timestamps, files, names, bpm):
         threading.Thread.__init__(self)
         self.timestamps = timestamps
         self.files = files
         self.names = names
+        self.sixteenthnote = (60 / bpm) / 16
         self.files_wait_done = 0
         self.i = 0
         self.playCheck = False
@@ -42,6 +43,7 @@ class AudioPlayThread(threading.Thread):
                         self.files_wait_done = 0
                         self.timeZero = time.time()
                     else:
+                        time.sleep(self.sixteenthnote)
                         self.i = 0
                         self.timeZero = time.time()
                 if self.exit:

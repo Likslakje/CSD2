@@ -192,9 +192,6 @@ def edit_rythm():
         elif algorythm == 'back to normal':
             return event_timestamps_sorted, event_files_sorted, event_names_sorted
 
-playAudio = apt.AudioPlayThread(event_timestamps_sorted, event_files_sorted, event_names_sorted, bpm)
-playAudio.start()
-
 def create_midi_file(ts, files, names):
     # after example BY CISKA (https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2a/theorie/6_writeMIDI)
     # create MIDI object
@@ -241,6 +238,20 @@ def create_midi_file(ts, files, names):
     # This would have worked if the chaos algorithm had not been used
     # Because the chaos algorythm scrambles the intruments NOT the array with all the timestamps
 
+def clear():
+    # This function will clear all the filled in arrays so the code can start over again
+    events.clear()
+    # event_files_unsorted.clear()
+    # event_timestamps_unsorted.clear()
+    # event_names_unsorted.clear()
+    # event_timestamps_sorted.clear()
+    # event_files_sorted.clear()
+    # event_names_sorted.clear()
+
+playAudio = apt.AudioPlayThread(event_timestamps_sorted, event_files_sorted, event_names_sorted, bpm)
+playAudio.start()
+
+
 while True:
     #This loop keeps expecting an user input
     user_input = str(input("Type 'help' for options and explanation\nWhat would you like to do? : "))
@@ -275,8 +286,8 @@ while True:
         playAudio.i = 0
         playAudio.timeZero = time.time()
         playAudio.playCheck = False
-        events.clear()
-        #bpm = bpm_choice()
+        clear()
+        # Start over again
         events = event_dict_arr()
         event_files_unsorted, event_timestamps_unsorted, event_names_unsorted = np.array(split_files_timestamp())
         event_timestamps_sorted, event_files_sorted, event_names_sorted = selection_sort(
