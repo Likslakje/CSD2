@@ -1,9 +1,10 @@
-# include <iostream>
+#include <iostream>
 using namespace std;
 #include "instrument.h"
 
-Instrument::Instrument(string name){
+Instrument::Instrument(string name, string soundDes){
     this-> name = name;
+    this-> soundDes = soundDes;
 }
 
 Instrument::~Instrument(){
@@ -11,5 +12,5 @@ Instrument::~Instrument(){
 }
 
 void Instrument::play(){
-    cout<< name << " is playing" <<endl;
+    cout<< name << " is playing \n" << soundDes <<endl;
 }
