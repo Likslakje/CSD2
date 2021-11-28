@@ -4,6 +4,6 @@ using namespace std;
 
 class Percussion : public Instrument{
     public:
-        Percussion(string name);
+        Percussion(string name, string soundDes);
         ~Percussion();
 };

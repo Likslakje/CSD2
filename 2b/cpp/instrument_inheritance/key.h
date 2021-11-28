@@ -4,6 +4,6 @@ using namespace std;
 
 class Key : public Instrument{
     public:
-        Key(string name);
+        Key(string name, string soundDes);
         ~Key();
 };

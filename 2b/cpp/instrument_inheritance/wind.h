@@ -4,6 +4,6 @@ using namespace std;
 
 class Wind : public Instrument{
     public: 
-        Wind(string name);
+        Wind(string name, string soundDes);
         ~Wind();
 };
