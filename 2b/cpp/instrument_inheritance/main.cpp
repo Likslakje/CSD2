@@ -4,6 +4,9 @@ using namespace std;
 
 int main(){
     String guitar("guitar");
+    guitar.play();
+    String violin("violin");
+    violin.play();
      
     return 0;
 }

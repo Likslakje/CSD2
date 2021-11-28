@@ -1,3 +1,4 @@
+
 g++ -c main.cpp
 g++ -c instrument.cpp
 g++ -c string.cpp

@@ -5,6 +5,7 @@ class Instrument{
     public:
         Instrument(string name);
         ~Instrument();
+        void play();
     protected:
         string name;
 };
