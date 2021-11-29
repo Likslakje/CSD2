@@ -12,9 +12,7 @@ Instrument::~Instrument(){
     
 }
 
-void Instrument::play(){
-        cout<< name << " is playing \n" 
-        << soundDes
-        << note <<endl;
+void Instrument::play(string message){
+        cout<< name << message << " (" << note << ") " << soundDes <<endl;
 
 }

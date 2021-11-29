@@ -7,10 +7,9 @@ using namespace std;
 
 int main(){
     // Give every intrument subclass an intrumentname, a descriptive sound and a note in Hz
-    String guitar("guitar", "IIEWWWIIWW", 3);
-    guitar.play();
+    String guitar("guitar", "IIEWWWIIWW", 350);
     guitar.pitchRangeCheck();
-    cout<< guitar.pitchRangeCheck() <<endl;
+    
 
     
     // String violin("violin", "KKKGGGIIIEE", 3458);

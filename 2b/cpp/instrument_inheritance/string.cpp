@@ -3,7 +3,7 @@ using namespace std;
 #include "string.h"
 
 String::String(string name, string soundDes, float note) : Instrument(name, soundDes, note){
-    cout<< "String" <<endl;
+    cout<< "String: " <<endl;
     this-> lowHz = 80;
     this-> highHz = 3500;
 }
@@ -12,10 +12,10 @@ String::~String(){
     // cout<< lowHz <<endl;
 }
 
-bool String::pitchRangeCheck(){
+void String::pitchRangeCheck(){
     if(note >= lowHz && note <= highHz){
-        return true;
+        Instrument::play(" is playing");
     }else{
-        return false;
+        Instrument::play(" pitch is out of range");
     }
 }

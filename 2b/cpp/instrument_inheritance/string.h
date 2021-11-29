@@ -8,6 +8,6 @@ class String : public Instrument{
         ~String();
         float lowHz;
         float highHz;
-        bool pitchRangeCheck();
+        void pitchRangeCheck();
 };
 
