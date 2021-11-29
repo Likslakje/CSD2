@@ -2,7 +2,7 @@
 using namespace std;
 #include "perc.h"
 
-Percussion::Percussion(string name, string soundDes, int note) : Instrument(name, soundDes, note){
+Percussion::Percussion() : Instrument(){
     cout<< "Percussion: " <<endl;
     this-> lowHz = 55;
     this-> highHz = 7500;

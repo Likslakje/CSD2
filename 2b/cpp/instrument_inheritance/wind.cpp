@@ -2,7 +2,7 @@
 using namespace std;
 #include "wind.h"
 
-Wind::Wind(string name, string soundDes, int note) : Instrument(name, soundDes, note){
+Wind::Wind() : Instrument(){
     cout<< "Wind: " <<endl;
     this-> lowHz = 40;
     this-> highHz = 2500;

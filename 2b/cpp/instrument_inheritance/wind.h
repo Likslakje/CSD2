@@ -4,7 +4,7 @@ using namespace std;
 
 class Wind : public Instrument{
     public: 
-        Wind(string name, string soundDes, int note);
+        Wind();
         ~Wind();
         float lowHz;
         float highHz;

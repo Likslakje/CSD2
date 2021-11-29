@@ -2,7 +2,7 @@
 using namespace std;
 #include "key.h"
 
-Key::Key(string name, string soundDes, int note) : Instrument(name, soundDes, note){
+Key::Key() : Instrument(){
     cout<< "Key: " <<endl;
     this-> lowHz = 20;
     this-> highHz = 10000;

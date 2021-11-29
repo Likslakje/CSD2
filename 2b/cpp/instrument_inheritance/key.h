@@ -4,7 +4,7 @@ using namespace std;
 
 class Key : public Instrument{
     public:
-        Key(string name, string soundDes, int note);
+        Key();
         ~Key();
         float lowHz;
         float highHz;

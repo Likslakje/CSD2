@@ -4,7 +4,7 @@ using namespace std;
 
 class Percussion : public Instrument{
     public:
-        Percussion(string name, string soundDes, int note);
+        Percussion();
         ~Percussion();
         float lowHz;
         float highHz;
