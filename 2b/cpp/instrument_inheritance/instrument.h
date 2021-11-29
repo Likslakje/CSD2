@@ -5,7 +5,7 @@ using namespace std;
 
 class Instrument{
     public:
-        Instrument(string name, string soundDes, int note);
+        Instrument();
         ~Instrument();
         float noteToFreq(int note);
         void play(string message, string soundDes);

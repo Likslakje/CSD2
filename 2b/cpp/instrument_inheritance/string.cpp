@@ -2,14 +2,14 @@
 using namespace std;
 #include "string.h"
 
-String::String(string name, string soundDes, float note) : Instrument(name, soundDes, note){
+String::String() : Instrument(){
     cout<< "String: " <<endl;
     this-> lowHz = 80;
     this-> highHz = 3500;
 }
 
 String::~String(){
-    
+
 }
 
 void String::pitchRangeCheck(){

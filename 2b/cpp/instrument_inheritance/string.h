@@ -4,7 +4,7 @@ using namespace std;
 
 class String : public Instrument{
     public:
-        String(string name, string soundDes, float note);
+        String();
         ~String();
         float lowHz;
         float highHz;

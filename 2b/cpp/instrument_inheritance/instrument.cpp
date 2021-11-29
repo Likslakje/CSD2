@@ -2,10 +2,8 @@
 using namespace std;
 #include "instrument.h"
 
-Instrument::Instrument(string name, string soundDes, int note){
-    this-> name = name;
-    this-> soundDes = soundDes;
-    this-> note = note;
+Instrument::Instrument(){
+    cin>> name >> soundDes >> note;
     this-> freq = Instrument::noteToFreq(note);
 }
 
