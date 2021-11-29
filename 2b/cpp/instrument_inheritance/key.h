@@ -4,6 +4,9 @@ using namespace std;
 
 class Key : public Instrument{
     public:
-        Key(string name, string soundDes);
+        Key(string name, string soundDes, int note);
         ~Key();
+        float lowHz;
+        float highHz;
+        void pitchRangeCheck();
 };

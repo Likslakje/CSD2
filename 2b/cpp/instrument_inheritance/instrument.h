@@ -5,13 +5,15 @@ using namespace std;
 
 class Instrument{
     public:
-        Instrument(string name, string soundDes, float note);
+        Instrument(string name, string soundDes, int note);
         ~Instrument();
+        float noteToFreq(int note);
         void play(string message, string soundDes);
     protected:
         string name;
         string soundDes;
-        float note;
+        int note;
+        float freq;
 };
 
 #endif

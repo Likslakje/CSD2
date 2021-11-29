@@ -9,7 +9,7 @@ String::String(string name, string soundDes, float note) : Instrument(name, soun
 }
 
 String::~String(){
-    // cout<< lowHz <<endl;
+    
 }
 
 void String::pitchRangeCheck(){
