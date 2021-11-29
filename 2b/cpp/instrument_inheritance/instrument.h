@@ -5,12 +5,13 @@ using namespace std;
 
 class Instrument{
     public:
-        Instrument(string name, string soundDes);
+        Instrument(string name, string soundDes, float note);
         ~Instrument();
         void play();
     protected:
         string name;
         string soundDes;
+        float note;
 };
 
 #endif

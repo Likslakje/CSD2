@@ -2,9 +2,10 @@
 using namespace std;
 #include "instrument.h"
 
-Instrument::Instrument(string name, string soundDes){
+Instrument::Instrument(string name, string soundDes, float note){
     this-> name = name;
     this-> soundDes = soundDes;
+    this-> note = note;
 }
 
 Instrument::~Instrument(){
@@ -12,5 +13,8 @@ Instrument::~Instrument(){
 }
 
 void Instrument::play(){
-    cout<< name << " is playing \n" << soundDes <<endl;
+        cout<< name << " is playing \n" 
+        << soundDes
+        << note <<endl;
+
 }

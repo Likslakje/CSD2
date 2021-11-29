@@ -4,7 +4,10 @@ using namespace std;
 
 class String : public Instrument{
     public:
-        String(string name, string soundDes);
+        String(string name, string soundDes, float note);
         ~String();
+        float lowHz;
+        float highHz;
+        bool pitchRangeCheck();
 };
 
