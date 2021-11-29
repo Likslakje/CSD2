@@ -12,7 +12,7 @@ Instrument::~Instrument(){
     
 }
 
-void Instrument::play(string message){
+void Instrument::play(string message, string soundDes){
         cout<< name << message << " (" << note << ") " << soundDes <<endl;
 
 }

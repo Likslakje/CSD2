@@ -7,7 +7,7 @@ class Instrument{
     public:
         Instrument(string name, string soundDes, float note);
         ~Instrument();
-        void play(string message);
+        void play(string message, string soundDes);
     protected:
         string name;
         string soundDes;
