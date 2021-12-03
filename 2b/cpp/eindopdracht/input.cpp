@@ -3,8 +3,8 @@ using namespace std;
 #include "input.h"
 
 UserInput::UserInput(){
-//    waveformChoiceCheck();
-    waveformChoice();
+   waveformChoiceCheck();
+    // waveformChoice();
 }
 
 UserInput::~UserInput(){
@@ -18,31 +18,32 @@ void UserInput::waveformChoice(){
     }
     cout<< endl;
     cin>> inputWaveform;
-
-            for(int i = 0; i < waveforms.size(); i++){
-                if(inputWaveform == waveforms[i]){
-                    cout<< "bool voor if " << choiceCheck << "i voor if "<< i <<endl;
-                    choiceCheck = true;
-                    cout<< "bool " << choiceCheck << "i " << i <<endl;
-                    i = 0;
-                    break;
-                }else{
-                    if(i > waveforms.size()){
-                        cout << "doesnt exist" <<endl;
-                    }else{
-                        cout<< "else" << i <<endl;
-                        // i++;
-                    }
-                    
+    try{
+        for(int i = 0; i < waveforms.size(); i++){
+            if(inputWaveform == waveforms[i]){
+                cout<< "bool voor if " << choiceCheck << "i voor if "<< i <<endl;
+                choiceCheck = true;
+                cout<< "bool " << choiceCheck << "i " << i <<endl;
+                i = 0;
+                break;
+            }else{
+                if(i + 1 == waveforms.size()){
+                    cout << "does not exist" <<endl;
+                    throw(choiceCheck);
                 }
             }
-
+        }
+    }
+    catch(bool boolCatch){
+        cout<< boolCatch <<endl;
+    }
 }
 
 void UserInput::waveformChoiceCheck(){
-// do{
-//     waveformChoice();
-// }
+do{
+    waveformChoice();
+}
+while(!choiceCheck);
 // while(choiceCheck)
 //     waveformChoice();
 //     while (true) {
