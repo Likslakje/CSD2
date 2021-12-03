@@ -1,7 +1,7 @@
+//All credits for writeToFile and sine go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
 #include <iostream>
-#include "sine.h"
 
-class Oscillator : public Sine{
+class Oscillator{
     public:
         Oscillator();
         ~Oscillator();
