@@ -10,10 +10,11 @@ UserInput::UserInput(){
                 if(inputWaveform != waveforms[i]){
                     if(i == 3){
                         // I think something's going wrong here the second time around.
+                        // is it even allowed to have a while loop inside a class?
                         cout<< inputWaveform << " does not exist" <<endl;
                         waveformChoice(); // code too slow because of everything that needs to be printed?
                         i = 0;
-                        // continue; ?
+                        // would continue; help ?
                     }
                 }else{
                     throw(inputWaveform);
