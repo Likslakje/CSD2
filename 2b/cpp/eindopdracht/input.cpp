@@ -17,25 +17,21 @@ void UserInput::waveformChoice(){
     }
     cout<< endl;
     cin>> inputWaveform;
-    try{
-        for(int i = 0; i < waveforms.size(); i++){
-            if(inputWaveform == waveforms[i]){
+    int i = 0; //the index for the waveform array inside the while loop
+    do{
+        if(inputWaveform == waveforms[i]){
+            //check if the input exists inside the array
+            //else keep going until choiceCheck is true -> see waveformChoiceCheck()
                 cout<< "bool voor if " << choiceCheck << "i voor if "<< i <<endl;
                 choiceCheck = true;
                 cout<< "bool " << choiceCheck << "i " << i <<endl;
                 i = 0;
                 break;
-            }else{
-                if(i + 1 == waveforms.size()){
-                    throw(choiceCheck);
-                }
-            }
+        }else{
+            i++;
         }
     }
-    catch(bool boolCatch){
-        cout << "does not exist" <<endl;
-        cout<< boolCatch <<endl;
-    }
+    while(i < waveforms.size());
 }
 
 void UserInput::waveformChoiceCheck(){
