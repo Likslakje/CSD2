@@ -9,8 +9,9 @@ UserInput::UserInput(){
             try{
                 if(inputWaveform != waveforms[i]){
                     if(i == 3){
+                        // I think something's going wrong here the second time around.
                         cout<< inputWaveform << " does not exist" <<endl;
-                        waveformChoice();
+                        waveformChoice(); // code too slow because of everything that needs to be printed?
                         i = 0;
                         // continue; ?
                     }
