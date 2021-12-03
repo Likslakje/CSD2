@@ -12,12 +12,14 @@ UserInput::UserInput(){
                         cout<< inputWaveform << " does not exist" <<endl;
                         waveformChoice();
                         i = 0;
+                        // continue; ?
                     }
                 }else{
                     throw(inputWaveform);
                 }
             }
             catch(string waveformCatch){
+                i = 0;
                 cout<< inputWaveform << " exists" <<endl;
                 break;
             }

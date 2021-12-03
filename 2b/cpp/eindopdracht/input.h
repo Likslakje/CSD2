@@ -6,6 +6,7 @@ class UserInput{
     UserInput();
     ~UserInput();
     void waveformChoice();
-    string inputWaveform;  
-    string waveforms[4] = {"sine", "triangle", "saw", "square"};
+    protected:
+        string inputWaveform;  
+        string waveforms[4] = {"sine", "triangle", "saw", "square"};
 };
