@@ -7,20 +7,22 @@
 using namespace std;
 
 int main(){
-    
-    // Sine sine(220);
-    // std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
-    // sine.setFrequency(10);
-    // std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
-
-    // // write 1 second of samples to file
-    // // second parameter - overwrite is set to true
-    // WriteToFile fileWriter("output.csv", true);
-    // for(int i = 0; i < SAMPLERATE; i++) {
-    //     fileWriter.write(std::to_string(sine.getSample()) + "\n");
-    //     sine.tick();
-    // }
+  
     UserInput userInput;
+    // if(userInput.choiceCheck){
+    //   Sine sine(220);
+    //   std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
+    //   sine.setFrequency(10);
+    //   std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
+
+    //   // write 1 second of samples to file
+    //   // second parameter - overwrite is set to true
+    //   WriteToFile fileWriter("output.csv", true);
+    //   for(int i = 0; i < SAMPLERATE; i++) {
+    //       fileWriter.write(std::to_string(sine.getSample()) + "\n");
+    //       sine.tick();
+    //   }
+    // }
     // cout<< UserInput.UserInput() <<endl;
 
   // end of program

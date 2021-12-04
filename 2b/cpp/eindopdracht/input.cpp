@@ -3,7 +3,11 @@ using namespace std;
 #include "input.h"
 
 UserInput::UserInput(){
-   waveformChoiceCheck();
+    // do{
+        waveformChoiceCheck();
+        makeObjectName();
+    // }
+    // while(!terminate);
 }
 
 UserInput::~UserInput(){
@@ -12,6 +16,7 @@ UserInput::~UserInput(){
 
 void UserInput::waveformChoice(){
     cout<< "Choose waveform: ";
+    //print everything inside the array
     for(int i = 0; i < waveforms.size(); i++){
         cout<< waveforms[i] << " ";
     }
@@ -22,21 +27,34 @@ void UserInput::waveformChoice(){
         if(inputWaveform == waveforms[i]){
             //check if the input exists inside the array
             //else keep going until choiceCheck is true -> see waveformChoiceCheck()
-                cout<< "bool voor if " << choiceCheck << "i voor if "<< i <<endl;
                 choiceCheck = true;
-                cout<< "bool " << choiceCheck << "i " << i <<endl;
                 i = 0;
                 break;
         }else{
             i++;
+            // cout<< inputWaveform << " does not exist" <<endl;
         }
     }
     while(i < waveforms.size());
 }
 
 void UserInput::waveformChoiceCheck(){
-do{
-    waveformChoice();
+    do{
+        //keep executing wavefromChoice until choiceCheck is true
+        waveformChoice();
+        // cout<< inputWaveform << " does not exist" <<endl;
+    }
+    while(!choiceCheck);
 }
-while(!choiceCheck);
+
+void UserInput::makeObjectName(){
+    makeWaveformTimes++;
+    stream << makeWaveformTimes;
+    stream >> str;
+    if(choiceCheck){
+        //make an unique object name everytime a wavefrom is called
+        string objectName = inputWaveform + str;
+        cout<< objectName <<endl;
+        //return objectName;
+    }
 }
