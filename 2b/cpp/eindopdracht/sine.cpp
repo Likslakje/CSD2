@@ -28,14 +28,14 @@ void Sine::tick() {
   sample = sin(M_PI * 2 * phase);
 }
 
-//getters and setters
-// void Sine::setFrequency(float frequency)
-// {
-//   // TODO add check to see if parameter is valid
-//   this->frequency = frequency;
-// }
+// getters and setters
+void Sine::setFrequency(float frequency)
+{
+  // TODO add check to see if parameter is valid
+  this->frequency = frequency;
+}
 
-// float Sine::getFrequency()
-// {
-//   return frequency;
-// }
+float Sine::getFrequency()
+{
+  return frequency;
+}

@@ -17,9 +17,9 @@ class Sine : public Oscillator {
       // go to next sample
       void tick();
 
-      //getters and setters
-      // void setFrequency(float frequency);
-      // float getFrequency();
+      // getters and setters
+      void setFrequency(float frequency);
+      float getFrequency();
 
       //NOTE - do we need a setter for phase? for now -> not using one
 
