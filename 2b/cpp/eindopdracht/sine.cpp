@@ -1,20 +1,19 @@
-//All credits for writeToFile and sine go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
+//All credits for writeToFile, Sine and the structure for every type of oscillator 
+//go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
+//Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
+#include <iostream>
 #include "sine.h"
 #include "math.h"
+using namespace std;
 
-Sine::Sine(float frequency) {
-  // initialize members
-  this->frequency = frequency;
-  amplitude = 1.0;
-  sample = 0;
-  phase = 0;
-  std::cout << "Sine - constructor\n";
+Sine::Sine(float frequency, double samplerate) : Oscillator (frequency, samplerate){
+  cout<< "sine constructor" <<endl;
 }
 
 
 
 Sine::~Sine() {
-  std::cout << "Sine - destructor\n";
+
 }
 
 
@@ -23,19 +22,12 @@ float Sine::getSample() {
 }
 
 void Sine::tick() {
-  // TODO - frequency / SAMPLERATE can be implemented in a more efficient way
-  phase += frequency / SAMPLERATE;
-  sample = sin(M_PI * 2 * phase);
+  // NOTE 1. - frequency / SAMPLERATE can be implemented in a more efficient way
+  // NOTE 2. - still need todo 'something' with the phase, see 04_sin_function
+  phase += frequency / samplerate;
+  sample = sin(M_PI * 2 * phase) * amplitude;
 }
 
 // getters and setters
-void Sine::setFrequency(float frequency)
-{
-  // TODO add check to see if parameter is valid
-  this->frequency = frequency;
-}
 
-float Sine::getFrequency()
-{
-  return frequency;
-}
+
