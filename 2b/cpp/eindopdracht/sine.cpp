@@ -29,13 +29,13 @@ void Sine::tick() {
 }
 
 //getters and setters
-void Sine::setFrequency(float frequency)
-{
-  // TODO add check to see if parameter is valid
-  this->frequency = frequency;
-}
+// void Sine::setFrequency(float frequency)
+// {
+//   // TODO add check to see if parameter is valid
+//   this->frequency = frequency;
+// }
 
-float Sine::getFrequency()
-{
-  return frequency;
-}
+// float Sine::getFrequency()
+// {
+//   return frequency;
+// }

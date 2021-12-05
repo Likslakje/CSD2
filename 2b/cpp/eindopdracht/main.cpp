@@ -10,7 +10,7 @@ int main(){
   
     UserInput userInput;
     // if(userInput.choiceCheck){
-    //   Sine sine(220);
+      Sine sine(220);
     //   std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
     //   sine.setFrequency(10);
     //   std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
@@ -23,7 +23,6 @@ int main(){
     //       sine.tick();
     //   }
     // }
-    // cout<< UserInput.UserInput() <<endl;
 
   // end of program
   return 0;

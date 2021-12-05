@@ -5,7 +5,7 @@ using namespace std;
 UserInput::UserInput(){
     // do{
         waveformChoiceCheck();
-        makeObjectName();
+        waveformFreq();
     // }
     // while(!terminate);
 }
@@ -47,14 +47,37 @@ void UserInput::waveformChoiceCheck(){
     while(!choiceCheck);
 }
 
-void UserInput::makeObjectName(){
+void UserInput::waveformFreq(){
+    cout<< "Set frequency: ";
+    cin>> inputFreq;
+    this-> freq = stof(inputFreq); //convert str to float
+    if (freq >= 20 && freq <= 20000){
+        makeObjectWaveform();
+    }else{
+        cout<< "Frequency out of range (20 - 20k Hz)" <<endl;
+        waveformFreq();
+    }
+}
+
+void UserInput::makeObjectWaveform(){
     makeWaveformTimes++;
-    stream << makeWaveformTimes;
-    stream >> str;
+    string uniqueNumber = to_string(makeWaveformTimes);
     if(choiceCheck){
         //make an unique object name everytime a wavefrom is called
-        string objectName = inputWaveform + str;
-        cout<< objectName <<endl;
+        string objectName = inputWaveform + uniqueNumber;
+        cout<< inputWaveform << objectName <<endl;
         //return objectName;
+        Sine sine(freq);
+        std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
+        sine.setFrequency(10);
+        std::cout << "Sine frequency: " << sine.getFrequency() << "\n";
+
+        // write 1 second of samples to file
+        // second parameter - overwrite is set to true
+        // WriteToFile fileWriter("output.csv", true);
+        // for(int i = 0; i < SAMPLERATE; i++) {
+        //     fileWriter.write(std::to_string(sine.getSample()) + "\n");
+        //     sine.tick();
+        // }
     }
 }
