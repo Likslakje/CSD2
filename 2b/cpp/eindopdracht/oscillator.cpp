@@ -7,16 +7,17 @@ using namespace std;
 
 Oscillator::Oscillator(float frequency, double samplerate) : frequency(frequency),
   amplitude(1.0), phase(0), sample(0), samplerate(samplerate){
-    cout<< "Oscillator" <<endl;
+    cout<< "constructor Oscillator" <<endl;
     this->frequency = frequency;
     amplitude = 1.0;
     sample = 0;
     phase = 0;
+    cout<< frequency << " " << samplerate << " " << amplitude << sample << phase <<endl;
 
 }
 
 Oscillator::~Oscillator(){
-
+  cout<< "desttructor Oscillator" <<endl;
 }
 
 void Oscillator::setFrequency(float frequency)

@@ -7,11 +7,11 @@
 using namespace std;
 
 Sine::Sine(float frequency, double samplerate) : Oscillator (frequency, samplerate){
-  cout<< "sine constructor" <<endl;
+  cout<< "constructor Sine" <<endl;
 }
 
 Sine::~Sine() {
-
+  cout<< "destructor Sine" <<endl;
 }
 
 float Sine::getSample() {
