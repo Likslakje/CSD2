@@ -10,12 +10,9 @@ Sine::Sine(float frequency, double samplerate) : Oscillator (frequency, samplera
   cout<< "sine constructor" <<endl;
 }
 
-
-
 Sine::~Sine() {
 
 }
-
 
 float Sine::getSample() {
   return sample;
@@ -27,7 +24,5 @@ void Sine::tick() {
   phase += frequency / samplerate;
   sample = sin(M_PI * 2 * phase) * amplitude;
 }
-
-// getters and setters
 
 

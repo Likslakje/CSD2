@@ -6,22 +6,17 @@
 #include <iostream>
 #include "oscillator.h"
 
-#define SAMPLERATE 44100
+// #define SAMPLERATE 44100
 
 class Sine : public Oscillator {
   public:
-      //Constructor and destructor
       Sine(float frequency, double samplerate);
       ~Sine();
-
-        //return the current sample
+      //getSample() and tick() not inside Oscillator() because they are unique per type of wavefrom
+      //return the current sample
       float getSample();
       // go to next sample
       void tick();
-
-      //NOTE - do we need a setter for phase? for now -> not using one
-
-
 };
 
 #endif

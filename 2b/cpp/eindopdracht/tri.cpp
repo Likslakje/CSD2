@@ -3,7 +3,7 @@
 #include "tri.h"
 #include "math.h"
 
-Triangle::Triangle(float frequency) {
+Triangle::Triangle(float frequency, double samplerate) : Oscillator (frequency, samplerate) {
   // initialize members
   this->frequency = frequency;
   amplitude = 1.0;
@@ -27,16 +27,4 @@ void Triangle::tick() {
   // TODO - frequency / SAMPLERATE can be implemented in a more efficient way
   phase += frequency / SAMPLERATE;
   sample = sin(M_PI * 2 * phase);
-}
-
-// getters and setters
-void Triangle::setFrequency(float frequency)
-{
-  // TODO add check to see if parameter is valid
-  this->frequency = frequency;
-}
-
-float Triangle::getFrequency()
-{
-  return frequency;
 }

@@ -3,7 +3,7 @@
 #include "saw.h"
 #include "math.h"
 
-Saw::Saw(float frequency) {
+Saw::Saw(float frequency, double samplerate) : Oscillator (frequency, samplerate) {
   // initialize members
   this->frequency = frequency;
   amplitude = 1.0;
@@ -27,16 +27,4 @@ void Saw::tick() {
   // TODO - frequency / SAMPLERATE can be implemented in a more efficient way
   phase += frequency / SAMPLERATE;
   sample = sin(M_PI * 2 * phase);
-}
-
-// getters and setters
-void Saw::setFrequency(float frequency)
-{
-  // TODO add check to see if parameter is valid
-  this->frequency = frequency;
-}
-
-float Saw::getFrequency()
-{
-  return frequency;
 }

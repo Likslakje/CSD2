@@ -10,26 +10,14 @@
 class Triangle : public Oscillator {
   public:
       //Constructor and destructor
-      Triangle(float frequency);
+      Triangle(float frequency, double samplerate);
       ~Triangle();
 
       //return the current sample
       float getSample();
       // go to next sample
       void tick();
-
-      // getters and setters
-      void setFrequency(float frequency);
-      float getFrequency();
-
       //NOTE - do we need a setter for phase? for now -> not using one
-
-  private:
-    float amplitude;
-    float frequency;
-    float phase;
-    // contains the current sample
-    float sample;
 };
 
 #endif

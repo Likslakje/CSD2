@@ -3,29 +3,33 @@
 //Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
 #include <iostream>
 #include <thread>
-// #include "oscillator.h"
-#include "sine.h"
-#include "saw.h"
-#include "writeToFile.h"
-#include "input.cpp"
-#include "jack_module.h"
 #include "math.h"
+#include "sine.h"
+#include "tri.h"
+#include "saw.h"
+#include "square.h"
+#include "writeToFile.h"
+#include "jack_module.h"
+#include "input.cpp"
 using namespace std;
 
-
-
+double samplerateGeneral;
 
 int main(int argc,char **argv){
-    // cout<< "Press ? for help or type 'help'\nType command: ";
     // execute();
     // create a JackModule instance
   JackModule jack;
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-
+    samplerateGeneral = samplerate;
   
-  Sine sine(220, samplerate);
+      // cout<< "Press ? for help or type 'help'\nType command: ";
+
+    //  Sine sine(220, samplerateGeneral);
+    //  Triangle tri(330, samplerate);
+    //  Saw saw(440, samplerate);
+     Square sine(550, samplerate);
 
 
   float amplitude = 0.15;

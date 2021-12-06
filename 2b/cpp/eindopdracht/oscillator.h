@@ -9,8 +9,6 @@ class Oscillator{
     public:
         Oscillator(float frequency, double samplerate);
         ~Oscillator();
-      
-
       // getters and setters
       void setFrequency(float frequency);
       float getFrequency();
