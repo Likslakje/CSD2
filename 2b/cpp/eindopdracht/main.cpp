@@ -9,6 +9,8 @@
 #include "saw.h"
 #include "square.h"
 #include "additive.h"
+#include "subtractive.h"
+#include "fm.h"
 #include "writeToFile.h"
 #include "jack_module.h"
 #include "input.cpp"
@@ -17,21 +19,27 @@ using namespace std;
 // double samplerateGeneral = 44100;
 
 int main(int argc,char **argv){
-  Additive additiveSynth(4);
-    // execute();
+  
+  // Additive additiveSynth(4);
+  // additiveSynth.makeAdditive();
+  // Subtractive subtractiveSynth(5);
+  // subtractiveSynth.makeSubtractive();
+  // Fm fmSynth(2);
+  // fmSynth.makeFm();
+    execute();
     // create a JackModule instance
   // JackModule jack;
   // // init the jack, use program name as JACK client name
   // jack.init(argv[0]);
   // double samplerate = jack.getSamplerate();
-  //   samplerateGeneral = samplerate;
+  //   // samplerateGeneral = samplerate;
   
   //     // cout<< "Press ? for help or type 'help'\nType command: ";
 
-    //  Sine sine(220, samplerateGeneral);
-    //  Triangle tri(330, samplerate);
-    //  Saw saw(440, samplerate);
-    //  Square sine(550, samplerate);
+  //   //  Sine sine(220, samplerateGeneral);
+  //   //  Triangle tri(330, samplerate);
+  //   //  Saw saw(440, samplerate);
+  //   //  Square sine(550, samplerate);
 
 
   // float amplitude = 0.15;

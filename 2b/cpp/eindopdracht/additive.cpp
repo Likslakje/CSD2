@@ -7,7 +7,7 @@ using namespace std;
 
 Additive::Additive(int numberOsc) : Synth(numberOsc){
     cout<< "constructor Additive" <<endl;
-    makeAdditive();
+    // makeAdditive();
 }
 
 Additive::~Additive(){
