@@ -7,6 +7,12 @@ using namespace std;
 
 class Square : public Oscillator{
     public:
-        Square();
+        Square(float frequency, double samplerate);
         ~Square();
+        float getSample();
+        void calculate();
+    private:
+        float amplitude = 1.0;
+        float phase = 0;
+        float sample = 0;
 };

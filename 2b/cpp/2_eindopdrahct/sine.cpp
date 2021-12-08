@@ -19,5 +19,10 @@ float Sine::getSample(){
 
 void Sine::calculate(){
     phase += getFrequency() / getSamplerate();
-    sample = sin(M_PI * 2 * phase) * amplitude;
+    if(phase < 1){
+        sample = sin(M_PI * 2 * phase) * amplitude;
+    }else{
+        phase = 0;
+    }
+    cout<< "phase: " << phase << "sample: " << sample <<endl;
 }

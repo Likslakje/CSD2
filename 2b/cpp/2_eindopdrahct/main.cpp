@@ -5,6 +5,7 @@
 #include <thread>
 #include <limits>
 #include "jack_module.h"
+#include "writeToFile.h"
 #include "math.h"
 #include "sine.h"
 #include "saw.h"
@@ -20,7 +21,11 @@ int main(int argc,char **argv){
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
-  Sine sine(220, samplerate);
+    // double samplerate = 44100;
+    Saw sine(220, samplerate);
+    // while(true){
+    //   sine.calculate();
+    // };
 
   float amplitude = 0.15;
   //assign a function to the JackModule::onProces
@@ -50,5 +55,10 @@ int main(int argc,char **argv){
         break;
     }
   }
+//   WriteToFile fileWriter("output.csv", true);
+//   for(int i = 0; i < samplerate; i++) {
+//     fileWriter.write(std::to_string(sine.getSample()) + "\n");
+//     sine.calculate();
+//   }
   return 0;
 }

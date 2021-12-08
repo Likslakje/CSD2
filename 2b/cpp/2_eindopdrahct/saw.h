@@ -8,9 +8,11 @@ using namespace std;
 class Saw : public Oscillator{
     public:
         Saw(float frequency, double samplerate);
-        ~Saw();
-        void calculateSaw();
-    // private:
-    //     float frequency;
-    //     double samplerate;
+        ~Saw();        
+        float getSample();
+        void calculate();
+    private:
+        float amplitude = 1.0;
+        float phase = 0;
+        float sample = 0;
 };
