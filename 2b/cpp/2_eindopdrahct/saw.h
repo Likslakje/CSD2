@@ -7,6 +7,10 @@ using namespace std;
 
 class Saw : public Oscillator{
     public:
-        Saw();
+        Saw(float frequency, double samplerate);
         ~Saw();
+        void calculateSaw();
+    // private:
+    //     float frequency;
+    //     double samplerate;
 };

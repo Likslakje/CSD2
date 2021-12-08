@@ -5,10 +5,28 @@
 #include "oscillator.h"
 using namespace std;
 
-Oscillator::Oscillator(){
+Oscillator::Oscillator(float frequency, double samplerate) : frequency(frequency), samplerate(samplerate){
     cout<< "contructor Oscillator" <<endl;
 }
 
 Oscillator::~Oscillator(){
     cout<< "destructor Oscillator" <<endl;
 }
+
+void Oscillator::setFrequency(float frequency){
+    this->frequency = frequency;
+}
+
+void Oscillator::setSamplerate(double samplerate){
+    this->samplerate = samplerate;
+}
+
+float Oscillator::getFrequency(){
+    return frequency;
+}
+
+double Oscillator::getSamplerate(){
+    return samplerate;
+}
+
+

@@ -5,10 +5,15 @@
 #include "saw.h"
 using namespace std;
 
-Saw::Saw(){
+Saw::Saw(float frequency, double samplerate){
     cout<< "constructor Saw" <<endl;
+    cout<< frequency << samplerate <<endl;
 }
 
 Saw::~Saw(){
     cout<< "destructor Saw" <<endl;
+}
+
+void Saw::calculateSaw(){
+
 }

@@ -7,6 +7,11 @@ using namespace std;
 
 class Sine : public Oscillator{
     public:
-        Sine();
+        Sine(float frequency, double samplerate);
         ~Sine();
+        void calculate();
+    private:
+        float amplitude = 1.0;
+        float phase = 0;
+        float sample = 0;
 };

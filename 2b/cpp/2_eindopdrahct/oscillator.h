@@ -8,8 +8,17 @@ using namespace std;
 
 class Oscillator{
     public:
-        Oscillator();
-        ~Oscillator();
+        Oscillator(float frequency, double samplerate);
+        virtual ~Oscillator();
+        //getters and setters
+        void setFrequency(float frequency);
+        void setSamplerate(double samplerate);
+        float getFrequency();
+        double getSamplerate();
+        virtual void calculate() = 0;
+    private:
+        float frequency;
+        double samplerate;
 };
 
 #endif

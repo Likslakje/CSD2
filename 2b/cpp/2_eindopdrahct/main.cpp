@@ -10,10 +10,10 @@
 using namespace std;
 
 int main(){
-    Sine sine;
-    Saw saw;
-    Square square;
+    // Sine sine;
+    Sine sine(440, 44100);
+    // Square square;
 
-    Additive additive;
-    Beating beating;
+    // Additive additive;
+    // Beating beating;
 }

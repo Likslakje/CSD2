@@ -5,10 +5,15 @@
 #include "sine.h"
 using namespace std;
 
-Sine::Sine(){
+Sine::Sine(float frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Sine" <<endl;
 }
 
 Sine::~Sine(){
     cout<< "destructor Sine" <<endl;
+}
+
+void Sine::calculate(){
+    phase += getFrequency() / getSamplerate();
+    sample = sin(M_PI * 2 * phase) * amplitude;
 }
