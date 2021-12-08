@@ -9,6 +9,7 @@ class Sine : public Oscillator{
     public:
         Sine(float frequency, double samplerate);
         ~Sine();
+        float getSample();
         void calculate();
     private:
         float amplitude = 1.0;

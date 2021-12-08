@@ -13,6 +13,10 @@ Sine::~Sine(){
     cout<< "destructor Sine" <<endl;
 }
 
+float Sine::getSample(){
+    return sample;
+}
+
 void Sine::calculate(){
     phase += getFrequency() / getSamplerate();
     sample = sin(M_PI * 2 * phase) * amplitude;
