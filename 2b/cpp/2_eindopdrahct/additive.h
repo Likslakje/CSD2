@@ -7,6 +7,7 @@ using namespace std;
 
 class Additive : public Synth{
     public:
-        Additive();
+        Additive(int midiNumber, double samplerate);
         ~Additive();
+        void makeOscillator();
 };

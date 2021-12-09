@@ -8,8 +8,22 @@ using namespace std;
 
 class Synth{
     public:
-        Synth();
+        Synth(int midiNumber, double samplerate);
         ~Synth();
+        void setMidiNumber(int midinumber);
+        int getMidiNumber();
+        void setMidiToFreq();
+        float getMidiToFreq();
+        void setFrequency();
+        float getFrequency();
+        void setSamplerate(double samplerate);
+        double getSamplerate();
+        // virtual void setFrequency() = 0;
+    private:
+        int midiNumber;
+        float midiToFreq;
+        double samplerate;
+        float frequency;
 };
 
 #endif
