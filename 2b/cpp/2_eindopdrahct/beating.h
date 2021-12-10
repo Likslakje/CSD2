@@ -7,7 +7,7 @@ using namespace std;
 
 class Beating : public Synth{
     public:
-        Beating();
+        Beating(int midiNumber, double samplerate);
         ~Beating();
-
+        void makeOscillator();
 };

@@ -3,9 +3,6 @@
 //Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
 #include <iostream>
 #include "additive.h"
-#include "sine.h"
-#include "saw.h"
-#include "square.h"
 using namespace std;
 
 Additive::Additive(int midiNumber, double samplerate) : Synth(midiNumber, samplerate){
@@ -20,4 +17,16 @@ Additive::~Additive(){
 
 void Additive::makeOscillator(){
     Sine sine(getFrequency(), getSamplerate());
+}
+
+void Additive::getSample(){
+    // this->sample = sine.getSample()
+}
+
+void Additive::getWaveformCalculate(){
+
+}
+
+void Additive::synthCalculate(){
+
 }

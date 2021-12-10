@@ -4,12 +4,15 @@
 #ifndef _SYNTH_H_
 #define _SYNTH_H_
 #include <iostream>
+#include "sine.h"
+#include "saw.h"
+#include "square.h"
 using namespace std;
 
 class Synth{
     public:
         Synth(int midiNumber, double samplerate);
-        ~Synth();
+        virtual ~Synth();
         void setMidiNumber(int midinumber);
         int getMidiNumber();
         void setMidiToFreq();
@@ -18,6 +21,10 @@ class Synth{
         float getFrequency();
         void setSamplerate(double samplerate);
         double getSamplerate();
+        //for jack
+        virtual void getSample() = 0;
+        virtual void getWaveformCalculate() = 0;
+        virtual void synthCalculate() = 0;
         // virtual void setFrequency() = 0;
     private:
         int midiNumber;

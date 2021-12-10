@@ -5,10 +5,14 @@
 #include "beating.h"
 using namespace std;
 
-Beating::Beating(){
+Beating::Beating(int midiNumber, double samplerate) : Synth(midiNumber, samplerate){
     cout<< "constructor Beating" <<endl;
 }
 
 Beating::~Beating(){
-    cout<< "destructor BEating" <<endl;
+    cout<< "destructor Beating" <<endl;
+}
+
+void Beating::makeOscillator(){
+    Saw saw(getFrequency(), getSamplerate());
 }

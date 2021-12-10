@@ -10,4 +10,8 @@ class Additive : public Synth{
         Additive(int midiNumber, double samplerate);
         ~Additive();
         void makeOscillator();
+        //for jack
+        void getSample();
+        void getWaveformCalculate();
+        void synthCalculate();
 };
