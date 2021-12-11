@@ -26,49 +26,49 @@ int main(int argc,char **argv){
   // subtractiveSynth.makeSubtractive();
   // Fm fmSynth(2);
   // fmSynth.makeFm();
-    execute();
+    // execute();
     // create a JackModule instance
-  // JackModule jack;
-  // // init the jack, use program name as JACK client name
-  // jack.init(argv[0]);
-  // double samplerate = jack.getSamplerate();
-  //   // samplerateGeneral = samplerate;
+  JackModule jack;
+  // init the jack, use program name as JACK client name
+  jack.init(argv[0]);
+  double samplerate = jack.getSamplerate();
   
-  //     // cout<< "Press ? for help or type 'help'\nType command: ";
+      // cout<< "Press ? for help or type 'help'\nType command: ";
 
-  //   //  Sine sine(220, samplerateGeneral);
-  //   //  Triangle tri(330, samplerate);
-  //   //  Saw saw(440, samplerate);
-  //   //  Square sine(550, samplerate);
+    Additive additiveSynth(1);
+    // Sine sine(440, samplerate);
+    //  Triangle tri(330, samplerate);
+    //  Saw saw(440, samplerate);
+    //  Square sine(550, samplerate);
 
 
-  // float amplitude = 0.15;
-  // //assign a function to the JackModule::onProces
-  // jack.onProcess = [&sine, &amplitude](jack_default_audio_sample_t *inBuf,
-  //   jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+  float amplitude = 0.15;
+  //assign a function to the JackModule::onProces
+  jack.onProcess = [&additiveSynth, &amplitude](jack_default_audio_sample_t *inBuf,
+    jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
-  //   for(unsigned int i = 0; i < nframes; i++) {
-  //     outBuf[i] = sine.getSample() * amplitude;
-  //     sine.tick();
-  //   }
-  //   amplitude = 0.5;
-  //   return 0;
-  // };
+    for(unsigned int i = 0; i < nframes; i++) {
+      outBuf[i] = additiveSynth.getSample() * amplitude;
+      additiveSynth.tick();
+    }
+    amplitude = 0.5;
+    return 0;
+  };
 
-  // jack.autoConnect();
+  jack.autoConnect();
 
-  // //keep the program running and listen for user input, q = quit
-  // std::cout << "\n\nPress 'q' when you want to quit the program.\n";
-  // bool running = true;
-  // while (running)
-  // {
-  //   switch (std::cin.get())
-  //   {
-  //     case 'q':
-  //       running = false;
-  //       jack.end();
-  //       break;
-  //   }
-  // }
+  //keep the program running and listen for user input, q = quit
+  std::cout << "\n\nPress 'q' when you want to quit the program.\n";
+  bool running = true;
+  while (running)
+  {
+    switch (std::cin.get())
+    {
+      case 'q':
+        running = false;
+        jack.end();
+        break;
+    }
+  }
     return 0;
 }

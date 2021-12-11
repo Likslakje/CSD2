@@ -13,12 +13,8 @@ Square::~Square(){
     cout<< "destructor Square" <<endl;
 }
 
-float Square::getSample(){
-    return sample;
-}
-
 void Square::calculate(){
-    phase += getFrequency() / getSamplerate();
+    phase += frequency / samplerate;
     if(phase < 1){
         if(phase >= 0.5){
             sample = -1.0f;

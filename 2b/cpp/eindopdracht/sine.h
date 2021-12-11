@@ -12,11 +12,16 @@ class Sine : public Oscillator {
   public:
       Sine(float frequency, double samplerate);
       ~Sine();
-      //getSample() and tick() not inside Oscillator() because they are unique per type of wavefrom
-      //return the current sample
-      float getSample();
+      float getSample() override;
       // go to next sample
-      void tick();
+      void tick() override;
+  private:
+     float amplitude;
+      float frequency;
+      float phase;
+      // contains the current sample
+      float sample;
+      double samplerate;
 };
 
 #endif

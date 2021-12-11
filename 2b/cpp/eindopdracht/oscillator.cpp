@@ -8,10 +8,6 @@ using namespace std;
 Oscillator::Oscillator(float frequency, double samplerate) : frequency(frequency),
   amplitude(1.0), phase(0), sample(0), samplerate(samplerate){
     cout<< "constructor Oscillator" <<endl;
-    this->frequency = frequency;
-    amplitude = 1.0;
-    sample = 0;
-    phase = 0;
     cout<< frequency << " " << samplerate << " " << amplitude << sample << phase <<endl;
 
 }
@@ -29,4 +25,12 @@ void Oscillator::setFrequency(float frequency)
 float Oscillator::getFrequency()
 {
   return frequency;
+}
+
+void Oscillator::setSamplerate(double samplerate){
+    this->samplerate = samplerate;
+}
+
+double Oscillator::getSamplerate(){
+    return samplerate;
 }

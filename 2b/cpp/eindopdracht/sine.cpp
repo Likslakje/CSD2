@@ -25,4 +25,3 @@ void Sine::tick() {
   sample = sin(M_PI * 2 * phase) * amplitude;
 }
 
-

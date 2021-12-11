@@ -8,11 +8,18 @@
 class Oscillator{
     public:
         Oscillator(float frequency, double samplerate);
-        ~Oscillator();
+        virtual ~Oscillator();
       // getters and setters
       void setFrequency(float frequency);
       float getFrequency();
-    // private:
+       //getSample() and tick() not inside Oscillator() because they are unique per type of wavefrom
+      //return the current sample
+      virtual float getSample() = 0;
+      // go to next sample
+      virtual void tick() = 0;
+      void setSamplerate(double samplerate);
+      double getSamplerate();
+    private:
         float amplitude;
         float frequency;
         float phase;

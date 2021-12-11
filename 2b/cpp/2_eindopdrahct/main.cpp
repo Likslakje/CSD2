@@ -15,6 +15,8 @@
 #include "beating.h"
 using namespace std;
 
+#define WRITETOFILE 1
+
 int main(int argc,char **argv){
   // double samplerate = 44100;
   // Additive additiveSynth(34, samplerate);
@@ -26,11 +28,18 @@ int main(int argc,char **argv){
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
     // double samplerate = 44100;
-    Sine sine(220, samplerate);
+  Sine sine(220, samplerate);
     // while(true){
     //   sine.calculate();
     // };
-
+  
+#if WRITETOFILE 
+  WriteToFile fileWriter("output.csv", true);
+  for(int i = 0; i < 3000; i++) {
+    fileWriter.write(std::to_string(sine.getSample()) + "\n");
+    sine.tick();
+  }
+#else
   float amplitude = 0.15;
   //assign a function to the JackModule::onProces
   jack.onProcess = [&sine, &amplitude](jack_default_audio_sample_t *inBuf,
@@ -38,7 +47,7 @@ int main(int argc,char **argv){
 
     for(unsigned int i = 0; i < nframes; i++) {
       outBuf[i] = sine.getSample() * amplitude;
-      sine.calculate();
+      sine.tick();
     }
     amplitude = 0.5;
     return 0;
@@ -59,10 +68,6 @@ int main(int argc,char **argv){
         break;
     }
   }
-//   WriteToFile fileWriter("output.csv", true);
-//   for(int i = 0; i < samplerate; i++) {
-//     fileWriter.write(std::to_string(sine.getSample()) + "\n");
-//     sine.calculate();
-//   }
+#endif
   return 0;
 }

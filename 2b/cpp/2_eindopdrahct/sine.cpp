@@ -5,7 +5,7 @@
 #include "sine.h"
 using namespace std;
 
-Sine::Sine(float frequency, double samplerate) : Oscillator(frequency, samplerate){
+Sine::Sine(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Sine" <<endl;
 }
 
@@ -13,12 +13,7 @@ Sine::~Sine(){
     cout<< "destructor Sine" <<endl;
 }
 
-float Sine::getSample(){
-    return sample;
-}
-
 void Sine::calculate(){
-    phase += getFrequency() / getSamplerate();
     if(phase < 1){
         sample = sin(M_PI * 2 * phase) * amplitude;
     }else{
