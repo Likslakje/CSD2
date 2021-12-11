@@ -5,7 +5,8 @@
 #include "oscillator.h"
 using namespace std;
 
-Oscillator::Oscillator(double frequency, double samplerate) : frequency(frequency), samplerate(samplerate){
+Oscillator::Oscillator(double frequency, double samplerate) : frequency(frequency), samplerate(samplerate),
+    amplitude(1.0), phase(0.0), sample(0){
     cout<< "contructor Oscillator" <<endl;
 }
 
@@ -13,12 +14,12 @@ Oscillator::~Oscillator(){
     cout<< "destructor Oscillator" <<endl;
 }
 
-bool Oscillator::setFrequency(double frequency){
-    if(frequency > 20 && frequency < 20500) {
-        this->frequency = frequency;
-        return true;
-    }
-    return false;
+void Oscillator::setFrequency(double frequency){
+    this->frequency = frequency;
+}
+
+double Oscillator::getFrequency(){
+    return frequency;
 }
 
 void Oscillator::setSamplerate(double samplerate){
@@ -26,11 +27,13 @@ void Oscillator::setSamplerate(double samplerate){
 }
 
 double Oscillator::getSample(){
+    cout<< "Osc getsample " << sample <<endl;
     return sample;
 }
 
-void Oscillator::tick(){
+void Oscillator::nextSample(){
     phase += frequency / samplerate;
+    cout<< "Osc nextSample " << phase <<endl;
     if(phase > 1.0) phase -= 1.0;
     calculate();
 }

@@ -6,49 +6,32 @@
 #include "synth.h"
 using namespace std;
 
-Synth::Synth(int midiNumber, double samplerate) : midiNumber(midiNumber), samplerate(samplerate){
+Synth::Synth(float midiNumber, double samplerate) : midiNumber(midiNumber), sample(0){
     cout<< "constructor Synth" << midiNumber <<endl;
-    setMidiToFreq();
+    sine.setSamplerate(samplerate);
+    setWaveformFreq(midiNumber);
+  
 }
 
 Synth::~Synth(){
     cout<< "destructor Synth" <<endl;
 }
 
-void Synth::setMidiNumber(int midiNumber){
-    this->midiNumber = midiNumber;
+double Synth::midiToFreq(float midiNumber){
+    return 440 * pow(2.0, (midiNumber - 69.0) / 12.0);
 }
 
-int Synth::getMidiNumber(){
-    return midiNumber;
+void Synth::nextSample(){
+    sine.nextSample();
+    sample = sine.getSample();
+    cout<< "Synth nextSmaple " << sample <<endl;
 }
 
-void Synth::setMidiToFreq(){
-    int midiNumber = getMidiNumber();
-    cout<< "Synth::midiToFreq" << midiNumber << endl;
-    if(midiNumber > 1 && midiNumber < 128){
-        this->midiToFreq = 440 * pow(2.0, (midiNumber - 69.0) / 12.0);
-    }else{
-        cout<< "ask for new frequency" <<endl;
-    }
+double Synth::getSample(){
+    return sample;
 }
 
-float Synth::getMidiToFreq(){
-    return midiToFreq;
-}
-
-void Synth::setFrequency(){
-    this->frequency = getMidiToFreq();
-}
-
-float Synth::getFrequency(){
-    return frequency;
-}
-
-void Synth::setSamplerate(double samplerate){
-    this->samplerate = samplerate;
-}
-
-double Synth::getSamplerate(){
-    return samplerate;
+void Synth::setWaveformFreq(float midiNumber){
+    double frequency = midiToFreq(midiNumber);
+    sine.setFrequency(frequency);
 }

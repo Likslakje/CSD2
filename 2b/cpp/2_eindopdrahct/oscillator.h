@@ -7,24 +7,22 @@
 using namespace std;
 
 class Oscillator{
-public:
-    Oscillator(double frequency, double samplerate);
-    virtual ~Oscillator();
-    //getters and setters
-    bool setFrequency(double frequency);
-    
-    double getSample();
-    //TODO rename to initialize 
-    void setSamplerate(double samplerate);
-    void tick();
-
-protected:
-    virtual void calculate() = 0;
-    double frequency;
-    double samplerate;
-    double amplitude = 1.0;
-    double phase = 0;
-    double sample = 0;
+    public:
+        Oscillator(double frequency, double samplerate);
+        ~Oscillator();
+        //getters and setters
+        void setFrequency(double frequency);
+        double getFrequency();
+        double getSample();
+        void setSamplerate(double samplerate);
+        void nextSample();
+    protected:
+        virtual void calculate() = 0;
+        double frequency;
+        double samplerate;
+        double amplitude;
+        double phase;
+        double sample;
 };
 
 #endif

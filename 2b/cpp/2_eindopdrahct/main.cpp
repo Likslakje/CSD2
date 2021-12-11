@@ -1,4 +1,4 @@
-//All credits for writeToFile, Sine and basically all the other types of oscillators
+//All credits for writeToFile, synth and basically all the other types of oscillators
 //go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
 //Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
 #include <iostream>
@@ -28,26 +28,27 @@ int main(int argc,char **argv){
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
     // double samplerate = 44100;
-  Sine sine(220, samplerate);
+  Synth synth(60, samplerate);
+  cout<< synth.getSample() <<endl;
     // while(true){
-    //   sine.calculate();
+    //   synth.calculate();
     // };
   
-#if WRITETOFILE 
-  WriteToFile fileWriter("output.csv", true);
-  for(int i = 0; i < 3000; i++) {
-    fileWriter.write(std::to_string(sine.getSample()) + "\n");
-    sine.tick();
-  }
-#else
+// #if WRITETOFILE 
+//   WriteToFile fileWriter("output.csv", true);
+//   for(int i = 0; i < 3000; i++) {
+//     fileWriter.write(std::to_string(synth.getSample()) + "\n");
+//     synth.nextSample();
+//   }
+// #else
   float amplitude = 0.15;
   //assign a function to the JackModule::onProces
-  jack.onProcess = [&sine, &amplitude](jack_default_audio_sample_t *inBuf,
+  jack.onProcess = [&synth, &amplitude](jack_default_audio_sample_t *inBuf,
     jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
 
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = sine.getSample() * amplitude;
-      sine.tick();
+      outBuf[i] = synth.getSample() * amplitude;
+      synth.nextSample();
     }
     amplitude = 0.5;
     return 0;
@@ -68,6 +69,5 @@ int main(int argc,char **argv){
         break;
     }
   }
-#endif
   return 0;
 }

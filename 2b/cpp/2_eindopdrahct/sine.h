@@ -8,12 +8,12 @@
 using namespace std;
 
 class Sine : public Oscillator{
-public:
-    Sine(double frequency, double samplerate);
-    ~Sine();
-        
-private:
-    void calculate();     
+    public:
+        Sine();
+        Sine(double frequency, double samplerate);
+        ~Sine();
+    private:
+        void calculate() override;
 };
 
 #endif
