@@ -8,12 +8,12 @@
 using namespace std;
 
 class Saw : public Oscillator{
-public:
-    Saw(float frequency, double samplerate);
-    ~Saw();
-
-protected:
-    void calculate();
+    public:
+        Saw();
+        Saw(float frequency, double samplerate);
+        ~Saw();
+    protected:
+        void calculate() override;
 };
 
 #endif

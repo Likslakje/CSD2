@@ -12,7 +12,7 @@ class Sine : public Oscillator{
         Sine();
         Sine(double frequency, double samplerate);
         ~Sine();
-    private:
+    protected:
         void calculate() override;
 };
 

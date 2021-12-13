@@ -5,6 +5,8 @@
 #include "square.h"
 using namespace std;
 
+Square::Square() : Square(0, 0){}
+
 Square::Square(float frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Square" <<endl;
 }
@@ -14,15 +16,10 @@ Square::~Square(){
 }
 
 void Square::calculate(){
-    phase += frequency / samplerate;
-    if(phase < 1){
-        if(phase >= 0.5){
-            sample = -1.0f;
-        }else{
-            sample = 1.0f;
-        }
-        sample = sample * amplitude;
+    if(phase >= 0.5){
+        sample = -1.0f;
     }else{
-        phase = 0;
+        sample = 1.0f;
     }
+    sample *= amplitude;
 }

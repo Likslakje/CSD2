@@ -13,7 +13,7 @@ using namespace std;
 class Synth{
     public:
         Synth(float midiNumber, double samplerate);
-        ~Synth();
+        virtual ~Synth();
         void setWaveformFreq(float midiNumber);
         void nextSample();
         double getSample();
@@ -23,10 +23,7 @@ class Synth{
         double sample;
         double midiToFreq(float midiNumber);
         virtual void typeSynthCalc() = 0;
-        Sine* sine = new Sine(0, 0);
-        // Saw* saw = new Saw(0, 0);
-        // Square* square = new Square(0, 0);
-        array<Oscillator*, 1> waveforms = {sine};
+        array<Oscillator*, 2> waveforms = {new Sine(0, 0), new Square(0, 0)};
 };
 
 #endif

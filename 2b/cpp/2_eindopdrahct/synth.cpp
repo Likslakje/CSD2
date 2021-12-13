@@ -14,6 +14,10 @@ Synth::Synth(float midiNumber, double samplerate) : midiNumber(midiNumber), samp
 
 Synth::~Synth(){
     cout<< "destructor Synth" <<endl;
+    //I've got no frikkin clu if this is "tha wäy"?
+    for (int i = 0; i < waveforms.size(); i++){
+        delete waveforms[i];
+    }
 }
 
 double Synth::midiToFreq(float midiNumber){
@@ -22,7 +26,6 @@ double Synth::midiToFreq(float midiNumber){
 
 void Synth::nextSample(){
     typeSynthCalc();
-    cout<< "Synth nextSmaple " << sample <<endl;
 }
 
 double Synth::getSample(){

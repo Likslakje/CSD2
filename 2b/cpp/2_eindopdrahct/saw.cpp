@@ -5,9 +5,10 @@
 #include "saw.h"
 using namespace std;
 
+Saw::Saw() : Saw(0, 0){}
+
 Saw::Saw(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Saw" <<endl;
-    cout<< frequency << samplerate <<endl;
 }
 
 Saw::~Saw(){
@@ -16,10 +17,6 @@ Saw::~Saw(){
 
 
 void Saw::calculate(){
-    phase += frequency / samplerate;
-    if(phase < 1){
-        sample = (phase * 2 -1) * amplitude;
-    }else{
-        phase = 0;
-    }
+    sample = (phase * 2 -1);
+    sample *= amplitude;
 }

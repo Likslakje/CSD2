@@ -8,12 +8,12 @@
 using namespace std;
 
 class Square : public Oscillator{
-public:
-    Square(float frequency, double samplerate);
-    ~Square();
-
-protected:
-    void calculate(); 
+    public:
+        Square();
+        Square(float frequency, double samplerate);
+        ~Square();
+    protected:
+        void calculate() override; 
 };
 
 #endif

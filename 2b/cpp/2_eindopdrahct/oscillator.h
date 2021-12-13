@@ -9,7 +9,7 @@ using namespace std;
 class Oscillator{
     public:
         Oscillator(double frequency, double samplerate);
-        ~Oscillator();
+        virtual ~Oscillator();
         //getters and setters
         void setFrequency(double frequency);
         double getFrequency();
