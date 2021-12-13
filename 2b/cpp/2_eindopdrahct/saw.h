@@ -10,7 +10,7 @@ using namespace std;
 class Saw : public Oscillator{
 public:
     Saw(float frequency, double samplerate);
-    ~Saw();        
+    ~Saw();
 
 protected:
     void calculate();

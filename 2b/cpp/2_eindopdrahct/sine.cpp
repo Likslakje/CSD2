@@ -18,6 +18,5 @@ Sine::~Sine(){
 void Sine::calculate(){
     sample = sin(M_PI * 2 * phase);
     sample *= amplitude;
-    cout<< "sine::cal " << sample <<endl;
 }
 

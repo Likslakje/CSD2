@@ -17,10 +17,12 @@ class Synth{
         void nextSample();
         double getSample();
     protected:
+        double samplerate;
         float midiNumber;
         double sample;
         Sine sine;
         double midiToFreq(float midiNumber);
+        virtual void typeSynthCalc() = 0;
 };
 
 #endif

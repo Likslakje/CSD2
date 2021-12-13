@@ -27,13 +27,11 @@ void Oscillator::setSamplerate(double samplerate){
 }
 
 double Oscillator::getSample(){
-    cout<< "Osc getsample " << sample <<endl;
     return sample;
 }
 
 void Oscillator::nextSample(){
     phase += frequency / samplerate;
-    cout<< "Osc nextSample " << phase <<endl;
     if(phase > 1.0) phase -= 1.0;
     calculate();
 }

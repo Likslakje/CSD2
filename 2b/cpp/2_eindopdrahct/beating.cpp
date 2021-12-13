@@ -13,6 +13,9 @@ Beating::~Beating(){
     cout<< "destructor Beating" <<endl;
 }
 
-void Beating::makeOscillator(){
-    Saw saw(getFrequency(), getSamplerate());
+void Beating::typeSynthCalc(){
+    // get the sample of 2 waveforms and add them?
+    //retrun that sample
+    sine.nextSample();
+    sample = sine.getSample();
 }

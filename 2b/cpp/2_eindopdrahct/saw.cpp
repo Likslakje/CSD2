@@ -22,5 +22,4 @@ void Saw::calculate(){
     }else{
         phase = 0;
     }
-     cout<< "phase: " << phase << "sample: " << sample <<endl;
 }

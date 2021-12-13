@@ -9,9 +9,6 @@ class Additive : public Synth{
     public:
         Additive(int midiNumber, double samplerate);
         ~Additive();
-        void makeOscillator();
-        //for jack
-        void getSample();
-        void getWaveformCalculate();
-        void synthCalculate();
+    protected:
+        void typeSynthCalc();
 };

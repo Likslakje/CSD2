@@ -10,7 +10,6 @@ Synth::Synth(float midiNumber, double samplerate) : midiNumber(midiNumber), samp
     cout<< "constructor Synth" << midiNumber <<endl;
     sine.setSamplerate(samplerate);
     setWaveformFreq(midiNumber);
-  
 }
 
 Synth::~Synth(){
@@ -22,8 +21,7 @@ double Synth::midiToFreq(float midiNumber){
 }
 
 void Synth::nextSample(){
-    sine.nextSample();
-    sample = sine.getSample();
+    typeSynthCalc();
     cout<< "Synth nextSmaple " << sample <<endl;
 }
 

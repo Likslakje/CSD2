@@ -28,7 +28,7 @@ int main(int argc,char **argv){
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
     // double samplerate = 44100;
-  Synth synth(60, samplerate);
+  Beating synth(60, samplerate);
   cout<< synth.getSample() <<endl;
     // while(true){
     //   synth.calculate();

@@ -9,5 +9,6 @@ class Beating : public Synth{
     public:
         Beating(int midiNumber, double samplerate);
         ~Beating();
-        void makeOscillator();
+    protected:
+        void typeSynthCalc();
 };
