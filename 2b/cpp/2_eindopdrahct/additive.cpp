@@ -16,6 +16,6 @@ Additive::~Additive(){
 void Additive::typeSynthCalc(){
     // get the sample of 2 waveforms and add them?
     //retrun that sample
-    sine.nextSample();
-    sample = sine.getSample();
+    waveforms[0]->nextSample();
+    sample = waveforms[0]->getSample();
 }

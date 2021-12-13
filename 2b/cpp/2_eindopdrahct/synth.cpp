@@ -8,7 +8,7 @@ using namespace std;
 
 Synth::Synth(float midiNumber, double samplerate) : midiNumber(midiNumber), sample(0){
     cout<< "constructor Synth" << midiNumber <<endl;
-    sine.setSamplerate(samplerate);
+    waveforms[0]->setSamplerate(samplerate);
     setWaveformFreq(midiNumber);
 }
 
@@ -31,5 +31,5 @@ double Synth::getSample(){
 
 void Synth::setWaveformFreq(float midiNumber){
     double frequency = midiToFreq(midiNumber);
-    sine.setFrequency(frequency);
+    waveforms[0]->setFrequency(frequency);
 }

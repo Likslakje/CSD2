@@ -4,6 +4,7 @@
 #ifndef _SYNTH_H_
 #define _SYNTH_H_
 #include <iostream>
+#include <array>
 #include "sine.h"
 #include "saw.h"
 #include "square.h"
@@ -20,9 +21,12 @@ class Synth{
         double samplerate;
         float midiNumber;
         double sample;
-        Sine sine;
         double midiToFreq(float midiNumber);
         virtual void typeSynthCalc() = 0;
+        Sine* sine = new Sine(0, 0);
+        // Saw* saw = new Saw(0, 0);
+        // Square* square = new Square(0, 0);
+        array<Oscillator*, 1> waveforms = {sine};
 };
 
 #endif
