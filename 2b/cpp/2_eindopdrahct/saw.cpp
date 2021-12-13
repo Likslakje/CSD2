@@ -15,8 +15,6 @@ Saw::~Saw(){
     cout<< "destructor Saw" <<endl;
 }
 
-
 void Saw::calculate(){
     sample = (phase * 2 -1);
-    sample *= amplitude;
 }

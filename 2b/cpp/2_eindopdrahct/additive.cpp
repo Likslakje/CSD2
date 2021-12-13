@@ -5,7 +5,7 @@
 #include "additive.h"
 using namespace std;
 
-Additive::Additive(int midiNumber, double samplerate) : Synth(midiNumber, samplerate){
+Additive::Additive(float midiNumber, double samplerate) : Synth(midiNumber, samplerate){
     cout<< "constructor Additive" <<endl;
 }
 

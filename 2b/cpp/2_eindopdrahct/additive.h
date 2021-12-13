@@ -7,8 +7,9 @@ using namespace std;
 
 class Additive : public Synth{
     public:
-        Additive(int midiNumber, double samplerate);
+        Additive(float midiNumber, double samplerate);
         ~Additive();
     protected:
         void typeSynthCalc();
+        void getTypeSynthSample();
 };

@@ -7,7 +7,7 @@ using namespace std;
 
 Square::Square() : Square(0, 0){}
 
-Square::Square(float frequency, double samplerate) : Oscillator(frequency, samplerate){
+Square::Square(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Square" <<endl;
 }
 
@@ -21,5 +21,4 @@ void Square::calculate(){
     }else{
         sample = 1.0f;
     }
-    sample *= amplitude;
 }

@@ -16,6 +16,8 @@ class Oscillator{
         double getSample();
         void setSamplerate(double samplerate);
         void nextSample();
+        void setAmp(double modulatedAmp);
+        double getAmp();
     protected:
         virtual void calculate() = 0;
         double frequency;

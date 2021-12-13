@@ -7,8 +7,9 @@ using namespace std;
 
 class Beating : public Synth{
     public:
-        Beating(int midiNumber, double samplerate);
+        Beating(float midiNumber, double samplerate);
         ~Beating();
     protected:
         void typeSynthCalc();
+        void getTypeSynthSample();
 };

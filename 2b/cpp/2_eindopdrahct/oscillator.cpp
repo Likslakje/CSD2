@@ -34,4 +34,13 @@ void Oscillator::nextSample(){
     phase += frequency / samplerate;
     if(phase > 1.0) phase -= 1.0;
     calculate();
+    sample *= amplitude;
+}
+
+void Oscillator::setAmp(double modulatedAmp){
+    amplitude = modulatedAmp;
+}
+
+double Oscillator::getAmp(){
+    return amplitude;
 }

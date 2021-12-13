@@ -5,7 +5,7 @@
 #include "beating.h"
 using namespace std;
 
-Beating::Beating(int midiNumber, double samplerate) : Synth(midiNumber, samplerate){
+Beating::Beating(float midiNumber, double samplerate) : Synth(midiNumber, samplerate){
     cout<< "constructor Beating" <<endl;
 }
 

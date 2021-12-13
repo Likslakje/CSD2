@@ -10,7 +10,7 @@ using namespace std;
 class Square : public Oscillator{
     public:
         Square();
-        Square(float frequency, double samplerate);
+        Square(double frequency, double samplerate);
         ~Square();
     protected:
         void calculate() override; 

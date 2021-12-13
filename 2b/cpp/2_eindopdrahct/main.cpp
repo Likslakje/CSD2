@@ -6,13 +6,14 @@
 #include <limits>
 #include "jack_module.h"
 #include "writeToFile.h"
-#include "math.h"
+// #include "math.h"
 // #include "sine.h"
 // #include "saw.h"
 // #include "square.h"
 // #include "synth.h"
 #include "additive.h"
 #include "beating.h"
+#include "lfo.h"
 using namespace std;
 
 #define WRITETOFILE 1
@@ -28,7 +29,7 @@ int main(int argc,char **argv){
   jack.init(argv[0]);
   double samplerate = jack.getSamplerate();
     // double samplerate = 44100;
-  Beating synth(60, samplerate);
+  Lfo synth(45, samplerate);
   cout<< synth.getSample() <<endl;
     // while(true){
     //   synth.calculate();

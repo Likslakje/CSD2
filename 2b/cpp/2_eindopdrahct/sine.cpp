@@ -3,6 +3,7 @@
 //Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
 #include <iostream>
 #include "sine.h"
+#include "math.h"
 using namespace std;
 
 Sine::Sine() : Sine(0, 0){}
@@ -17,6 +18,5 @@ Sine::~Sine(){
 
 void Sine::calculate(){
     sample = sin(M_PI * 2 * phase);
-    sample *= amplitude;
 }
 
