@@ -6,8 +6,6 @@
 #include "math.h"
 using namespace std;
 
-Sine::Sine() : Sine(0, 0){}
-
 Sine::Sine(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Sine" <<endl;
 }

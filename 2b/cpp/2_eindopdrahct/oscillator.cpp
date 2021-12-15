@@ -22,6 +22,14 @@ double Oscillator::getFrequency(){
     return frequency;
 }
 
+void Oscillator::setAmplitude(double newAmplitude){
+    this->amplitude = newAmplitude;
+}
+
+double Oscillator::getAmplitude(){
+    return amplitude;
+}
+
 void Oscillator::setSamplerate(double samplerate){
     this->samplerate = samplerate;
 }
@@ -35,12 +43,4 @@ void Oscillator::nextSample(){
     if(phase > 1.0) phase -= 1.0;
     calculate();
     sample *= amplitude;
-}
-
-void Oscillator::setAmp(double modulatedAmp){
-    amplitude = modulatedAmp;
-}
-
-double Oscillator::getAmp(){
-    return amplitude;
 }

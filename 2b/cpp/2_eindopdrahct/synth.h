@@ -15,18 +15,17 @@ class Synth{
         Synth(float midiNumber, double samplerate);
         virtual ~Synth();
         void setWaveformFreq(float midiNumber);
-        void nextSample();
-        double getSample();
+        void typeSynthNextSample();
+        double getTypeSynthSample();
     protected:
         double samplerate;
         float midiNumber;
         double sample;
         double synthTypeSample;
-        array<Oscillator*, 3> waveforms = {new Sine(0, 0), new Saw(0, 0), new Square(0, 0)};
+        int numWaveforms = 3;
+        Oscillator* waveforms[3] = {new Sine(0, 0), new Saw(0, 0), new Square(0, 0)};
         double midiToFreq(float midiNumber);
         virtual void typeSynthCalc() = 0;
-        virtual double getAmp() = 0;
-        virtual void setAmp() = 0;
 };
 
 #endif

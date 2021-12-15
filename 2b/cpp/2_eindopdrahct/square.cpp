@@ -5,10 +5,9 @@
 #include "square.h"
 using namespace std;
 
-Square::Square() : Square(0, 0){}
-
 Square::Square(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Square" <<endl;
+   
 }
 
 Square::~Square(){

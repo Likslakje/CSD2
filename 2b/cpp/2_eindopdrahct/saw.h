@@ -9,7 +9,6 @@ using namespace std;
 
 class Saw : public Oscillator{
     public:
-        Saw();
         Saw(double frequency, double samplerate);
         ~Saw();
     protected:

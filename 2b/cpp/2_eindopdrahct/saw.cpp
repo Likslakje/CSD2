@@ -5,8 +5,6 @@
 #include "saw.h"
 using namespace std;
 
-Saw::Saw() : Saw(0, 0){}
-
 Saw::Saw(double frequency, double samplerate) : Oscillator(frequency, samplerate){
     cout<< "constructor Saw" <<endl;
 }
