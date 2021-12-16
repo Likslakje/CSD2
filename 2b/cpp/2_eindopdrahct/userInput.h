@@ -10,16 +10,19 @@ class UserInput{
         bool terminate = false;
         void commands();
         void make();
-        bool validateSelection(string selection, string selectionOptions[],
+        static string retrieveUserSelection(string subject, string selectionOptions[], 
             int numOptions);
-        string retrieveUserInput(string subject, string selectionOptions[], 
-            int numOptions);
-        string retrieveUserSelection(string subject, string selectionOptions[], 
-            int numOptions);
-        float retrieveValueInRange(float min, float max);
+        static int retrieveSelectionIndex(string subject, 
+            string selectionOptions[], int numOptions);
+        static float retrieveValueInRange(float min, float max);
         float getCarrier();
         float getModulator();
     protected:
+
+        static bool validateSelection(string selection, string selectionOptions[],
+            int numOptions);
+        static string retrieveUserInput(string subject, string selectionOptions[], 
+            int numOptions);
         int numCommands = 2;
         string commandOptions[2] = {"make", "exit"};
         int numSynthTypes = 2;

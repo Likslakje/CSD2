@@ -19,30 +19,31 @@ using namespace std;
 
 int main(int argc,char **argv){
   UserInput userInput;
-  int numtypeSynths = 2;
-  Synth* typeSynths[2] = {new AM(0, 0), new FM(0, 0)};
-  // JackModule jack;
-  // jack.init(argv[0]);
-  // double samplerate = jack.getSamplerate();
-  double samplerate = 44100;
-  while(!userInput.terminate){
-    userInput.commands();
-  }
-
-  for(int i = 0; i < numtypeSynths; i++){
-    delete typeSynths[i];
-    typeSynths[i] = nullptr;
-  }
-
-  // Lfo synth(60, samplerate);
-  // for(int i = 0; i < 3000; i++) {
-  //   synth.typeSynthNextSample();
+  // int numtypeSynths = 2;
+  // Synth* typeSynths[2] = {new AM(0, 0), new FM(0, 0)};
+  // // JackModule jack;
+  // // jack.init(argv[0]);
+  // // double samplerate = jack.getSamplerate();
+  // double samplerate = 44100;
+  // while(!userInput.terminate){
+  //   userInput.commands();
   // }
 
-  // Square synth(45, samplerate);
-  // for(int i = 0; i < 3000; i++) {
-  //   synth.nextSample();
-  // }
+  // create a string array with the waveform type options
+  string* waveformOptions = new string[AM::Waveform::Size];
+  for(int i = 0; i < AM::Waveform::Size; i++) {
+     waveformOptions[i] = AM::waveformTypeToString((AM::Waveform)i);
+  }
+
+  // retrieve the user selection in form of an enum
+  AM::Waveform waveType = (AM::Waveform)
+    UserInput::retrieveSelectionIndex("hoi", waveformOptions, AM::Waveform::Size);
+
+  AM synth;
+
+  // use waveform of user's choice
+  synth.setWaveform(waveType);
+
   
 
   #if WRITE_TO_FILE

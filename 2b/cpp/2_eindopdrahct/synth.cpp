@@ -7,25 +7,67 @@
 #include "math.h"
 using namespace std;
 
+Synth::Synth(){
+    cout<< "constructor Synth" << midiNumber <<endl;
+}
+
 Synth::Synth(float midiNumber, double samplerate) : midiNumber(midiNumber), sample(0){
     cout<< "constructor Synth" << midiNumber <<endl;
-    waveforms[0]->setSamplerate(samplerate);
-    waveforms[2]->setSamplerate(samplerate);
-    setWaveformFreq(midiNumber);
+    // waveforms[0]->setSamplerate(samplerate);
+    // waveforms[2]->setSamplerate(samplerate);
+    // setWaveformFreq(midiNumber);
 }
 
 Synth::~Synth(){
     cout<< "destructor Synth" <<endl;
-    //I've got no frikkin clu if this is "tha wäy"?
-    for (int i = 0; i < numWaveforms; i++){
-        //delete frees the memory address
-        delete waveforms[i];
-        //nulptr is an address which is set to 0
-        waveforms[i] = nullptr;
-        /*possible question: How do memory addresses work?
-         *How are they build up?
-        */
-    }
+    // //I've got no frikkin clu if this is "tha wäy"?
+    // for (int i = 0; i < numWaveforms; i++){
+    //     //delete frees the memory address
+    //     delete waveforms[i];
+    //     //nulptr is an address which is set to 0
+    //     waveforms[i] = nullptr;
+    //     /*possible question: How do memory addresses work?
+    //      *How are they build up?
+    //     */
+    // }
+}
+
+void Synth::setWaveform(Waveform type)
+{
+  cout<< "\n• Synth::setWaveform" <<endl;
+
+  cout<< "\n - using " << waveformTypeToString(type) << " as waveform"
+    <<endl;
+  switch (type) {
+  case Waveform::Sine:
+    // set sine
+    cout << "\n--- selecting sine";
+    break;
+  case Waveform::Saw:
+    // set saw
+    cout << "\n--- selecting saw";
+    break;
+  case Waveform::Square:
+    // set square
+    cout << "\n--- selecting square";
+    break;
+  default:
+    break;
+  }
+}
+
+string Synth::waveformTypeToString(Waveform type)
+{
+  switch(type) {
+    case Waveform::Sine:
+      return "sine";
+    case Waveform::Saw:
+      return "saw";
+    case Waveform::Square:
+      return "square";
+    default:
+      return "Invalid waveform";
+  }
 }
 
 double Synth::midiToFreq(float midiNumber){
@@ -42,6 +84,6 @@ double Synth::getTypeSynthSample(){
 
 void Synth::setWaveformFreq(float midiNumber){
     double frequency = midiToFreq(midiNumber);
-    waveforms[0]->setFrequency(frequency);
-    waveforms[2]->setFrequency(frequency/50);
+    // waveforms[0]->setFrequency(frequency);
+    // waveforms[2]->setFrequency(frequency/50);
 }

@@ -90,6 +90,21 @@ string UserInput::retrieveUserSelection(string subject, string selectionOptions[
     return userSelection;
 }
 
+int UserInput::retrieveSelectionIndex(string subject, string selectionOptions[], int numOptions)
+{
+  string userSelection = retrieveUserSelection(subject, selectionOptions, numOptions);
+  // find and return the index of userSelection;
+  for(int i = 0; i < numOptions; i++) {
+    if(userSelection == selectionOptions[i]) return i;
+  }
+  // NOTE: this code should never be reached --> throw error
+  cout << "ERROR • UIUtilities::retrieveUserSelection - "
+    << "THIS SHOULD NEVER HAPPEN" << endl;
+  throw "ERROR • UIUtilities::retrieveUserSelection";
+  return -1;
+}
+
+
 
 float UserInput::retrieveValueInRange(float min, float max){
     string input;
