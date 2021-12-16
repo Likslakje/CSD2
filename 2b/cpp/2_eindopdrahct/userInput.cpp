@@ -31,15 +31,15 @@ void UserInput::make(){
     numWaveFormOptions);
   cout << "You selected: " << carrierWaveSelection << endl;
 
-  float carrierValue = retrieveValueInRange(0, 128);
-  cout << "Carrier value is set to: " << carrierValue << endl;
+  carrierFrequency = retrieveValueInRange(0, 128);
+  cout << "Carrier value is set to: " << carrierFrequency << endl;
 
     string modulatorWaveSelection = retrieveUserSelection("modulator oscillator", waveFormOptions,
     numWaveFormOptions);
   cout << "You selected: " << modulatorWaveSelection << endl;
 
-  float modulatorValue = retrieveValueInRange(0, 128);
-  cout << "Carrier value is set to: " << modulatorValue << endl;
+  modulatorFrequency = retrieveValueInRange(0, 128);
+  cout << "Modulator value is set to: " << modulatorFrequency << endl;
 
 }
 
@@ -118,4 +118,12 @@ float UserInput::retrieveValueInRange(float min, float max){
         }
     }
     return value;
+}
+
+float UserInput::getCarrier(){
+    return carrierFrequency;
+}
+
+float UserInput::getModulator(){
+    return modulatorFrequency;
 }

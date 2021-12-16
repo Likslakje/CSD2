@@ -18,14 +18,13 @@ using namespace std;
 #define WRITE_TO_FILE 0
 
 int main(int argc,char **argv){
+  UserInput userInput;
   int numtypeSynths = 2;
   Synth* typeSynths[2] = {new AM(0, 0), new FM(0, 0)};
   // JackModule jack;
   // jack.init(argv[0]);
   // double samplerate = jack.getSamplerate();
   double samplerate = 44100;
-
-  UserInput userInput;
   while(!userInput.terminate){
     userInput.commands();
   }

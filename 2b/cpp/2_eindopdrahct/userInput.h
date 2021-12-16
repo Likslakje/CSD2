@@ -7,7 +7,7 @@ class UserInput{
     public:
         UserInput();
         ~UserInput();
-                bool terminate = false;
+        bool terminate = false;
         void commands();
         void make();
         bool validateSelection(string selection, string selectionOptions[],
@@ -17,6 +17,8 @@ class UserInput{
         string retrieveUserSelection(string subject, string selectionOptions[], 
             int numOptions);
         float retrieveValueInRange(float min, float max);
+        float getCarrier();
+        float getModulator();
     protected:
         int numCommands = 2;
         string commandOptions[2] = {"make", "exit"};
@@ -25,8 +27,11 @@ class UserInput{
         int numWaveFormOptions = 4;
         string waveFormOptions[4] = {"sine", "saw", "square", "triangle"};
 
-
-
+        string synthTypeSelection;
+        string carrierWaveSelection;
+        string modulatorWaveSelection;
+        float carrierFrequency;
+        float modulatorFrequency;
 };
 
 #endif
