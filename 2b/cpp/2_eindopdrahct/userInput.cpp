@@ -12,7 +12,14 @@ UserInput::~UserInput(){
 }
 
 void UserInput::commands(){
-    make();
+    string commandSelection = retrieveUserSelection("command", commandOptions, 
+        numCommands);
+    if(commandSelection == "make"){
+        make();
+    }
+    if(commandSelection == "exit"){
+        terminate = true;
+    }
 }
 
 void UserInput::make(){

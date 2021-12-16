@@ -25,6 +25,7 @@ int main(int argc,char **argv){
   double samplerate = 44100;
 
   UserInput userInput;
+  while(!userInput.terminate)
   userInput.commands();
 
   // Lfo synth(60, samplerate);

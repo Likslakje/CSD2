@@ -7,6 +7,7 @@ class UserInput{
     public:
         UserInput();
         ~UserInput();
+                bool terminate = false;
         void commands();
         void make();
         bool validateSelection(string selection, string selectionOptions[],
@@ -17,7 +18,8 @@ class UserInput{
             int numOptions);
         float retrieveValueInRange(float min, float max);
     protected:
-        bool terminate = false;
+        int numCommands = 2;
+        string commandOptions[2] = {"make", "exit"};
         int numSynthTypes = 2;
         string synthTypesOptions[2] = {"AM", "FM"};
         int numWaveFormOptions = 4;
