@@ -14,17 +14,20 @@
 #include "additive.h"
 #include "beating.h"
 #include "lfo.h"
+#include "userInput.h"
 using namespace std;
-#define WRITE_TO_FILE 1
+#define WRITE_TO_FILE 0
 
 int main(int argc,char **argv){
-  // create a JackModule instance
-  JackModule jack;
-  // init the jack, use program name as JACK client name
-  jack.init(argv[0]);
-  double samplerate = jack.getSamplerate();
-  // double samplerate = 44100;
-  Lfo synth(60, samplerate);
+  // JackModule jack;
+  // jack.init(argv[0]);
+  // double samplerate = jack.getSamplerate();
+  double samplerate = 44100;
+
+  UserInput userInput;
+  userInput.commands();
+
+  // Lfo synth(60, samplerate);
   // for(int i = 0; i < 3000; i++) {
   //   synth.typeSynthNextSample();
   // }
@@ -43,15 +46,15 @@ int main(int argc,char **argv){
     //   synth.typeSynthNextSample();
     // }
   #else
-    Saw sine(440, samplerate);
-    WriteToFile fileWriter("output.csv", true);
-    for(int i = 0; i < 3000; i++) {
-      fileWriter.write(std::to_string(sine.getSample()) + "\n");
-      sine.nextSample();
-    }
+    // Saw sine(440, samplerate);
+    // WriteToFile fileWriter("output.csv", true);
+    // for(int i = 0; i < 3000; i++) {
+    //   fileWriter.write(std::to_string(sine.getSample()) + "\n");
+    //   sine.nextSample();
+    // }
 
   #endif
- #if 1
+ #if 0
   float amplitude = 0.15;
   //assign a function to the JackModule::onProces
   jack.onProcess = [&synth, &amplitude](jack_default_audio_sample_t *inBuf,
