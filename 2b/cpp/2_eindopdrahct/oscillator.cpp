@@ -5,6 +5,10 @@
 #include "oscillator.h"
 using namespace std;
 
+Oscillator::Oscillator(){
+
+}
+
 Oscillator::Oscillator(double frequency, double samplerate) : frequency(frequency), samplerate(samplerate),
     amplitude(1.0), phase(0.0), sample(0){
     cout<< "contructor Oscillator" <<endl;
@@ -12,6 +16,49 @@ Oscillator::Oscillator(double frequency, double samplerate) : frequency(frequenc
 
 Oscillator::~Oscillator(){
     cout<< "destructor Oscillator" <<endl;
+}
+
+void Oscillator::setWaveform(Waveform type)
+{
+  cout<< "\n• Synth::setWaveform" <<endl;
+
+  cout<< "\n - using " << waveformTypeToString(type) << " as waveform"
+    <<endl;
+  switch (type) {
+  case Waveform::Sine:
+    // set sine
+    cout << "\n--- selecting sine";
+    break;
+  case Waveform::Saw:
+    // set saw
+    cout << "\n--- selecting saw";
+    break;
+  case Waveform::Square:
+    // set square
+    cout << "\n--- selecting square";
+    break;
+  default:
+    break;
+  }
+}
+
+
+string Oscillator::waveformTypeToString(Waveform type)
+{
+  switch(type) {
+    case Waveform::Sine:
+      return "sine";
+    case Waveform::Saw:
+      return "saw";
+    case Waveform::Square:
+      return "square";
+    default:
+      return "Invalid waveform";
+  }
+}
+
+void Oscillator::calculate(){
+    
 }
 
 void Oscillator::setFrequency(double frequency){

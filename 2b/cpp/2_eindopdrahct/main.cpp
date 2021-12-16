@@ -11,6 +11,7 @@
 #include "saw.h"
 #include "square.h"
 #include "synth.h"
+#include "oscillator.h"
 #include "AM.h"
 #include "FM.h"
 #include "userInput.h"
@@ -29,7 +30,7 @@ int main(int argc,char **argv){
   //   userInput.commands();
   // }
 
-  // create a string array with the waveform type options
+  // create a string array with the synth type options
   string* synthOptions = new string[Synth::TypeSynth::Size];
   for(int i = 0; i < Synth::TypeSynth::Size; i++) {
      synthOptions[i] = Synth::synthTypeToString((Synth::TypeSynth)i);
@@ -41,8 +42,20 @@ int main(int argc,char **argv){
 
   Synth synth;
 
+  // create a string array with the waveform type options
+  string* waveformOptions = new string[Oscillator::Waveform::Size];
+  for(int i = 0; i < Oscillator::Waveform::Size; i++) {
+     waveformOptions[i] = Oscillator::waveformTypeToString((Oscillator::Waveform)i);
+  }
+
+  // retrieve the user selection in form of an enum
+  Oscillator::Waveform waveType = (Oscillator::Waveform)
+    UserInput::retrieveSelectionIndex("waveform", waveformOptions, Oscillator::Waveform::Size);
+
+  Oscillator osc;
+
   // use waveform of user's choice
-  synth.setTypeSynth(synthType);
+  osc.setWaveform(waveType);
 
   
 

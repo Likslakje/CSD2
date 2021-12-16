@@ -8,8 +8,20 @@ using namespace std;
 
 class Oscillator{
     public:
+        Oscillator();
         Oscillator(double frequency, double samplerate);
         virtual ~Oscillator();
+        enum Waveform {
+            Sine = 0, // ensure enum starts at 0
+            Saw,
+            Square,
+            Size // 3
+        };
+        // setters and getters
+        void setWaveform(Waveform type);
+
+        // static method because this method does not depend on objects
+        static string waveformTypeToString(Waveform type);
         //getters and setters
         void setFrequency(double frequency);
         double getFrequency();
@@ -19,7 +31,7 @@ class Oscillator{
         void setSamplerate(double samplerate);
         void nextSample();
     protected:
-        virtual void calculate() = 0;
+        virtual void calculate();
         double frequency;
         double samplerate;
         double amplitude;
