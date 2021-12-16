@@ -16,19 +16,18 @@ class Synth{
         Synth(float midiNumber, double samplerate);
         virtual ~Synth();
         // NOTE: needs to be same order as the waveFormOptions string array
-        enum Waveform {
-            Sine = 0, // ensure enum starts at 0
-            Saw,
-            Square,
-            Size // 3
+        enum TypeSynth {
+            AM = 0, // ensure enum starts at 0
+            FM,
+            Size // 2
         };
         // setters and getters
-        void setWaveform(Waveform type);
+        void setTypeSynth(TypeSynth type);
         void setWaveformFreq(float midiNumber);
         void typeSynthNextSample();
         double getTypeSynthSample();
         // static method because this method does not depend on objects
-        static string waveformTypeToString(Waveform type);
+        static string synthTypeToString(TypeSynth type);
     protected:
         double samplerate;
         float midiNumber;
@@ -37,7 +36,7 @@ class Synth{
         int numWaveforms = 3;
         // Oscillator* waveforms[3] = {new Sine(0, 0), new Saw(0, 0), new Square(0, 0)};
         double midiToFreq(float midiNumber);
-        virtual void typeSynthCalc() = 0;
+        virtual void typeSynthCalc();
 };
 
 #endif

@@ -30,19 +30,19 @@ int main(int argc,char **argv){
   // }
 
   // create a string array with the waveform type options
-  string* waveformOptions = new string[AM::Waveform::Size];
-  for(int i = 0; i < AM::Waveform::Size; i++) {
-     waveformOptions[i] = AM::waveformTypeToString((AM::Waveform)i);
+  string* synthOptions = new string[Synth::TypeSynth::Size];
+  for(int i = 0; i < Synth::TypeSynth::Size; i++) {
+     synthOptions[i] = Synth::synthTypeToString((Synth::TypeSynth)i);
   }
 
   // retrieve the user selection in form of an enum
-  AM::Waveform waveType = (AM::Waveform)
-    UserInput::retrieveSelectionIndex("hoi", waveformOptions, AM::Waveform::Size);
+  Synth::TypeSynth synthType = (Synth::TypeSynth)
+    UserInput::retrieveSelectionIndex("synth", synthOptions, Synth::TypeSynth::Size);
 
-  AM synth;
+  Synth synth;
 
   // use waveform of user's choice
-  synth.setWaveform(waveType);
+  synth.setTypeSynth(synthType);
 
   
 

@@ -32,47 +32,47 @@ Synth::~Synth(){
     // }
 }
 
-void Synth::setWaveform(Waveform type)
+void Synth::setTypeSynth(TypeSynth type)
 {
   cout<< "\n• Synth::setWaveform" <<endl;
 
-  cout<< "\n - using " << waveformTypeToString(type) << " as waveform"
+  cout<< "\n - using " << synthTypeToString(type) << " as synth"
     <<endl;
   switch (type) {
-  case Waveform::Sine:
+  case TypeSynth::AM:
     // set sine
-    cout << "\n--- selecting sine";
+    cout << "\n--- selecting am";
     break;
-  case Waveform::Saw:
+  case TypeSynth::FM:
     // set saw
-    cout << "\n--- selecting saw";
-    break;
-  case Waveform::Square:
-    // set square
-    cout << "\n--- selecting square";
+    cout << "\n--- selecting fm";
     break;
   default:
     break;
   }
 }
 
-string Synth::waveformTypeToString(Waveform type)
+string Synth::synthTypeToString(TypeSynth type)
 {
   switch(type) {
-    case Waveform::Sine:
-      return "sine";
-    case Waveform::Saw:
-      return "saw";
-    case Waveform::Square:
-      return "square";
+    case TypeSynth::AM:
+      return "am";
+    case TypeSynth::FM:
+      return "fm";
     default:
-      return "Invalid waveform";
+      return "Invalid synth type";
   }
 }
 
 double Synth::midiToFreq(float midiNumber){
     //Just a midi to freq formula (we need math.h)
     return 440 * pow(2.0, (midiNumber - 69.0) / 12.0);
+}
+
+void Synth::typeSynthCalc(){
+    //could't be pure virtual void because the Synth base class is
+    //called by th euserIput in main -> Synth synth
+
 }
 void Synth::typeSynthNextSample(){
     typeSynthCalc();
