@@ -32,37 +32,7 @@ Synth::~Synth(){
     // }
 }
 
-void Synth::setTypeSynth(TypeSynth type)
-{
-  cout<< "\n• Synth::setWaveform" <<endl;
 
-  cout<< "\n - using " << synthTypeToString(type) << " as synth"
-    <<endl;
-  switch (type) {
-  case TypeSynth::AM:
-    // set sine
-    cout << "\n--- selecting am";
-    break;
-  case TypeSynth::FM:
-    // set saw
-    cout << "\n--- selecting fm";
-    break;
-  default:
-    break;
-  }
-}
-
-string Synth::synthTypeToString(TypeSynth type)
-{
-  switch(type) {
-    case TypeSynth::AM:
-      return "am";
-    case TypeSynth::FM:
-      return "fm";
-    default:
-      return "Invalid synth type";
-  }
-}
 
 double Synth::midiToFreq(float midiNumber){
     //Just a midi to freq formula (we need math.h)

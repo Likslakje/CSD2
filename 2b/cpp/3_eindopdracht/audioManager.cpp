@@ -57,10 +57,13 @@ bool AudioManager::changeSynth(SynthType synthType)
   Synth::Waveform waveformType = (Synth::Waveform)
     userInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
 
+  double carFreq = userInput::retrieveValueInRange(20, 20000);
+  double modFreq = userInput::retrieveValueInRange(20, 20000);
+
   const double samplerate = jack->getSamplerate();
   // set freq
-  double carFreq = 400;
-  double modFreq = 440;
+  // double carFreq = 400;
+  // double modFreq = 440;
   switch(synthType) {
     case AMSynthType:
       synth = new AMSynth(samplerate, waveformType, carFreq, modFreq);

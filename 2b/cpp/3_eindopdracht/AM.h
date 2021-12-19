@@ -12,7 +12,8 @@ public:
 
   enum OscType {
     Modulator,
-    Carrier
+    Carrier,
+    Size
   };
   void calculate() override;
   // setters and getters
@@ -22,7 +23,8 @@ public:
   void setWaveform(Waveform type, OscType oscType);
   static std::string oscTypeToString(OscType type);
 #else
-  void setWaveform(Waveform type);
+  void setWaveform(Waveform oscType, double carFreq, 
+    double modFreq, double samplerate);
 #endif
 
 protected:
