@@ -19,7 +19,8 @@ public:
 
   // setters and getters
   bool changeSynth();
-
+  bool setWaveform();
+  bool setFrequency();
   void assignAudioCallback();
   void end();
   // static method because this method does not depend on objects

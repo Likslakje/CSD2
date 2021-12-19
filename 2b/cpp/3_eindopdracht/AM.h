@@ -24,10 +24,12 @@ public:
   static std::string oscTypeToString(OscType type);
 #else
   void setWaveform(Waveform oscType, double carFreq, 
-    double modFreq, double samplerate);
+    double modFreq, double);
 #endif
 
 protected:
-  Oscillator* carrierOsc;
-  Oscillator* modulatorOsc;
+  int numberOsc = 2;
+  // Oscillator* carrierOsc;
+  // Oscillator* modulatorOsc;
+  Oscillator* oscillators[2];
 };
