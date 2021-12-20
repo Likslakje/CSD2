@@ -18,7 +18,6 @@ public:
   };
 
   // setters and getters
-  int getNumFrequencies();
   bool changeSynth();
   void makeSynth(double samplerate);
   void setWaveform(double samplerate);
@@ -30,8 +29,8 @@ public:
 
 protected:
   int waveformIndex = 0;
-  int numFrequencies = 2;
-  Oscillator* waveformType[2];
+  int numWavefroms = 2;
+  Oscillator* waveformType[30];
   double frequencies[2]; //30 is max because THX sound
   Synth* synth;
   JackModule* jack;

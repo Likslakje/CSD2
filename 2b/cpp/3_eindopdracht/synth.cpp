@@ -1,6 +1,6 @@
 #include "synth.h"
 
-Synth::Synth(double samplerate) : sample(0), samplerate(samplerate)
+Synth::Synth(double samplerate) : sample(0.0), samplerate(samplerate)
 {
   std::cout << "\n• Synth::Synth" << std::endl;
 }
@@ -28,6 +28,8 @@ std::string Synth::waveformTypeToString(Waveform type)
       return "saw";
     case Waveform::SquareType:
       return "square";
+    case Waveform::TriangleType:
+      return "triangle";
     default:
       return "Invalid waveform";
   }

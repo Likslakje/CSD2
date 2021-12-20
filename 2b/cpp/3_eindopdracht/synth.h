@@ -4,6 +4,7 @@
 #include "sine.h"
 #include "saw.h"
 #include "square.h"
+#include "triangle.h"
 
 class Synth
 {
@@ -15,6 +16,7 @@ public:
     SineType = 0, // ensure enum starts at 0
     SawType,
     SquareType,
+    TriangleType,
     Size // 3
   };
   // setters and getters

@@ -22,10 +22,6 @@ AudioManager::~AudioManager()
   deleteSynth();
 }
 
-int AudioManager::getNumFrequencies(){
-  return numFrequencies;
-}
-
 bool AudioManager::changeSynth()
 {
   // create a string array with the synth type options
@@ -105,6 +101,9 @@ void AudioManager::setWaveform(double samplerate){
     case Synth::SquareType:
       waveformType[waveformIndex] = new Square(frequencies[waveformIndex], samplerate);
     break;
+    case Synth::TriangleType:
+      waveformType[waveformIndex] = new Triangle(frequencies[waveformIndex], samplerate);
+    break;
   default:
     /* code */
     break;
@@ -118,7 +117,7 @@ void AudioManager::setFrequency(){
 void AudioManager::makeSynth(double samplerate){
   // this function excits because I didnt want to put a forloop inside the changeSynth()
   // during the switch process
-  for(int i = 0; i < numFrequencies; i++){
+  for(int i = 0; i < numWavefroms; i++){
     setWaveform(samplerate);
     waveformIndex++;
   }
@@ -170,7 +169,7 @@ void AudioManager::deleteSynth()
   if(synth != nullptr) {
     // delete all the waveforms used by a synth
     // delete current synth
-    for(int i = 0; i < numFrequencies; i++){
+    for(int i = 0; i < numWavefroms; i++){
       delete waveformType[i];
       waveformType[i] = nullptr;
     }

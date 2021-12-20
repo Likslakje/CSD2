@@ -22,16 +22,8 @@ void Oscillator::setFrequency(double frequency){
     this->frequency = frequency;
 }
 
-double Oscillator::getFrequency(){
-    return frequency;
-}
-
 void Oscillator::setAmplitude(double newAmplitude){
     this->amplitude = newAmplitude;
-}
-
-double Oscillator::getAmplitude(){
-    return amplitude;
 }
 
 void Oscillator::setSamplerate(double samplerate){
