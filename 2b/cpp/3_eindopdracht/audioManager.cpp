@@ -119,6 +119,7 @@ void AudioManager::makeSynth(double samplerate){
   // during the switch process
   for(int i = 0; i < numFrequencies; i++){
     setWaveform(samplerate);
+    waveformIndex++;
   }
 }
 
