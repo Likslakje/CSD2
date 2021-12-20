@@ -7,13 +7,17 @@
 class FMSynth : public Synth
 {
 public:
-  FMSynth(double samplerate, Waveform oscType, 
-  double carFreq, double modFreq);
+  FMSynth(Oscillator* waveformType[], 
+    double frequencies[], double samplerate);
   ~FMSynth();
-
+  void setWaveform(Waveform oscType, double frequencies[], 
+    double samplerate);
   void calculate() override;
 
 protected:
-  Oscillator* carrierOsc;
-  Oscillator* modulatorOsc;
+  int numberOsc = 2;
+  int oscIndex = 0;
+  // double pointer cuz the datatype = Oscillator pointer
+  // and AMWaveforms points at waveformType array
+  Oscillator** FMWaveforms;
 };

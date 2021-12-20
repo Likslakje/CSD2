@@ -18,18 +18,25 @@ public:
   };
 
   // setters and getters
+  int getNumFrequencies();
   bool changeSynth();
-  bool setWaveform();
-  bool setFrequency();
+  void makeSynth(double samplerate);
+  void setWaveform(double samplerate);
+  void setFrequency();
   void assignAudioCallback();
   void end();
   // static method because this method does not depend on objects
   static std::string synthTypeToString(SynthType type);
 
 protected:
+  int waveformIndex = 0;
+  int numFrequencies = 2;
+  Oscillator* waveformType[2];
+  double frequencies[2]; //30 is max because THX sound
   Synth* synth;
   JackModule* jack;
 
   bool changeSynth(SynthType synthType);
+  void deleteWaveForm();
   void deleteSynth();
 };

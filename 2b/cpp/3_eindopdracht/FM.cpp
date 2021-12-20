@@ -1,43 +1,46 @@
 #include "FM.h"
 
-FMSynth::FMSynth(double samplerate, Waveform oscType, 
-    double carFreq, double modFreq) : Synth(samplerate)
+FMSynth::FMSynth(Oscillator* waveformType[], 
+    double frequencies[], double samplerate) : Synth(samplerate)
 {
   // using baseOsc and modulatorOsc instead of creating
   // oscillators dynamically in the constructor
   // for the sake of the example
   std::cout << "• FMSynth constructor" << std::endl;
   synthName = "FMSynth";
-
-  switch (oscType)
-  {
-    case SineType:
-      carrierOsc = new Sine(carFreq, samplerate);
-      modulatorOsc = new Sine(modFreq, samplerate);
-    break;
-    case SawType:
-      carrierOsc = new Saw(carFreq, samplerate);
-      modulatorOsc = new Saw(modFreq, samplerate);
-    break;
-    case SquareType:
-      carrierOsc = new Square(carFreq, samplerate);
-      modulatorOsc = new Square(modFreq, samplerate);
-    break;
-  default:
-    /* code */
-    break;
-  }
-
 }
+
 FMSynth::~FMSynth()
 {
   std::cout << "• FMSynth destructor" << std::endl;
 }
 
+// void FMSynth::setWaveform(Waveform oscType, double frequencies[], double samplerate){
+//   // TODO make more modular cuz duplicate code and stuff
+//   //something with the OscType enum and then blablabla
+//   for(int i = 0; i < numberOsc; i++){
+//       switch (oscType)
+//     {
+//       case SineType:
+//         oscillators[i] = new Sine(frequencies[i], samplerate);
+//       break;
+//       case SawType:
+//         oscillators[i] = new Saw(frequencies[i], samplerate);
+//       break;
+//       case SquareType:
+//         oscillators[i] = new Square(frequencies[i], samplerate);
+//       break;
+//     default:
+//       /* code */
+//       break;
+//     }
+//   }
+// }
+
 void FMSynth::calculate()
 {
-  carrierOsc->nextSample();
-  modulatorOsc->nextSample();
-  sample = (carrierOsc->getSample() + modulatorOsc->getSample()) * 0.1;
+  FMWaveforms[0]->nextSample();
+  FMWaveforms[1]->nextSample();
+  sample = (FMWaveforms[0]->getSample() + FMWaveforms[1]->getSample()) * 0.1;
 
 }

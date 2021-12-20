@@ -1,33 +1,17 @@
 #include "AM.h"
 
-AMSynth::AMSynth(double samplerate, Waveform oscType, 
-  double carFreq, double modFreq) : Synth(samplerate)
+AMSynth::AMSynth(Oscillator* waveformType[], 
+  double frequencies[], double samplerate) : Synth(samplerate)
 {
   // using modulatorOsc and carrierOsc instead of creating
   // oscillators dynamically in the constructor
   // for the sake of the example
-
+  this->AMWaveforms = waveformType;
   synthName = "AMSynth";
   std::cout << "• AMSynth constructor" << std::endl;
-  setWaveform(oscType, carFreq, modFreq, samplerate);
-
-  // switch (oscType)
-  // {
-  //   case SineType:
-  //     carrierOsc = new Sine(carFreq, samplerate);
-  //     modulatorOsc = new Sine(modFreq, samplerate);
-  //   break;
-  //   case SawType:
-  //     carrierOsc = new Saw(carFreq, samplerate);
-  //     modulatorOsc = new Saw(modFreq, samplerate);
-  //   break;
-  //   case SquareType:
-  //     carrierOsc = new Square(carFreq, samplerate);
-  //     modulatorOsc = new Square(modFreq, samplerate);
-  //   break;
-  // default:
-  //   /* code */
-  //   break;
+  // for(int i = 0; i < 2; i++){
+  //   setWaveform(waveformType, frequencies, samplerate);
+  //   std::cout<< frequencies[i] <<std::endl;
   // }
 }
 
@@ -36,31 +20,25 @@ AMSynth::~AMSynth()
   std::cout << "• AMSynth destructor" << std::endl;
 }
 
-void AMSynth::setWaveform(Waveform oscType, double carFreq, 
-  double modFreq, double samplerate){
-  // TODO make more modular cuz duplicate code and stuff
-  //something with the OscType enum and then blablabla
-  for(int i = 0; i < numberOsc; i++){
-      switch (oscType)
-    {
-      case SineType:
-        oscillators[0] = new Sine(carFreq, samplerate);
-        oscillators[1] = new Sine(modFreq, samplerate);
-      break;
-      case SawType:
-        oscillators[0] = new Saw(carFreq, samplerate);
-        oscillators[1] = new Saw(modFreq, samplerate);
-      break;
-      case SquareType:
-        oscillators[0] = new Square(carFreq, samplerate);
-        oscillators[1] = new Square(modFreq, samplerate);
-      break;
-    default:
-      /* code */
-      break;
-    }
-  }
-}
+// void AMSynth::setWaveform(Oscillator* waveformType[], double frequencies[], double samplerate){
+//   // TODO make more modular cuz duplicate code and stuff
+//   //something with the OscType enum and then blablabla
+//     switch (waveformType)
+//   {
+//     case SineType:
+//       oscillators[oscIndex] = new Sine(frequencies[oscIndex], samplerate);
+//     break;
+//     case SawType:
+//       oscillators[oscIndex] = new Saw(frequencies[oscIndex], samplerate);
+//     break;
+//     case SquareType:
+//       oscillators[oscIndex] = new Square(frequencies[oscIndex], samplerate);
+//     break;
+//   default:
+//     /* code */
+//     break;
+//   }
+// }
 
 void AMSynth::calculate()
 {
@@ -75,10 +53,10 @@ void AMSynth::calculate()
     carrierOsc->setAmplitude(newAmplitude);
     sample = carrierOsc->getSample();
   #else
-    oscillators[0]->nextSample();
-    oscillators[1]->nextSample();
-    double newAmplitude = (oscillators[1]->getSample() * 0.5) + 0.5;
-    oscillators[0]->setAmplitude(newAmplitude);
-    sample = oscillators[0]->getSample();
+    AMWaveforms[0]->nextSample();
+    AMWaveforms[1]->nextSample();
+    double newAmplitude = (AMWaveforms[1]->getSample() * 0.5) + 0.5;
+    AMWaveforms[0]->setAmplitude(newAmplitude);
+    sample = AMWaveforms[0]->getSample();
   #endif
 }
