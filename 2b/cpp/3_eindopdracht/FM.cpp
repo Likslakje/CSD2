@@ -6,8 +6,10 @@ FMSynth::FMSynth(Oscillator* waveformType[],
   // using baseOsc and modulatorOsc instead of creating
   // oscillators dynamically in the constructor
   // for the sake of the example
+  this->FMWaveforms = waveformType;
   std::cout << "• FMSynth constructor" << std::endl;
   synthName = "FMSynth";
+  
 }
 
 FMSynth::~FMSynth()

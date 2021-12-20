@@ -49,6 +49,7 @@ bool AudioManager::changeSynth()
 bool AudioManager::changeSynth(SynthType synthType)
 {
   // if synth is assigned to dynamic allocated Synth object- delete it
+  waveformIndex = 0;
   deleteSynth();
   // double carFreq = userInput::retrieveValueInRange(20, 20000);
   // double modFreq = userInput::retrieveValueInRange(20, 20000);
