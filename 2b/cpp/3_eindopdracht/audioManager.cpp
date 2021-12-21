@@ -2,20 +2,36 @@
 #include "melody.h"
 #include "AM.h"
 #include "FM.h"
+#include "writeToFile.h"
+
+#define WRITE_TO_FILE 1
+
 AudioManager::AudioManager() : synth(nullptr)
 {
-  jack = new JackModule();
-  jack->init("example");
   // call method that handles assignment of onProcess function for
   // JackModule
   // TODO - why does the program 'break' when I use cin immediately after
   // calling init
+#if WRITE_TO_FILE
+
+  WriteToFile fileWriter("output.csv", true);
+  samplerate = 44100;
+  changeSynth();
+  for(int i = 0; i < 1000; i++) {
+    fileWriter.write(std::to_string(synth->getSample()) + "\n");
+    synth->tick();
+  }
+#else
+
+  jack = new JackModule();
+  jack->init("example");
+  samplerate = jack->getSamplerate();
   assignAudioCallback();
   // create synth based on user input
   changeSynth();
   // start audio!
   jack->autoConnect();
-
+#endif
   Melody melody;
 }
 
@@ -56,13 +72,11 @@ bool AudioManager::changeSynth(SynthType synthType)
      waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
   }
 
-  
+
 
   // retrieve the user selection in form of an enum
   Synth::Waveform waveformType = (Synth::Waveform)
     UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
-
-  const double samplerate = jack->getSamplerate();
 
   double carrierFreq = UserInput::retrieveValueInRange(100, 20000);
   double modulatorFreq = UserInput::retrieveValueInRange(1, 100);

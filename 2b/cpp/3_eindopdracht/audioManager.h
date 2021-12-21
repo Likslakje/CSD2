@@ -32,6 +32,7 @@ protected:
   Melody* melody;
   Synth* synth;
   JackModule* jack;
+  double samplerate;
 
   bool changeSynth(SynthType synthType);
   void deleteSynth();
