@@ -3,6 +3,7 @@
 Synth::Synth(double samplerate) : sample(0.0), samplerate(samplerate)
 {
   std::cout << "\n• Synth::Synth" << std::endl;
+
 }
 
 Synth::~Synth()
@@ -16,6 +17,12 @@ void Synth::tick()
   calculate();
 }
 
+double mtof(float mPitch)
+{
+  // source of the mtof calculation:
+  // https://www.musicdsp.org/en/latest/Other/125-midi-note-frequency-conversion.html
+  return 440.0 * pow(2.0, (mPitch - 57.0f)/12.0f);
+}
 
 double Synth::getSample() { return sample; }
 

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-class userInput
+class UserInput
 {
 public:
   // returns the users choice, which depends on the passed selectionOptions
@@ -18,8 +18,8 @@ public:
 
 protected:
   // hide default constructor and destructor
-  userInput() {};
-  ~userInput() {};
+  UserInput() {};
+  ~UserInput() {};
   static bool validateSelection(std::string selection, std::string selectionOptions[],
       int numOptions);
   static std::string retrieveInput(std::string selectionOptions[], int numOptions);

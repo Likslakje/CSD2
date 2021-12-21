@@ -31,8 +31,8 @@ bool AudioManager::changeSynth()
   }
 
   // retrieve the user selection in form of an enum
-  SynthType synthType = (SynthType)
-    userInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
+    this->synthType = (SynthType)
+    UserInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
 
   // release the dynamic synth array
   delete [] synthTypeOptions;
@@ -45,24 +45,26 @@ bool AudioManager::changeSynth()
 bool AudioManager::changeSynth(SynthType synthType)
 {
   // if synth is assigned to dynamic allocated Synth object- delete it
-  waveformIndex = 0;
   deleteSynth();
-  // double carFreq = userInput::retrieveValueInRange(20, 20000);
-  // double modFreq = userInput::retrieveValueInRange(20, 20000);
+
+  // create a string array with the waveform type options
+  std::string* waveformOptions = new std::string[Synth::Waveform::Size];
+  for(int i = 0; i < Synth::Waveform::Size; i++) {
+     waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
+  }
+
+  // retrieve the user selection in form of an enum
+  Synth::Waveform waveformType = (Synth::Waveform)
+    UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
+
   const double samplerate = jack->getSamplerate();
-  // set freq
-  // double carFreq = 400;
-  // double modFreq = 440;
+
   switch(synthType) {
     case AMSynthType:
-      //the set frequncy fills up the frquency array
-      //these frequencies are used to set their respective oscillators
-      makeSynth(samplerate);
-      synth = new AMSynth(waveformType, frequencies, samplerate);
+      synth = new AMSynth(waveformType, samplerate);
       break;
     case FMSynthType:
-      makeSynth(samplerate);
-      synth = new FMSynth(waveformType, frequencies, samplerate);
+      synth = new FMSynth(waveformType, samplerate);
       break;
     default:
       std::cout << "• AudioManager::changeSynth - unknown synth type" << std::endl;
@@ -71,56 +73,6 @@ bool AudioManager::changeSynth(SynthType synthType)
   }
 
   return true;
-}
-
-void AudioManager::setWaveform(double samplerate){
-  //als case synthtype voor deze functie uit
-  //moet synthtype hebben om de hoeveel osc te weten
-  //deze functies moet aantal keer als osc uitgevoerd
-    // create a string array with the waveform type options
-    std::string* waveformOptions = new std::string[Synth::Waveform::Size];
-    for(int i = 0; i < Synth::Waveform::Size; i++) {
-      waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
-    }
-    // retrieve the user selection in form of an enum
-    Synth::Waveform waveformTypeSelection = (Synth::Waveform)
-      userInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
-    
-    //after running the selection process, get the frequency
-    // sinds we cannot make an new Oscillator type without a frequency
-    setFrequency();
-
-    switch (waveformTypeSelection)
-  {
-    case Synth::SineType:
-      waveformType[waveformIndex] = new Sine(frequencies[waveformIndex], samplerate);
-    break;
-    case Synth::SawType:
-      waveformType[waveformIndex] = new Saw(frequencies[waveformIndex], samplerate);
-    break;
-    case Synth::SquareType:
-      waveformType[waveformIndex] = new Square(frequencies[waveformIndex], samplerate);
-    break;
-    case Synth::TriangleType:
-      waveformType[waveformIndex] = new Triangle(frequencies[waveformIndex], samplerate);
-    break;
-  default:
-    /* code */
-    break;
-  }
-}
-
-void AudioManager::setFrequency(){
-  this->frequencies[waveformIndex] = userInput::retrieveValueInRange(20, 20000);
-}
-
-void AudioManager::makeSynth(double samplerate){
-  // this function excits because I didnt want to put a forloop inside the changeSynth()
-  // during the switch process
-  for(int i = 0; i < numWavefroms; i++){
-    setWaveform(samplerate);
-    waveformIndex++;
-  }
 }
 
 void AudioManager::assignAudioCallback()
@@ -164,15 +116,11 @@ std::string AudioManager::synthTypeToString(SynthType type)
   }
 }
 
+
 void AudioManager::deleteSynth()
 {
   if(synth != nullptr) {
-    // delete all the waveforms used by a synth
     // delete current synth
-    for(int i = 0; i < numWavefroms; i++){
-      delete waveformType[i];
-      waveformType[i] = nullptr;
-    }
     delete synth;
     synth = nullptr;
   }

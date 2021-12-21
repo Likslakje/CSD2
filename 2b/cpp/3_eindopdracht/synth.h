@@ -20,11 +20,11 @@ public:
     Size // 3
   };
   // setters and getters
-
+  virtual void setWaveform(Waveform waveformType) = 0;
   void tick();
   virtual void calculate() = 0;
   double getSample();
-
+  double mtof(float mPitch);
   // static method because this method does not depend on objects
   static std::string waveformTypeToString(Waveform type);
 
@@ -34,5 +34,7 @@ protected:
   double samplerate;
   // for the sake of logging
   std::string synthName;
+  Oscillator* modulatorOsc;
+  Oscillator* carrierOsc;
 
 };

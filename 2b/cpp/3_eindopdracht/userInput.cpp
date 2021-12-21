@@ -1,7 +1,7 @@
 #include "userInput.h"
 
 
-bool userInput::validateSelection(std::string selection,
+bool UserInput::validateSelection(std::string selection,
   std::string selectionOptions[], int numOptions)
 {
   // check if the selection occurs inside the options, if so, return true
@@ -15,7 +15,7 @@ bool userInput::validateSelection(std::string selection,
 }
 
 
-std::string userInput::retrieveInput(std::string selectionOptions[],
+std::string UserInput::retrieveInput(std::string selectionOptions[],
   int numOptions)
 {
   // show user the allowed options
@@ -33,7 +33,7 @@ std::string userInput::retrieveInput(std::string selectionOptions[],
   return selection;
 }
 
-std::string userInput::retrieveSelection(std::string selectionOptions[], int numOptions)
+std::string UserInput::retrieveSelection(std::string selectionOptions[], int numOptions)
 {
   bool noCorrectSelection = true;
   std::string userSelection = "";
@@ -53,7 +53,7 @@ std::string userInput::retrieveSelection(std::string selectionOptions[], int num
 }
 
 
-int userInput::retrieveSelectionIndex(std::string selectionOptions[], int numOptions)
+int UserInput::retrieveSelectionIndex(std::string selectionOptions[], int numOptions)
 {
   std::string userSelection = retrieveSelection(selectionOptions, numOptions);
   // find and return the index of userSelection;
@@ -61,14 +61,14 @@ int userInput::retrieveSelectionIndex(std::string selectionOptions[], int numOpt
     if(userSelection == selectionOptions[i]) return i;
   }
   // NOTE: this code should never be reached --> throw error
-  std::cout << "ERROR • userInput::retrieveUserSelection - "
+  std::cout << "ERROR • UserInput::retrieveUserSelection - "
     << "THIS SHOULD NEVER HAPPEN" << std::endl;
-  throw "ERROR • userInput::retrieveUserSelection";
+  throw "ERROR • UserInput::retrieveUserSelection";
   return -1;
 }
 
 
-float userInput::retrieveValueInRange(float min, float max) {
+float UserInput::retrieveValueInRange(float min, float max) {
   std::string input;
   float value = 0;
   bool notInRange = true;
