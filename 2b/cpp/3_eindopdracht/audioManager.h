@@ -19,15 +19,15 @@ public:
 
   // setters and getters
   bool changeSynth();
-
+  void updatePitch(Melody* melody, Synth* synthType);
   void assignAudioCallback();
   void end();
   // static method because this method does not depend on objects
   static std::string synthTypeToString(SynthType type);
-  void setFrequencies();
 
 protected:
   SynthType synthType;
+  Melody* melody;
   Synth* synth;
   JackModule* jack;
 

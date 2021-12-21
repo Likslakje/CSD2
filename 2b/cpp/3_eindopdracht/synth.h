@@ -9,8 +9,6 @@
 class Synth
 {
 public:
-  Synth(double carrierFreq, double modulatorFreq, double samplerate);
-  virtual ~Synth();
   // NOTE: needs to be same order as the waveFormOptions string array
   enum Waveform {
     SineType = 0, // ensure enum starts at 0
@@ -19,12 +17,17 @@ public:
     TriangleType,
     Size // 3
   };
+  Synth(Waveform waveformType, double carrierFreq, 
+    double modulatorFreq, double samplerate);
+  virtual ~Synth();
+
   // setters and getters
-  virtual void setWaveform(Waveform waveformType) = 0;
+  void setWaveform(Waveform waveformType);
   void tick();
   virtual void calculate() = 0;
   double getSample();
   double mtof(float mPitch);
+  void setFrequency(double freq);
   // static method because this method does not depend on objects
   static std::string waveformTypeToString(Waveform type);
 
@@ -33,6 +36,7 @@ protected:
   double sample;
   double samplerate;
   // for the sake of logging
+  Waveform WaveformType;
   std::string synthName;
   double carrierFreq;
   double modulatorFreq;

@@ -17,7 +17,6 @@ public:
   // };
   void calculate() override;
   // setters and getters
-  void setWaveform(Waveform type) override;
 
 protected:
 

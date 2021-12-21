@@ -11,8 +11,6 @@ public:
     double modulatorFreq, double samplerate);
   ~FMSynth();
 
-  void setWaveform(Waveform type) override;
-
   void calculate() override;
 
 protected:

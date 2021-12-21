@@ -1,4 +1,5 @@
 #include "audioManager.h"
+#include "melody.h"
 #include "AM.h"
 #include "FM.h"
 AudioManager::AudioManager() : synth(nullptr)
@@ -14,6 +15,8 @@ AudioManager::AudioManager() : synth(nullptr)
   changeSynth();
   // start audio!
   jack->autoConnect();
+
+  Melody melody;
 }
 
 AudioManager::~AudioManager()
@@ -53,6 +56,8 @@ bool AudioManager::changeSynth(SynthType synthType)
      waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
   }
 
+  
+
   // retrieve the user selection in form of an enum
   Synth::Waveform waveformType = (Synth::Waveform)
     UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
@@ -78,9 +83,13 @@ bool AudioManager::changeSynth(SynthType synthType)
   return true;
 }
 
-void setFrequencies(){
-
+void AudioManager::updatePitch(Melody* melody, Synth* synthType) {
+  float pitch = melody->getPitch();
+  double freq = synthType->mtof(pitch);
+  std::cout << "next pitch: " << pitch << ", freq is: " << freq << std::endl;
+  synthType->setFrequency(freq);
 }
+
 
 void AudioManager::assignAudioCallback()
 {
