@@ -6,7 +6,8 @@ Synth::Synth(Waveform waveformType, double carrierFreq, double modulatorFreq,
     modulatorFreq(modulatorFreq), samplerate(samplerate)
 {
   std::cout << "\n• Synth::Synth" << std::endl;
-
+  modulatorOsc = new Sine(modulatorFreq, samplerate);
+  carrierOsc = new Sine(carrierFreq, samplerate);
 }
 
 Synth::~Synth()

@@ -4,7 +4,7 @@
 #include "FM.h"
 #include "writeToFile.h"
 
-#define WRITE_TO_FILE 1
+#define WRITE_TO_FILE 0
 
 AudioManager::AudioManager() : synth(nullptr)
 {

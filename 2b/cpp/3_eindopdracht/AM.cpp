@@ -1,11 +1,10 @@
 #include "AM.h"
 
-AMSynth::AMSynth(Waveform waveformType, double carrierFreq, 
-    double modulatorFreq, double samplerate) : Synth(waveformType, 
+AMSynth::AMSynth(Waveform waveformType, double carrierFreq,
+    double modulatorFreq, double samplerate) : Synth(waveformType,
     carrierFreq, modulatorFreq, samplerate)
 {
   std::cout << "• AMSynth constructor" << std::endl;
-  // synthName = "AMSynth";
 }
 
 AMSynth::~AMSynth()

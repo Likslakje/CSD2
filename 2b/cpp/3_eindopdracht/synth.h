@@ -17,7 +17,7 @@ public:
     TriangleType,
     Size // 3
   };
-  Synth(Waveform waveformType, double carrierFreq, 
+  Synth(Waveform waveformType, double carrierFreq,
     double modulatorFreq, double samplerate);
   virtual ~Synth();
 
