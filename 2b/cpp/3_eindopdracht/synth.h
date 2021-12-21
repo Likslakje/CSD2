@@ -25,10 +25,12 @@ public:
   void tick();
   virtual void calculate() = 0;
   double getSample();
-  double mtof(float mPitch);
-  void setFrequency(double freq);
+  void setMPitch(float mPitch);
+  void setRatio(double ratio);
   // static method because this method does not depend on objects
   static std::string waveformTypeToString(Waveform type);
+
+  //TODO - add setters for the modDepth and carAmp
 
 protected:
   // contains current sample value
@@ -37,9 +39,18 @@ protected:
   // for the sake of logging
   Waveform WaveformType;
   std::string synthName;
+  double modRatio;
+  double modDepth;
+  double carAmp;
+  float midiPitch;
+
+
   double carrierFreq;
   double modulatorFreq;
   Oscillator* modulatorOsc;
   Oscillator* carrierOsc;
 
+  double mtof(float mPitch);
+  void setFrequency(double freq);
+  void setModFrequency(double freq);
 };

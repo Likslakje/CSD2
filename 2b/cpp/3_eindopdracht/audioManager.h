@@ -29,11 +29,14 @@ public:
 
 protected:
   SynthType synthType;
-  Melody* melody;
+  Melody melody;
   Synth* synth;
   JackModule* jack;
   double samplerate;
+  double masterAmp;
+  int frameIndex;
   int frameInterval;
+
 
   bool changeSynth(SynthType synthType);
   void deleteSynth();

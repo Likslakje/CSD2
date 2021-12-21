@@ -19,10 +19,19 @@ Oscillator::~Oscillator(){
 }
 
 void Oscillator::setFrequency(double frequency){
+// debug low_level
+#if DEBUG == 3
+    std::cout << "• Oscillator::setFrequency - frequency: " << frequency
+      << std::endl;
+#endif
     this->frequency = frequency;
 }
 
 void Oscillator::setAmplitude(double newAmplitude){
+// debug low_level
+#if DEBUG == 3
+    std::cout << "• Oscillator::setFrequency - amplitude: " << amplitude << std::endl;
+#endif
     this->amplitude = newAmplitude;
 }
 

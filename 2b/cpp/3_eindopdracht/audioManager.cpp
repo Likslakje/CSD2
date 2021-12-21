@@ -6,7 +6,7 @@
 
 #define WRITE_TO_FILE 0
 
-AudioManager::AudioManager() : synth(nullptr)
+AudioManager::AudioManager() : synth(nullptr), masterAmp(0.15), frameIndex(0)
 {
   // call method that handles assignment of onProcess function for
   // JackModule
@@ -17,6 +17,9 @@ AudioManager::AudioManager() : synth(nullptr)
   WriteToFile fileWriter("output.csv", true);
   samplerate = 44100;
   changeSynth();
+  // set first note of the melody as midiPitch
+  updatePitch();
+
   for(int i = 0; i < 1000; i++) {
     fileWriter.write(std::to_string(synth->getSample()) + "\n");
     synth->tick();
@@ -28,14 +31,16 @@ AudioManager::AudioManager() : synth(nullptr)
   samplerate = jack->getSamplerate();
   // set default frameInterval
   frameInterval = samplerate;
-  assignAudioCallback();
-
   // create synth based on user input
   changeSynth();
+  // set first note of the melody as midiPitch
+  updatePitch();
+
+  assignAudioCallback();
   // start audio!
   jack->autoConnect();
 #endif
-  Melody melody;
+
 }
 
 AudioManager::~AudioManager()
@@ -75,8 +80,6 @@ bool AudioManager::changeSynth(SynthType synthType)
      waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
   }
 
-
-
   // retrieve the user selection in form of an enum
   Synth::Waveform waveformType = (Synth::Waveform)
     UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
@@ -98,20 +101,19 @@ bool AudioManager::changeSynth(SynthType synthType)
 }
 
 void AudioManager::updatePitch() {
-  float pitch = melody->getPitch();
-  double freq = synth->mtof(pitch);
-  std::cout << "next pitch: " << pitch << ", freq is: " << freq << std::endl;
-  synth->setFrequency(freq);
+  float pitch = melody.getPitch();
+#if DEBUG >= 1
+  std::cout << "• AudioManager::updatePitch - pitch " << pitch << std::endl;
+#endif
+  synth->setMPitch(pitch);
 }
 
 
 void AudioManager::assignAudioCallback()
 {
-
-  float amplitude = 0.15;
-  // keep track of the frameIndex, to play notes at a given frame interval
-  int frameIndex = 0;
-  frameInterval = 0.05 * samplerate;
+  // TODO - add method to AudioManager to set the franeInterval in seconds
+  // e..g. 0.1 --> 0.1 * samplerate inside method
+  frameInterval = 0.5 * samplerate;
   // start with the first pitch
   updatePitch();
   // assign a function to the JackModule::onProces
@@ -125,20 +127,21 @@ void AudioManager::assignAudioCallback()
       if(frameIndex >= frameInterval) {
         // reset frameIndex
         frameIndex = 0;
-        updatePitch(melody, synth);
+        updatePitch();
       } else {
         // increment frameindex
         frameIndex++;
       }
 
       // write sample to output
-      outBuf[i] = synth->getSample() * amplitude;
+      outBuf[i] = synth->getSample() * masterAmp;
 
       // calculate next sample
       synth->tick();
 
     }
-  }
+    return 0;
+  };
   //   // fill output buffer
   //   for(unsigned int i = 0; i < nframes; i++) {
   //     // write sample to output
@@ -151,7 +154,7 @@ void AudioManager::assignAudioCallback()
   //       outBuf[i] = 0;
   //     }
   //   }
-  return 0;
+
 }
 
 void AudioManager::end()
