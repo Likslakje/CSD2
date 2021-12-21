@@ -1,6 +1,8 @@
 #include "synth.h"
 
-Synth::Synth(double samplerate) : sample(0.0), samplerate(samplerate)
+Synth::Synth(double carrierFreq, double modulatorFreq, 
+  double samplerate) : sample(0.0), samplerate(samplerate),
+  carrierFreq(carrierFreq), modulatorFreq(modulatorFreq)
 {
   std::cout << "\n• Synth::Synth" << std::endl;
 

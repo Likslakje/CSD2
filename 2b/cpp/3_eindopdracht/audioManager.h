@@ -24,6 +24,7 @@ public:
   void end();
   // static method because this method does not depend on objects
   static std::string synthTypeToString(SynthType type);
+  void setFrequencies();
 
 protected:
   SynthType synthType;

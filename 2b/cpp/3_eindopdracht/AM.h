@@ -6,7 +6,8 @@
 class AMSynth : public Synth
 {
 public:
-  AMSynth(Waveform waveformType, double samplerate);
+  AMSynth(Waveform waveformType, double carrierFreq, 
+    double modulatorFreq, double samplerate);
   ~AMSynth();
 
   // enum OscType {

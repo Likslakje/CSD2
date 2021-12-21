@@ -59,12 +59,15 @@ bool AudioManager::changeSynth(SynthType synthType)
 
   const double samplerate = jack->getSamplerate();
 
+  double carrierFreq = UserInput::retrieveValueInRange(100, 20000);
+  double modulatorFreq = UserInput::retrieveValueInRange(1, 100);
+
   switch(synthType) {
     case AMSynthType:
-      synth = new AMSynth(waveformType, samplerate);
+      synth = new AMSynth(waveformType, carrierFreq, modulatorFreq, samplerate);
       break;
     case FMSynthType:
-      synth = new FMSynth(waveformType, samplerate);
+      synth = new FMSynth(waveformType, carrierFreq, modulatorFreq, samplerate);
       break;
     default:
       std::cout << "• AudioManager::changeSynth - unknown synth type" << std::endl;
@@ -73,6 +76,10 @@ bool AudioManager::changeSynth(SynthType synthType)
   }
 
   return true;
+}
+
+void setFrequencies(){
+
 }
 
 void AudioManager::assignAudioCallback()

@@ -9,7 +9,7 @@
 class Synth
 {
 public:
-  Synth(double samplerate);
+  Synth(double carrierFreq, double modulatorFreq, double samplerate);
   virtual ~Synth();
   // NOTE: needs to be same order as the waveFormOptions string array
   enum Waveform {
@@ -34,6 +34,8 @@ protected:
   double samplerate;
   // for the sake of logging
   std::string synthName;
+  double carrierFreq;
+  double modulatorFreq;
   Oscillator* modulatorOsc;
   Oscillator* carrierOsc;
 
