@@ -1,8 +1,6 @@
 #include "FM.h"
 
-FMSynth::FMSynth(Waveform waveformType, double carrierFreq, 
-    double modulatorFreq, double samplerate) : Synth(waveformType, 
-    carrierFreq, modulatorFreq, samplerate)
+FMSynth::FMSynth(Waveform waveformType, double samplerate) : Synth(waveformType, samplerate)
 {
   // using baseOsc and modulatorOsc instead of creating
   // oscillators dynamically in the constructor

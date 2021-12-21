@@ -1,8 +1,6 @@
 #include "AM.h"
 
-AMSynth::AMSynth(Waveform waveformType, double carrierFreq,
-    double modulatorFreq, double samplerate) : Synth(waveformType,
-    carrierFreq, modulatorFreq, samplerate)
+AMSynth::AMSynth(Waveform waveformType, double samplerate) : Synth(waveformType, samplerate)
 {
   std::cout << "• AMSynth constructor" << std::endl;
 }

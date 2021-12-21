@@ -21,7 +21,7 @@ public:
 
   // setters and getters
   bool changeSynth();
-  void updatePitch(Melody* melody, Synth* synthType);
+  void updatePitch();
   void assignAudioCallback();
   void end();
   // static method because this method does not depend on objects
@@ -33,6 +33,7 @@ protected:
   Synth* synth;
   JackModule* jack;
   double samplerate;
+  int frameInterval;
 
   bool changeSynth(SynthType synthType);
   void deleteSynth();

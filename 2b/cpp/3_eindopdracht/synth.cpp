@@ -1,13 +1,9 @@
 #include "synth.h"
 #include <math.h>
 
-Synth::Synth(Waveform waveformType, double carrierFreq, double modulatorFreq,
-  double samplerate) : sample(0.0), carrierFreq(carrierFreq),
-    modulatorFreq(modulatorFreq), samplerate(samplerate)
+Synth::Synth(Waveform waveformType, double samplerate) : sample(0.0), samplerate(samplerate)
 {
   std::cout << "\n• Synth::Synth" << std::endl;
-  modulatorOsc = new Sine(modulatorFreq, samplerate);
-  carrierOsc = new Sine(carrierFreq, samplerate);
 }
 
 Synth::~Synth()
@@ -30,6 +26,7 @@ double Synth::mtof(float mPitch)
 
 void Synth::setFrequency(double freq){
   this->carrierFreq = freq;
+  this->modulatorFreq = freq/50;
 }
 
 double Synth::getSample(){

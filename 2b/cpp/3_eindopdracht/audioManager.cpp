@@ -26,7 +26,10 @@ AudioManager::AudioManager() : synth(nullptr)
   jack = new JackModule();
   jack->init("example");
   samplerate = jack->getSamplerate();
+  // set default frameInterval
+  frameInterval = samplerate;
   assignAudioCallback();
+
   // create synth based on user input
   changeSynth();
   // start audio!
@@ -78,15 +81,12 @@ bool AudioManager::changeSynth(SynthType synthType)
   Synth::Waveform waveformType = (Synth::Waveform)
     UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
 
-  double carrierFreq = UserInput::retrieveValueInRange(100, 20000);
-  double modulatorFreq = UserInput::retrieveValueInRange(1, 100);
-
   switch(synthType) {
     case AMSynthType:
-      synth = new AMSynth(waveformType, carrierFreq, modulatorFreq, samplerate);
+      synth = new AMSynth(waveformType, samplerate);
       break;
     case FMSynthType:
-      synth = new FMSynth(waveformType, carrierFreq, modulatorFreq, samplerate);
+      synth = new FMSynth(waveformType, samplerate);
       break;
     default:
       std::cout << "• AudioManager::changeSynth - unknown synth type" << std::endl;
@@ -97,35 +97,61 @@ bool AudioManager::changeSynth(SynthType synthType)
   return true;
 }
 
-void AudioManager::updatePitch(Melody* melody, Synth* synthType) {
+void AudioManager::updatePitch() {
   float pitch = melody->getPitch();
-  double freq = synthType->mtof(pitch);
+  double freq = synth->mtof(pitch);
   std::cout << "next pitch: " << pitch << ", freq is: " << freq << std::endl;
-  synthType->setFrequency(freq);
+  synth->setFrequency(freq);
 }
 
 
 void AudioManager::assignAudioCallback()
 {
+
+  float amplitude = 0.15;
+  // keep track of the frameIndex, to play notes at a given frame interval
+  int frameIndex = 0;
+  frameInterval = 0.05 * samplerate;
+  // start with the first pitch
+  updatePitch();
   // assign a function to the JackModule::onProces
   // NOTE: an empty process loop, just to log current synth
   jack->onProcess = [this](jack_default_audio_sample_t *inBuf,
     jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
-
     // fill output buffer
     for(unsigned int i = 0; i < nframes; i++) {
-      // write sample to output
 
-      if(synth != nullptr) {
-        outBuf[i] = synth->getSample();
-        // calculate next sample
-        synth->tick();
+      // check if we need to set the frequency to the next note
+      if(frameIndex >= frameInterval) {
+        // reset frameIndex
+        frameIndex = 0;
+        updatePitch(melody, synth);
       } else {
-        outBuf[i] = 0;
+        // increment frameindex
+        frameIndex++;
       }
+
+      // write sample to output
+      outBuf[i] = synth->getSample() * amplitude;
+
+      // calculate next sample
+      synth->tick();
+
     }
-    return 0;
-  };
+  }
+  //   // fill output buffer
+  //   for(unsigned int i = 0; i < nframes; i++) {
+  //     // write sample to output
+  //     //TODO Cis
+  //     if(synth != nullptr) {
+  //       outBuf[i] = synth->getSample();
+  //       // calculate next sample
+  //       synth->tick();
+  //     } else {
+  //       outBuf[i] = 0;
+  //     }
+  //   }
+  return 0;
 }
 
 void AudioManager::end()
