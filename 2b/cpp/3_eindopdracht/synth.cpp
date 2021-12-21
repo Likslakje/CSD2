@@ -1,7 +1,8 @@
 #include "synth.h"
+#include <math.h>
 
-Synth::Synth(Waveform waveformType, double carrierFreq, double modulatorFreq, 
-  double samplerate) : sample(0.0), carrierFreq(carrierFreq), 
+Synth::Synth(Waveform waveformType, double carrierFreq, double modulatorFreq,
+  double samplerate) : sample(0.0), carrierFreq(carrierFreq),
     modulatorFreq(modulatorFreq), samplerate(samplerate)
 {
   std::cout << "\n• Synth::Synth" << std::endl;

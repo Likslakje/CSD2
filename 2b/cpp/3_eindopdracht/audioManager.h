@@ -4,6 +4,8 @@
 // TODO - use interface SelectionUtil instead!
 #include "userInput.h"
 #include "synth.h"
+#include "melody.h"
+
 
 class AudioManager
 {
