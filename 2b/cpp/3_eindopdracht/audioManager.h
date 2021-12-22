@@ -20,6 +20,8 @@ public:
   };
 
   // setters and getters
+  void makeMelody();
+  void setMelody();
   bool changeSynth();
   void updatePitch();
   void assignAudioCallback();

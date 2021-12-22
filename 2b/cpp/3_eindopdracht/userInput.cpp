@@ -14,6 +14,16 @@ bool UserInput::validateSelection(std::string selection,
   return false;
 }
 
+int UserInput::retrieveMelodyInput(){
+  std::string melodyInput;
+  std::cin>> melodyInput;
+  char* char_arr;
+  char_arr = &melodyInput[0];
+  // for(int i = 0; i < melodyInput.length(); i++){
+  //     std::cout<< char_arr[i] <<std::endl;
+  // }
+  return melodyInput.length();
+}
 
 std::string UserInput::retrieveInput(std::string selectionOptions[],
   int numOptions)

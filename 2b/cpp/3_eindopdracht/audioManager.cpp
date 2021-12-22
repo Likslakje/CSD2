@@ -31,6 +31,8 @@ AudioManager::AudioManager() : synth(nullptr), masterAmp(0.15), frameIndex(0)
   samplerate = jack->getSamplerate();
   // set default frameInterval
   frameInterval = samplerate;
+
+  makeMelody();
   // create synth based on user input
   changeSynth();
   // set first note of the melody as midiPitch
@@ -47,6 +49,19 @@ AudioManager::~AudioManager()
 {
   // if synth is assigned to dynamic allocated Synth object- delete it
   deleteSynth();
+}
+
+void AudioManager::makeMelody(){
+  //get user input, append to array
+  int numChars = UserInput::retrieveMelodyInput();
+  // int numWarpedChars;
+  int modulo;
+  modulo = numChars % NUM_NOTES;
+  melody.setCharHop(modulo);
+}
+
+void AudioManager::setMelody(){
+  //retrun melody to melody class
 }
 
 bool AudioManager::changeSynth()

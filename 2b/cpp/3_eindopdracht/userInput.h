@@ -15,6 +15,8 @@ public:
 
   // returns the users input value, which has to be in the range of [min, max]
   static float retrieveValueInRange(float min, float max);
+  //gets user input and returns input length
+  static int retrieveMelodyInput();
 
 protected:
   // hide default constructor and destructor

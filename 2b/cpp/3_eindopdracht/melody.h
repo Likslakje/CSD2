@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#define NUM_NOTES 9
+#define NUM_NOTES 7
 
 class Melody
 {
@@ -11,11 +11,13 @@ public:
   ~Melody();
 
   // setters and getters
+  void setCharHop(int hop);
   float getPitch();
 
 protected:
-  // Cmaj7 -  arpeggio
-  float melody[NUM_NOTES] = {60, 64, 67, 71, 64, 67, 64, 60, 55};
+  // Cmaj -  arpeggio
+  float baseMelody[NUM_NOTES] = {60, 62, 64, 65, 67, 69, 71};
   // the index of the current note - readIndex
-  int index;
+  int charHop;
+  int index = 0;
 };
