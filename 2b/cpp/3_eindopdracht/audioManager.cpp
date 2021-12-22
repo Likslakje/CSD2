@@ -1,3 +1,5 @@
+//All credits for AudioManger go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/xx_eindopdrachtExamples/07_choicesSynth
+
 #include "audioManager.h"
 #include "melody.h"
 #include "AM.h"
@@ -6,12 +8,8 @@
 
 #define WRITE_TO_FILE 0
 
-AudioManager::AudioManager() : synth(nullptr), masterAmp(0.15), frameIndex(0)
+AudioManager::AudioManager() : modSynth(nullptr), masterAmp(0.15), frameIndex(0)
 {
-  // call method that handles assignment of onProcess function for
-  // JackModule
-  // TODO - why does the program 'break' when I use cin immediately after
-  // calling init
 #if WRITE_TO_FILE
 
   WriteToFile fileWriter("output.csv", true);
@@ -27,7 +25,8 @@ AudioManager::AudioManager() : synth(nullptr), masterAmp(0.15), frameIndex(0)
 #else
 
   jack = new JackModule();
-  jack->init("example");
+  //run Cate bitch...
+  jack->init("cate");
   samplerate = jack->getSamplerate();
   // set default frameInterval
   frameInterval = samplerate;
@@ -41,8 +40,8 @@ AudioManager::AudioManager() : synth(nullptr), masterAmp(0.15), frameIndex(0)
   assignAudioCallback();
   // start audio!
   jack->autoConnect();
-#endif
 
+#endif
 }
 
 AudioManager::~AudioManager()
@@ -51,30 +50,29 @@ AudioManager::~AudioManager()
   deleteSynth();
 }
 
-void AudioManager::makeMelody(){
-  //get user input, append to array
+void AudioManager::makeMelody()
+{
+  //get user input, count num chars
   int numChars = UserInput::retrieveMelodyInput();
-  // int numWarpedChars;
+  // wrap numChars by using modulo
   int modulo;
   modulo = numChars % NUM_NOTES;
+  //hop through melody array
   melody.setCharHop(modulo);
-}
-
-void AudioManager::setMelody(){
-  //retrun melody to melody class
 }
 
 bool AudioManager::changeSynth()
 {
-  // create a string array with the synth type options
+  // create a string array with the synth type options from enum 
+  //print them as string
   std::string* synthTypeOptions = new std::string[SynthType::Size];
   for(int i = 0; i < SynthType::Size; i++) {
      synthTypeOptions[i] = synthTypeToString((SynthType)i);
   }
 
   // retrieve the user selection in form of an enum
-    this->synthType = (SynthType)
-    UserInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
+  synthType = (SynthType)
+  UserInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
 
   // release the dynamic synth array
   delete [] synthTypeOptions;
@@ -90,37 +88,41 @@ bool AudioManager::changeSynth(SynthType synthType)
   deleteSynth();
 
   // create a string array with the waveform type options
-  std::string* waveformOptions = new std::string[Synth::Waveform::Size];
-  for(int i = 0; i < Synth::Waveform::Size; i++) {
-     waveformOptions[i] = Synth::waveformTypeToString((Synth::Waveform)i);
+  std::string* waveformOptions = new std::string[ModSynth::Waveform::Size];
+  for(int i = 0; i < ModSynth::Waveform::Size; i++) {
+     waveformOptions[i] = ModSynth::waveformTypeToString((ModSynth::Waveform)i);
   }
 
   // retrieve the user selection in form of an enum
-  Synth::Waveform waveformType = (Synth::Waveform)
-    UserInput::retrieveSelectionIndex(waveformOptions, Synth::Waveform::Size);
+  ModSynth::Waveform waveformType = (ModSynth::Waveform)
+    UserInput::retrieveSelectionIndex(waveformOptions, ModSynth::Waveform::Size);
 
+  //creat a synth with the selected SynthType and WaveformType
   switch(synthType) {
     case AMSynthType:
-      synth = new AMSynth(waveformType, samplerate);
+      modSynth = new AMSynth(waveformType, samplerate);
       break;
     case FMSynthType:
-      synth = new FMSynth(waveformType, samplerate);
+      modSynth = new FMSynth(waveformType, samplerate);
       break;
     default:
       std::cout << "• AudioManager::changeSynth - unknown synth type" << std::endl;
       // failed assinging new synth
       return false;
   }
-
   return true;
 }
 
-void AudioManager::updatePitch() {
+void AudioManager::updatePitch() 
+{
+  //function gets called depending on frameInterval
+  //get midinumber from melody array
   float pitch = melody.getPitch();
 #if DEBUG >= 1
   std::cout << "• AudioManager::updatePitch - pitch " << pitch << std::endl;
 #endif
-  synth->setMPitch(pitch);
+  //convert midinumber to frequency and set pitch of oscillators
+  modSynth->setMPitch(pitch);
 }
 
 
@@ -129,8 +131,10 @@ void AudioManager::assignAudioCallback()
   // TODO - add method to AudioManager to set the franeInterval in seconds
   // e..g. 0.1 --> 0.1 * samplerate inside method
   frameInterval = 0.5 * samplerate;
+
   // start with the first pitch
   updatePitch();
+
   // assign a function to the JackModule::onProces
   // NOTE: an empty process loop, just to log current synth
   jack->onProcess = [this](jack_default_audio_sample_t *inBuf,
@@ -149,42 +153,31 @@ void AudioManager::assignAudioCallback()
       }
 
       // write sample to output
-      outBuf[i] = synth->getSample() * masterAmp;
+      outBuf[i] = modSynth->getSample() * masterAmp;
 
       // calculate next sample
-      synth->tick();
+      modSynth->tick();
 
     }
     return 0;
   };
-  //   // fill output buffer
-  //   for(unsigned int i = 0; i < nframes; i++) {
-  //     // write sample to output
-  //     //TODO Cis
-  //     if(synth != nullptr) {
-  //       outBuf[i] = synth->getSample();
-  //       // calculate next sample
-  //       synth->tick();
-  //     } else {
-  //       outBuf[i] = 0;
-  //     }
-  //   }
-
 }
 
 void AudioManager::end()
 {
+  //end jack
   std::cout << "• AudioManager::end - ending jack process." << std::endl;
   jack->end();
 }
 
 std::string AudioManager::synthTypeToString(SynthType type)
 {
+  //Return selected synth from enum as string
   switch(type) {
   case AMSynthType:
-      return "AMSynth";
+      return "AM";
     case FMSynthType:
-      return "FMSynth";
+      return "FM";
     default:
       return "Invalid Synth";
   }
@@ -193,9 +186,10 @@ std::string AudioManager::synthTypeToString(SynthType type)
 
 void AudioManager::deleteSynth()
 {
-  if(synth != nullptr) {
+  //if a synth object is created then delete it
+  if(modSynth != nullptr) {
     // delete current synth
-    delete synth;
-    synth = nullptr;
+    delete modSynth;
+    modSynth = nullptr;
   }
 }

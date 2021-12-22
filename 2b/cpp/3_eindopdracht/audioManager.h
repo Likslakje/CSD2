@@ -1,11 +1,11 @@
+//All credits for AudioManger go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/xx_eindopdrachtExamples/07_choicesSynth
+
 #pragma once
 #include <iostream>
 #include "jack_module.h"
-// TODO - use interface SelectionUtil instead!
 #include "userInput.h"
-#include "synth.h"
+#include "modSynth.h"
 #include "melody.h"
-
 
 class AudioManager
 {
@@ -13,6 +13,7 @@ public:
   AudioManager();
   ~AudioManager();
 
+  //The possible synthtypes are choosen from enum 
   enum SynthType {
     AMSynthType = 0,
     FMSynthType,
@@ -30,16 +31,19 @@ public:
   static std::string synthTypeToString(SynthType type);
 
 protected:
+  //objects
   SynthType synthType;
   Melody melody;
-  Synth* synth;
+  //Create choosen synthType from enum dynamically
+  ModSynth* modSynth;
   JackModule* jack;
+  //var
   double samplerate;
   double masterAmp;
   int frameIndex;
   int frameInterval;
 
-
+  //protected cuz does not need to be accessed
   bool changeSynth(SynthType synthType);
   void deleteSynth();
 };

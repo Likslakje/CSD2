@@ -1,9 +1,10 @@
 #include "AM.h"
 
 AMSynth::AMSynth(Waveform waveformType, double samplerate) :
-  Synth(waveformType, samplerate)
+  ModSynth(waveformType, samplerate)
 {
   std::cout << "• AMSynth constructor" << std::endl;
+  modSynthName = "AM";
 
 }
 
@@ -14,23 +15,15 @@ AMSynth::~AMSynth()
 
 void AMSynth::calculate()
 {
-  //got to the next sample
-  //then get the frequency of the modulator wave and make its range fit the amplitude range
-  //then set the amplitude of the carrier
-  //retrun the result (= sample)
-  #if 1
-    modulatorOsc->nextSample();
-    //getsample * modDepth + carAmp
-    double modulatedAmp = (modulatorOsc->getSample() * modDepth) + carAmp;
-    // TODO use modulated amplitude
-    carrierOsc->setAmplitude(modulatedAmp);
-    carrierOsc->nextSample();
-    sample = carrierOsc->getSample();
-  #else
-    carrierOsc->nextSample();
-    modulatorOsc->nextSample();
-    double newAmplitude = (modulatorOsc->getSample() * 0.5) + 0.5;
-    carrierOsc->setAmplitude(newAmplitude);
-    sample = carrierOsc->getSample();
-  #endif
+  // get the first sample
+  modulatorOsc->nextSample();
+  //getsample * modDepth + carAmp
+  double modulatedAmp = (modulatorOsc->getSample() * modDepth) + carAmp;
+  // TODO use modulated amplitude
+  // set the amplitude of the carier with the modulator
+  carrierOsc->setAmplitude(modulatedAmp);
+  // go to next sample
+  carrierOsc->nextSample();
+  // set sample to mudalated waveform
+  sample = carrierOsc->getSample();
 }

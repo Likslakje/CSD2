@@ -14,14 +14,15 @@ bool UserInput::validateSelection(std::string selection,
   return false;
 }
 
-int UserInput::retrieveMelodyInput(){
+int UserInput::retrieveMelodyInput()
+{
+  // get a string from user
+  // retrun its length to set the melody charHop size
+  std::cout<< "Enter something..." <<std::endl;
   std::string melodyInput;
   std::cin>> melodyInput;
   char* char_arr;
   char_arr = &melodyInput[0];
-  // for(int i = 0; i < melodyInput.length(); i++){
-  //     std::cout<< char_arr[i] <<std::endl;
-  // }
   return melodyInput.length();
 }
 
@@ -31,15 +32,14 @@ std::string UserInput::retrieveInput(std::string selectionOptions[],
   // show user the allowed options
   std::cout << "Please enter your selection. You can choose between: ";
   for(int i = 0; i < numOptions - 1; i++) {
-    std::cout << selectionOptions[i] << ", ";
+    std::cout<< selectionOptions[i] << ", ";
   }
-  // print last option outside forloop to end with an .
-  std::cout << selectionOptions[numOptions - 1] << "." << std::endl;
+  // print last option outside forloop
+  std::cout<< selectionOptions[numOptions - 1] <<std::endl;
 
   // retrieve and return choice
   std::string selection = "";
-  std::cin >> selection;
-  std::cout << "******* " << std::endl;
+  std::cin>> selection;
   return selection;
 }
 
@@ -56,7 +56,7 @@ std::string UserInput::retrieveSelection(std::string selectionOptions[], int num
       numOptions);
     // if selection is not correct, log message to user to try again
     if(noCorrectSelection) {
-      std::cout << "Incorrect selection, please try again";
+      std::cout<< "Incorrect selection, please try again" <<std::endl;
     }
   }
   return userSelection;

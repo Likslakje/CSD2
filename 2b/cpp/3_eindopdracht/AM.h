@@ -1,22 +1,17 @@
 #pragma once
 
 #include <iostream>
-#include "synth.h"
+#include "modSynth.h"
 
-class AMSynth : public Synth
+class AMSynth : public ModSynth
 {
 public:
   AMSynth(Waveform waveformType, double samplerate);
   ~AMSynth();
 
-  // enum OscType {
-  //   Modulator,
-  //   Carrier,
-  //   Size
-  // };
+  // override virtual void form oscillator
   void calculate() override;
-  // setters and getters
-
+  
 protected:
 
 };

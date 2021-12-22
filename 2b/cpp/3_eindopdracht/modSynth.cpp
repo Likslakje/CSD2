@@ -1,34 +1,40 @@
-#include "synth.h"
+#include "modSynth.h"
 #include <math.h>
 
-Synth::Synth(Waveform waveformType, double samplerate) : sample(0.0),
+ModSynth::ModSynth(Waveform waveformType, double samplerate) : sample(0.0),
   samplerate(samplerate), modRatio(0.1), modDepth(0.25), carAmp(0.25)
 {
-  std::cout << "\n• Synth::Synth" << std::endl;
+  std::cout << "\n• ModSynth::ModSynth" << std::endl;
   setWaveform(waveformType);
 }
 
-Synth::~Synth()
+ModSynth::~ModSynth()
 {
-  std::cout << "\n• Synth::~Synth" << std::endl;
+  std::cout << "\n• ModSynth::~ModSynth" << std::endl;
 }
 
 
-void Synth::tick()
+void ModSynth::tick()
 {
   // TODO - make tick virtual and change calculate in subclasses to tick
   calculate();
 }
 
 
-void Synth::setMPitch(float mPitch)
+void ModSynth::setMPitch(float mPitch)
 {
+  // get the pitch as a midinumber
+  // use the mtof function to convert it to a frequency
+  // then pass it to the oscillators
   midiPitch = mPitch;
   setFrequency(mtof(mPitch));
 }
 
-void Synth::setRatio(double ratio)
+void ModSynth::setRatio(double ratio)
 {
+  // get the ratio
+  // use the mtof function to convert it to a frequency
+  // then pass it to the oscillators
   modRatio = ratio;
   // re-update modulator frequency
   setModFrequency(mtof(midiPitch));
@@ -36,17 +42,17 @@ void Synth::setRatio(double ratio)
 
 
 
-double Synth::mtof(float mPitch)
+double ModSynth::mtof(float mPitch)
 {
   // source of the mtof calculation:
   // https://www.musicdsp.org/en/latest/Other/125-midi-note-frequency-conversion.html
   return 440.0 * pow(2.0, (mPitch - 57.0f)/12.0f);
 }
 
-void Synth::setFrequency(double freq)
+void ModSynth::setFrequency(double freq)
 {
 #if DEBUG >= 1
-  std::cout << "• Synth::setFrequency - freq: " << freq << std::endl;
+  std::cout << "• ModSynth::setFrequency - freq: " << freq << std::endl;
 #endif
   // update frequency of modulator and carrier
   setModFrequency(freq);
@@ -54,20 +60,19 @@ void Synth::setFrequency(double freq)
   carrierOsc->setFrequency(freq);
 }
 
-void Synth::setModFrequency(double freq)
+void ModSynth::setModFrequency(double freq)
 {
   // update frequency of modulator and carrier
   float modFrequency = freq * modRatio;
   modulatorOsc->setFrequency(modFrequency);
 }
 
-double Synth::getSample(){
+double ModSynth::getSample(){
   return sample;
 }
 
-void Synth::setWaveform(Waveform waveformType){
-  // TODO make more modular cuz duplicate code and stuff
-  //something with the OscType enum and then blablabla
+void ModSynth::setWaveform(Waveform waveformType){
+  // create the carrier and modulators for the selected oscillator type
   switch (waveformType)
   {
     case SineType:
@@ -88,8 +93,9 @@ void Synth::setWaveform(Waveform waveformType){
   }
 }
 
-std::string Synth::waveformTypeToString(Waveform type)
+std::string ModSynth::waveformTypeToString(Waveform type)
 {
+  // return the selected ModSynthType as string
   switch(type) {
     case Waveform::SineType:
       return "sine";

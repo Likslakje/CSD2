@@ -1,12 +1,9 @@
 #include "FM.h"
 
-FMSynth::FMSynth(Waveform waveformType, double samplerate) : Synth(waveformType, samplerate)
+FMSynth::FMSynth(Waveform waveformType, double samplerate) : ModSynth(waveformType, samplerate)
 {
-  // using baseOsc and modulatorOsc instead of creating
-  // oscillators dynamically in the constructor
-  // for the sake of the example
   std::cout << "• FMSynth constructor" << std::endl;
-  // synthName = "FMSynth";
+  modSynthName = "FM";
   
 }
 
@@ -17,8 +14,9 @@ FMSynth::~FMSynth()
 
 void FMSynth::calculate()
 {
+  // get first sample
   carrierOsc->nextSample();
   modulatorOsc->nextSample();
+  // set the output sample to the modulated waveform
   sample = (carrierOsc->getSample() + modulatorOsc->getSample()) * 0.1;
-
 }

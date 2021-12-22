@@ -6,10 +6,10 @@
 #include "square.h"
 #include "triangle.h"
 
-class Synth
+class ModSynth
 {
 public:
-  // NOTE: needs to be same order as the waveFormOptions string array
+  // Enum of possible waveforms
   enum Waveform {
     SineType = 0, // ensure enum starts at 0
     SawType,
@@ -17,8 +17,11 @@ public:
     TriangleType,
     Size // 3
   };
-  Synth(Waveform waveformType, double samplerate);
-  virtual ~Synth();
+
+  // pass choosen waveform to the ModSynth contructor to be used 
+  // by the choosen ModSynthType
+  ModSynth(Waveform waveformType, double samplerate);
+  virtual ~ModSynth();
 
   // setters and getters
   void setWaveform(Waveform waveformType);
@@ -36,20 +39,26 @@ protected:
   // contains current sample value
   double sample;
   double samplerate;
-  // for the sake of logging
+
+  // store the waveformType
   Waveform WaveformType;
-  std::string synthName;
+
+  // for the sake of logging
+  std::string modSynthName;
+
+  // var
   double modRatio;
   double modDepth;
   double carAmp;
   float midiPitch;
-
-
   double carrierFreq;
   double modulatorFreq;
+
+  // Oscillator pointers
   Oscillator* modulatorOsc;
   Oscillator* carrierOsc;
 
+  // protected cuz does not to be accessed by outside
   double mtof(float mPitch);
   void setFrequency(double freq);
   void setModFrequency(double freq);

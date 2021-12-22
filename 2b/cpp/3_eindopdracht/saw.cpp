@@ -1,18 +1,18 @@
-//All credits for writeToFile, Sine and basically all the other types of oscillators
-//go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
-//Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
 #include <iostream>
 #include "saw.h"
-using namespace std;
 
-Saw::Saw(double frequency, double samplerate) : Oscillator(frequency, samplerate){
-    cout<< "constructor Saw" <<endl;
+Saw::Saw(double frequency, double samplerate) : Oscillator(frequency, samplerate)
+{
+	std::cout<< "constructor Saw" <<std::endl;
 }
 
-Saw::~Saw(){
-    cout<< "destructor Saw" <<endl;
+Saw::~Saw()
+{
+	std::cout<< "destructor Saw" <<std::endl;
 }
 
-void Saw::calculate(){
-    sample = (phase * 2 -1);
+void Saw::calculate()
+{
+	// calculate saw wavefrom
+	sample = (phase * 2 -1);
 }

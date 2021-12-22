@@ -1,3 +1,5 @@
+//All credits for Melody go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/session_5/01_melody
+
 #pragma once
 
 #include <iostream>
@@ -15,9 +17,11 @@ public:
   float getPitch();
 
 protected:
-  // Cmaj -  arpeggio
+  // Cmaj midinotes
   float baseMelody[NUM_NOTES] = {60, 62, 64, 65, 67, 69, 71};
-  // the index of the current note - readIndex
+
+  // the index of the current note equals the index + charHop
+  // then readIndex
   int charHop;
   int index = 0;
 };

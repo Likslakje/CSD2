@@ -4,6 +4,7 @@
 
 int main(int argc,char **argv)
 {
+  // AUdiomanager handels userInput and audio
   AudioManager audioManager;
 
   //keep the program running and listen for user input, q = quit
@@ -16,7 +17,7 @@ int main(int argc,char **argv)
     {
       case 'q':
         running = false;
-        //audioManager.end();
+        audioManager.end();
         break;
 
       case 'c':

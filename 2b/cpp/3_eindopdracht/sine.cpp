@@ -1,19 +1,21 @@
-//All credits for writeToFile, Sine and basically all the other types of oscillators
-//go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/master/csd2b/theorie/session_3
-//Credits for Jack audio implementation go to Marc Groenewegen and Ciska Vriezenga
+//All credits for Sine go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/session_3/05_soundingSineClass
+
 #include <iostream>
 #include "sine.h"
 #include "math.h"
-using namespace std;
 
-Sine::Sine(double frequency, double samplerate) : Oscillator(frequency, samplerate){
-    cout<< "constructor Sine" <<endl;
+Sine::Sine(double frequency, double samplerate) : Oscillator(frequency, samplerate)
+{
+  std::cout<< "constructor Sine" <<std::endl;
 }
 
-Sine::~Sine(){
-    cout<< "destructor Sine" <<endl;
+Sine::~Sine()
+{
+  std::cout<< "destructor Sine" <<std::endl;
 }
 
-void Sine::calculate(){
+void Sine::calculate()
+{
+  // calculate the sine 
   sample = sin(M_PI * 2 * phase);
 }
