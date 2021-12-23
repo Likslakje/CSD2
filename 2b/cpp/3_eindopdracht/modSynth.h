@@ -15,10 +15,11 @@ public:
     SawType,
     SquareType,
     TriangleType,
-    Size // 3
+    Size, // 3
+    None
   };
 
-  // pass choosen waveform to the ModSynth contructor to be used 
+  // pass choosen waveform to the ModSynth contructor to be used
   // by the choosen ModSynthType
   ModSynth(Waveform waveformType, double samplerate);
   virtual ~ModSynth();
