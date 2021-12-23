@@ -5,7 +5,7 @@
 #include <iostream>
 
 // 1 = regular flow, 2 = mid_level, 3 = low_level, 0 = off
-#define DEBUG 0
+#define DEBUG 1
 
 class Oscillator
 {

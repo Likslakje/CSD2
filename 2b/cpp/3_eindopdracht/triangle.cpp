@@ -14,7 +14,7 @@ Triangle::~Triangle()
 void Triangle::calculate()
 {
 	// calculate the triangle waveform
-	if(phase < 0.5){
+	if(phase <= 0.5){
 			sample = phase;
 	}else{
 			sample = (phase * -1) + 0.5;

@@ -19,8 +19,8 @@ AudioManager::AudioManager() : modSynth(nullptr), masterAmp(0.15), frameIndex(0)
   updatePitch();
 
   for(int i = 0; i < 1000; i++) {
-    fileWriter.write(std::to_string(synth->getSample()) + "\n");
-    synth->tick();
+    fileWriter.write(std::to_string(modSynth->getSample()) + "\n");
+    modSynth->tick();
   }
 #else
 
@@ -131,7 +131,7 @@ void AudioManager::assignAudioCallback()
   // TODO - add method to AudioManager to set the franeInterval in seconds
   // e..g. 0.1 --> 0.1 * samplerate inside method
   frameInterval = 0.5 * samplerate;
-
+  
   // start with the first pitch
   updatePitch();
 
@@ -186,6 +186,7 @@ std::string AudioManager::synthTypeToString(SynthType type)
 
 void AudioManager::deleteSynth()
 {
+  std::cout<< "delete Synths" <<std::endl;
   //if a synth object is created then delete it
   if(modSynth != nullptr) {
     // delete current synth
