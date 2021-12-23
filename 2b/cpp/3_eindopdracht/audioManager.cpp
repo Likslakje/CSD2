@@ -66,6 +66,20 @@ void AudioManager::makeMelody()
 
 bool AudioManager::changeSynth(bool changeImmediately)
 {
+  // create a string array with the waveform type options
+  std::string* waveformOptions = new std::string[ModSynth::Waveform::Size];
+  for(int i = 0; i < ModSynth::Waveform::Size; i++) {
+     waveformOptions[i] = ModSynth::waveformTypeToString((ModSynth::Waveform)i);
+  }
+
+  // retrieve the user selection in form of an enum
+  waveformType = (ModSynth::Waveform)
+    UserInput::retrieveSelectionIndex(waveformOptions, ModSynth::Waveform::Size);
+
+  // release the dynamic synth array
+  delete [] waveformOptions;
+  waveformOptions = nullptr;
+
   // NOTE: it is possible to choose the same synth again, no check for that
   // create a string array with the synth type options from enum
   //print them as string
@@ -81,16 +95,6 @@ bool AudioManager::changeSynth(bool changeImmediately)
   // release the dynamic synth array
   delete [] synthTypeOptions;
   synthTypeOptions = nullptr;
-
-    // create a string array with the waveform type options
-  std::string* waveformOptions = new std::string[ModSynth::Waveform::Size];
-  for(int i = 0; i < ModSynth::Waveform::Size; i++) {
-     waveformOptions[i] = ModSynth::waveformTypeToString((ModSynth::Waveform)i);
-  }
-
-  // retrieve the user selection in form of an enum
-  waveformType = (ModSynth::Waveform)
-    UserInput::retrieveSelectionIndex(waveformOptions, ModSynth::Waveform::Size);
 
   std::cout << "newSynthType: " << newSynthType
     << ", curSynthType: " << curSynthType
