@@ -24,6 +24,7 @@ protected:
   UserInput() {};
   ~UserInput() {};
 
+  static void removeSpaces(std::string &str);
   // retruns false if userInput doesn't occur in passed options array
   static bool validateSelection(std::string selection, std::string selectionOptions[],
       int numOptions);
