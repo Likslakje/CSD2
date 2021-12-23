@@ -67,7 +67,7 @@ void AudioManager::makeMelody()
 bool AudioManager::changeSynth(bool changeImmediately)
 {
 
-  std::string synthType = "";
+  // std::string synthType = "";
   // NOTE: it is possible to choose the same synth again, no check for that
   // create a string array with the synth type options from enum
   //print them as string
@@ -77,7 +77,7 @@ bool AudioManager::changeSynth(bool changeImmediately)
   }
 
   // retrieve the user selection in form of an enum
-  synthType = (SynthType)
+  SynthType synthType = (SynthType)
   UserInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
 
   // release the dynamic synth array
