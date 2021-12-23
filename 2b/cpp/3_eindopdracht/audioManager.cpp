@@ -77,8 +77,7 @@ bool AudioManager::changeSynth(bool changeImmediately)
   }
 
   // retrieve the user selection in form of an enum
-  // TODO use synthType
-  newSynthType = (SynthType)
+  synthType = (SynthType)
   UserInput::retrieveSelectionIndex(synthTypeOptions, SynthType::Size);
 
   // release the dynamic synth array
@@ -100,13 +99,13 @@ bool AudioManager::changeSynth(bool changeImmediately)
   delete [] waveformOptions;
   waveformOptions = nullptr;
 
+  // done with selection - store synthtype in newSynthType
+  newSynthType = synthType;
   std::cout << "newSynthType: " << newSynthType
     << ", curSynthType: " << curSynthType
     << ", waeformType: " <<  waveformType << std::endl;
 
-  // TODO store synthType in newSynthType
 
-  
   if(changeImmediately)
   {
     changeSynth(newSynthType, waveformType);
