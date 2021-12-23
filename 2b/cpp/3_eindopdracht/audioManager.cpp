@@ -8,7 +8,9 @@
 
 #define WRITE_TO_FILE 0
 
-AudioManager::AudioManager() : modSynth(nullptr), masterAmp(0.15), frameIndex(0)
+AudioManager::AudioManager() : modSynth(nullptr), masterAmp(0.15),
+  frameIndex(0), newSynthType(SynthType::None), curSynthType(SynthType::None),
+  waveformType(ModSynth::Waveform::None)
 {
 #if WRITE_TO_FILE
 
@@ -32,8 +34,9 @@ AudioManager::AudioManager() : modSynth(nullptr), masterAmp(0.15), frameIndex(0)
   frameInterval = samplerate;
 
   makeMelody();
-  // create synth based on user input
-  changeSynth();
+  // create synth based on user input - immediately, init straight away
+  changeSynth(true);
+
   // set first note of the melody as midiPitch
   updatePitch();
 
@@ -61,9 +64,12 @@ void AudioManager::makeMelody()
   melody.setCharHop(modulo);
 }
 
-bool AudioManager::changeSynth()
+bool AudioManager::changeSynth(bool changeImmediately)
 {
-  // create a string array with the synth type options from enum 
+
+  std::string synthType = "";
+  // NOTE: it is possible to choose the same synth again, no check for that
+  // create a string array with the synth type options from enum
   //print them as string
   std::string* synthTypeOptions = new std::string[SynthType::Size];
   for(int i = 0; i < SynthType::Size; i++) {
@@ -78,14 +84,6 @@ bool AudioManager::changeSynth()
   delete [] synthTypeOptions;
   synthTypeOptions = nullptr;
 
-  // create the by the user selected synth type
-  return changeSynth(synthType);
-}
-
-bool AudioManager::changeSynth(SynthType synthType)
-{
-  // if synth is assigned to dynamic allocated Synth object- delete it
-  deleteSynth();
 
   // create a string array with the waveform type options
   std::string* waveformOptions = new std::string[ModSynth::Waveform::Size];
@@ -94,10 +92,32 @@ bool AudioManager::changeSynth(SynthType synthType)
   }
 
   // retrieve the user selection in form of an enum
-  ModSynth::Waveform waveformType = (ModSynth::Waveform)
+  waveformType = (ModSynth::Waveform)
     UserInput::retrieveSelectionIndex(waveformOptions, ModSynth::Waveform::Size);
 
-  //creat a synth with the selected SynthType and WaveformType
+  // release the dynamic synth array
+  delete [] waveformOptions;
+  waveformOptions = nullptr;
+
+  // done with selection - store synthtype in newSynthType
+  newSynthType = synthType;
+  std::cout << "newSynthType: " << newSynthType
+    << ", curSynthType: " << curSynthType
+    << ", waeformType: " <<  waveformType << std::endl;
+
+
+  if(changeImmediately)
+  {
+    changeSynth(newSynthType, waveformType);
+  }
+  return true;
+}
+
+bool AudioManager::changeSynth(SynthType synthType, ModSynth::Waveform waveformType)
+{
+  // if synth is assigned to dynamic allocated Synth object- delete it
+  deleteSynth();
+
   switch(synthType) {
     case AMSynthType:
       modSynth = new AMSynth(waveformType, samplerate);
@@ -110,10 +130,11 @@ bool AudioManager::changeSynth(SynthType synthType)
       // failed assinging new synth
       return false;
   }
+  curSynthType = newSynthType;
   return true;
 }
 
-void AudioManager::updatePitch() 
+void AudioManager::updatePitch()
 {
   //function gets called depending on frameInterval
   //get midinumber from melody array
@@ -131,7 +152,7 @@ void AudioManager::assignAudioCallback()
   // TODO - add method to AudioManager to set the franeInterval in seconds
   // e..g. 0.1 --> 0.1 * samplerate inside method
   frameInterval = 0.5 * samplerate;
-  
+
   // start with the first pitch
   updatePitch();
 
@@ -139,6 +160,12 @@ void AudioManager::assignAudioCallback()
   // NOTE: an empty process loop, just to log current synth
   jack->onProcess = [this](jack_default_audio_sample_t *inBuf,
     jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
+
+    // check if we need to change the current synth, if so, recreate synth
+    if(newSynthType != curSynthType) {
+      changeSynth(newSynthType, waveformType);
+    }
+
     // fill output buffer
     for(unsigned int i = 0; i < nframes; i++) {
 
