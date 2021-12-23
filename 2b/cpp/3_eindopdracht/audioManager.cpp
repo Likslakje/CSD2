@@ -55,13 +55,12 @@ AudioManager::~AudioManager()
 
 void AudioManager::makeMelody()
 {
-  //get user input, count num chars
-  int numChars = UserInput::retrieveMelodyInput();
-  // wrap numChars by using modulo
-  int modulo;
-  modulo = numChars % NUM_NOTES;
-  //hop through melody array
-  melody.setCharHop(modulo);
+  //get user input
+  std::string melodyInput = UserInput::retrieveMelodyInput();
+  melody.setNoteHop(melodyInput);
+  melody.setRhythmHop(melodyInput);
+  // get the array with hop values
+  rhythmHop = melody.getRhythmHop();
 }
 
 bool AudioManager::changeSynth(bool changeImmediately)
@@ -101,10 +100,9 @@ bool AudioManager::changeSynth(bool changeImmediately)
 
   // done with selection - store synthtype in newSynthType
   newSynthType = synthType;
-  std::cout << "newSynthType: " << newSynthType
-    << ", curSynthType: " << curSynthType
-    << ", waeformType: " <<  waveformType << std::endl;
-
+  std::cout << "New synth " << newSynthType 
+    << " may not be the same as current synth " << curSynthType
+    << std::endl;
 
   if(changeImmediately)
   {
@@ -146,13 +144,19 @@ void AudioManager::updatePitch()
   modSynth->setMPitch(pitch);
 }
 
+float AudioManager::calculateInterval(){
+  if(rhythmIndex <= melody.getStringLength()){
+    frameInterval = rhythmHop[rhythmIndex] * samplerate;
+  }else{
+    rhythmIndex = 0;
+  }
+  return frameInterval;
+}
 
 void AudioManager::assignAudioCallback()
 {
-  // TODO - add method to AudioManager to set the franeInterval in seconds
+  // TODO - add method to AudioManager to set the frameInterval in seconds
   // e..g. 0.1 --> 0.1 * samplerate inside method
-  frameInterval = 0.5 * samplerate;
-
   // start with the first pitch
   updatePitch();
 
@@ -170,11 +174,15 @@ void AudioManager::assignAudioCallback()
     for(unsigned int i = 0; i < nframes; i++) {
 
       // check if we need to set the frequency to the next note
-      if(frameIndex >= frameInterval) {
+      // calculate interval can be done more efficient 
+      if(frameIndex >= calculateInterval()){
         // reset frameIndex
         frameIndex = 0;
+        rhythmIndex += 1;
         updatePitch();
-      } else {
+        std::cout<< calculateInterval() <<std::endl;
+        std::cout<< rhythmHop[rhythmIndex] <<std::endl;
+      }else{
         // increment frameindex
         frameIndex++;
       }

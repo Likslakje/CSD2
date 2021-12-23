@@ -8,10 +8,36 @@ Melody::Melody()
 Melody::~Melody()
 {}
 
-void Melody::setCharHop(int hop)
+void Melody::setNoteHop(std::string melodyInput)
 {
-  // set the charHop after userInput
-  charHop = hop;
+  // cast melodyInput string to a char* array
+  charArray = &melodyInput[0];
+
+  stringLength = melodyInput.length();
+  // wrap numChars by using modulo
+  int modulo = stringLength % NUM_NOTES;
+
+  // hop through melody array
+  // -1 so it can never be 6 in which case the note will stay the same
+  if(modulo == NUM_NOTES -1){
+    charHop = 1;
+  }else{
+    charHop = modulo;
+  }
+  std::cout<< modulo <<std::endl;
+}
+
+void Melody::setRhythmHop(std::string melodyInput){
+  // make an array of the Ascii values of each char
+  // divide the ascii value by 10 so it can be used as 
+  // an time interval
+  // Cast each char to its respective Ascii int
+  // and append it to the rhythmHop array
+  // I know the length is dependend on NUM_NOTES...
+  for(int i = 0; i < stringLength; i++){
+    rhythmHop[i] = int(charArray[i]) / 100.f;
+    std::cout<< rhythmHop[i] << " ";
+  }
 }
 
 float Melody::getPitch()
@@ -25,4 +51,12 @@ float Melody::getPitch()
   // index++ --> first use current value to read from array, after this
   // increment with 1
   return baseMelody[index++];
+}
+
+int Melody::getStringLength(){
+  return stringLength;
+}
+
+float* Melody::getRhythmHop(){
+  return rhythmHop;
 }

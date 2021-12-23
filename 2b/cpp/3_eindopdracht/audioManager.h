@@ -43,6 +43,8 @@ protected:
   double masterAmp;
   int frameIndex;
   int frameInterval;
+  int rhythmIndex = 0;
+  float *rhythmHop;
 
   //protected cuz does not need to be accessed
   bool changeSynth(SynthType synthType, ModSynth::Waveform waveformType);
@@ -53,4 +55,6 @@ protected:
   // to alter the waveformType without reallocating a synth, new- and
   // curWaveformType might be nice.
   ModSynth::Waveform waveformType;
+
+  float calculateInterval();
 };
