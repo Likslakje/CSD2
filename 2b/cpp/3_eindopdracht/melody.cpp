@@ -24,7 +24,6 @@ void Melody::setNoteHop(std::string melodyInput)
   }else{
     charHop = modulo;
   }
-  std::cout<< modulo <<std::endl;
 }
 
 void Melody::setRhythmHop(std::string melodyInput){
@@ -33,10 +32,9 @@ void Melody::setRhythmHop(std::string melodyInput){
   // an time interval
   // Cast each char to its respective Ascii int
   // and append it to the rhythmHop array
-  // I know the length is dependend on NUM_NOTES...
+  // Yes, I know the max length is set to 100...
   for(int i = 0; i < stringLength; i++){
     rhythmHop[i] = int(charArray[i]) / 100.f;
-    std::cout<< rhythmHop[i] << " ";
   }
 }
 

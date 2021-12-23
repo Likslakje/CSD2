@@ -34,6 +34,6 @@ protected:
 
   // rhythmHop array as long as number of possible notes
   // TODO: make array length dynamic depending on UserInput
-  float rhythmHop[NUM_NOTES];
+  float rhythmHop[100];
   int index = 0;
 };

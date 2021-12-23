@@ -144,19 +144,22 @@ void AudioManager::updatePitch()
   modSynth->setMPitch(pitch);
 }
 
-float AudioManager::calculateInterval(){
+void AudioManager::calculateInterval(){
+  // hop through rhythm array based on the length of the input string
   if(rhythmIndex <= melody.getStringLength()){
     frameInterval = rhythmHop[rhythmIndex] * samplerate;
   }else{
     rhythmIndex = 0;
   }
-  return frameInterval;
 }
 
 void AudioManager::assignAudioCallback()
 {
   // TODO - add method to AudioManager to set the frameInterval in seconds
   // e..g. 0.1 --> 0.1 * samplerate inside method
+
+  // get first frameInterval value
+  calculateInterval();
   // start with the first pitch
   updatePitch();
 
@@ -175,13 +178,12 @@ void AudioManager::assignAudioCallback()
 
       // check if we need to set the frequency to the next note
       // calculate interval can be done more efficient 
-      if(frameIndex >= calculateInterval()){
+      if(frameIndex >= frameInterval){
         // reset frameIndex
         frameIndex = 0;
         rhythmIndex += 1;
+        calculateInterval();
         updatePitch();
-        std::cout<< calculateInterval() <<std::endl;
-        std::cout<< rhythmHop[rhythmIndex] <<std::endl;
       }else{
         // increment frameindex
         frameIndex++;

@@ -56,5 +56,5 @@ protected:
   // curWaveformType might be nice.
   ModSynth::Waveform waveformType;
 
-  float calculateInterval();
+  void calculateInterval();
 };
