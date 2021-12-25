@@ -21,6 +21,7 @@ int main(int argc,char **argv)
         break;
 
       case 'c':
+        std::cout << "Warning: new synth may not be the same as current synth" << std::endl;
         audioManager.changeSynth();
         break;
     }
