@@ -54,6 +54,7 @@ protected:
   float midiPitch;
   double carrierFreq;
   double modulatorFreq;
+  double amplitude;
 
   // Oscillator pointers
   Oscillator* modulatorOsc;

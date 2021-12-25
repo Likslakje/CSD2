@@ -2,7 +2,7 @@
 #include <math.h>
 
 ModSynth::ModSynth(Waveform waveformType, double samplerate) : sample(0.0),
-  samplerate(samplerate), modRatio(0.1), modDepth(0.25), carAmp(0.25)
+  samplerate(samplerate), modRatio(0.1), modDepth(0.25), carAmp(0.25), amplitude(0.5)
 {
   std::cout << "\n• ModSynth::ModSynth" << std::endl;
   setWaveform(waveformType);

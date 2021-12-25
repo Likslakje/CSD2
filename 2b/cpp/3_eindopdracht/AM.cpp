@@ -25,5 +25,5 @@ void AMSynth::calculate()
   // go to next sample
   carrierOsc->nextSample();
   // set sample to mudalated waveform
-  sample = carrierOsc->getSample();
+  sample = carrierOsc->getSample() * amplitude;
 }

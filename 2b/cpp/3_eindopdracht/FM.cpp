@@ -18,5 +18,5 @@ void FMSynth::calculate()
   carrierOsc->nextSample();
   modulatorOsc->nextSample();
   // set the output sample to the modulated waveform
-  sample = (carrierOsc->getSample() + modulatorOsc->getSample()) * 0.1;
+  sample = (carrierOsc->getSample() + modulatorOsc->getSample()) * amplitude;
 }
