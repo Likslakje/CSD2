@@ -87,6 +87,9 @@ void ModSynth::setWaveform(Waveform waveformType){
       modulatorOsc = new Square(modulatorFreq, samplerate);
       carrierOsc = new Square(carrierFreq, samplerate);
     break;
+    case TriangleType:
+      modulatorOsc = new Triangle(modulatorFreq, samplerate);
+      carrierOsc = new Triangle(carrierFreq, samplerate);
   default:
     /* code */
     break;

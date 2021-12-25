@@ -13,11 +13,15 @@ Triangle::~Triangle()
 
 void Triangle::calculate()
 {
-	// calculate the triangle waveform
-	if(phase <= 0.5){
-			sample = phase;
-	}else{
-			sample = (phase * -1) + 0.5;
+	double newSample = phase;
+	if(newSample > 0.5) {
+	// [0.5, 1] --> [0.5, 0]
+	newSample = 1.0 - newSample;  
+	sample = newSample;
 	}
+	// transform all values between [0, 0.5] to [-1, 1] 
+	newSample *= 4.0;
+	newSample -=1.0;
+	sample = newSample;
 }
 

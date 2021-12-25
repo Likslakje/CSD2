@@ -23,6 +23,7 @@ std::string UserInput::retrieveMelodyInput()
   // get line allows for spaces to get through
   std::getline(std::cin, melodyInput);
   removeSpaces(melodyInput);
+  std::cout<< melodyInput <<std::endl;
   return melodyInput;
 }
 
@@ -50,17 +51,9 @@ void UserInput::removeSpaces(std::string &str)
 		// if current characters is non-space
 		if (str[j] != ' ')
 		{
-			// remove preceding spaces before dot,
-			// comma & question mark
-			if ((str[j] == '.' || str[j] == ',' ||
-				str[j] == '?') && i - 1 >= 0 &&
-				str[i - 1] == ' ')
-				str[i - 1] = str[j++];
-
-			else
-				// copy current character at index i
-				// and increment both i and j
-				str[i++] = str[j++];
+      // copy current character at index i
+      // and increment both i and j
+      str[i++] = str[j++];
 
 			// set space flag to false when any
 			// non-space character is found
@@ -79,7 +72,6 @@ void UserInput::removeSpaces(std::string &str)
 			}
 		}
 	}
-
 	// Remove trailing spaces
 	if (i <= 1)
 		str.erase(str.begin() + i, str.end());
