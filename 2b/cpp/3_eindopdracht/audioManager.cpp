@@ -65,8 +65,6 @@ void AudioManager::makeMelody()
 
 bool AudioManager::changeSynth(bool changeImmediately)
 {
-
-  // std::string synthType = "";
   // NOTE: it is possible to choose the same synth again, no check for that
   // create a string array with the synth type options from enum
   //print them as string
@@ -100,9 +98,6 @@ bool AudioManager::changeSynth(bool changeImmediately)
 
   // done with selection - store synthtype in newSynthType
   newSynthType = synthType;
-  std::cout << "New synth " << newSynthType 
-    << " may not be the same as current synth " << curSynthType
-    << std::endl;
 
   if(changeImmediately)
   {
@@ -223,7 +218,9 @@ std::string AudioManager::synthTypeToString(SynthType type)
 
 void AudioManager::deleteSynth()
 {
+  #if DEBUG >= 2
   std::cout<< "delete Synths" <<std::endl;
+  #endif
   //if a synth object is created then delete it
   if(modSynth != nullptr) {
     // delete current synth

@@ -3,12 +3,16 @@
 
 Square::Square(double frequency, double samplerate) : Oscillator(frequency, samplerate)
 {
+	#if DEBUG >= 1
 	std::cout<< "constructor Square" <<std::endl;
+	#endif
 }
 
 Square::~Square()
 {
+	#if DEBUG >= 1
 	std::cout<< "destructor Square" <<std::endl;
+	#endif
 }
 
 void Square::calculate()

@@ -8,12 +8,16 @@ Oscillator::Oscillator() {}
 Oscillator::Oscillator(double frequency, double samplerate) : frequency(frequency), samplerate(samplerate),
 	amplitude(1.0), phase(0.0), sample(0)
 {
+	#if DEBUG >= 1
 	std::cout<< "contructor Oscillator" <<std::endl;
+	#endif
 }
 
 Oscillator::~Oscillator()
 {
+	#if DEBUG >= 1
 	std::cout<< "destructor Oscillator" <<std::endl;
+	#endif
 }
 
 void Oscillator::setFrequency(double frequency)

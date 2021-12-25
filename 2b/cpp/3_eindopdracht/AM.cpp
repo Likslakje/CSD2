@@ -3,14 +3,18 @@
 AMSynth::AMSynth(Waveform waveformType, double samplerate) :
   ModSynth(waveformType, samplerate)
 {
+  #if DEBUG >= 1
   std::cout << "• AMSynth constructor" << std::endl;
+  #endif
   modSynthName = "AM";
 
 }
 
 AMSynth::~AMSynth()
 {
+  #if DEBUG >= 1
   std::cout << "• AMSynth destructor" << std::endl;
+  #endif
 }
 
 void AMSynth::calculate()
@@ -25,5 +29,5 @@ void AMSynth::calculate()
   // go to next sample
   carrierOsc->nextSample();
   // set sample to mudalated waveform
-  sample = carrierOsc->getSample() * amplitude;
+  sample = carrierOsc->getSample();
 }

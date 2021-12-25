@@ -6,12 +6,16 @@
 
 Sine::Sine(double frequency, double samplerate) : Oscillator(frequency, samplerate)
 {
+  #if DEBUG >= 1
   std::cout<< "constructor Sine" <<std::endl;
+  #endif
 }
 
 Sine::~Sine()
 {
+  #if DEBUG >= 1
   std::cout<< "destructor Sine" <<std::endl;
+  #endif
 }
 
 void Sine::calculate()

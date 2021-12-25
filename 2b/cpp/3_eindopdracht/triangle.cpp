@@ -3,12 +3,16 @@
 #include "math.h"
 Triangle::Triangle(double frequency, double samplerate) : Oscillator(frequency, samplerate)
 {
+	#if DEBUG >= 1
 	std::cout<< "constructor Triangle" <<std::endl;
+	#endif
 }
 
 Triangle::~Triangle()
 {
+	#if DEBUG >= 1
 	std::cout<< "destructor Triangle" <<std::endl;
+	#endif
 }
 
 void Triangle::calculate()

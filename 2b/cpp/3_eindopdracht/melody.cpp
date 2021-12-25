@@ -21,6 +21,9 @@ void Melody::setNoteHop(std::string melodyInput)
   // -1 so it can never be 6 in which case the note will stay the same
   if(modulo == NUM_NOTES -1){
     charHop = 1;
+  }
+  else if(modulo == 0){
+    charHop = 1;
   }else{
     charHop = modulo;
   }

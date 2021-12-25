@@ -18,12 +18,14 @@ std::string UserInput::retrieveMelodyInput()
 {
   // get a string from user
   // retrun its length to set the melody charHop size
-  std::cout<< "Enter something..." <<std::endl;
+  std::cout<< "Type something..." <<std::endl;
   std::string melodyInput;
   // get line allows for spaces to get through
   std::getline(std::cin, melodyInput);
   removeSpaces(melodyInput);
+  #if DEBUG == 3
   std::cout<< melodyInput <<std::endl;
+  #endif
   return melodyInput;
 }
 
