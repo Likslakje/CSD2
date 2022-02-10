@@ -4,6 +4,7 @@
 #include "math.h"
 #include "writeToFile.h"
 #include "tremolo.h"
+#include "sine.h"
 
 /*
  * NOTE: jack2 needs to be installed
@@ -28,7 +29,8 @@ int main(int argc,char **argv)
   float amplitude = 0.5;
 
   // instantiate tremolo effect
-  Tremolo tremolo(samplerate);
+  // Tremolo tremolo(samplerate);
+  // Sine sine(440, samplerate);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);
@@ -37,13 +39,13 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #else
   // assign a function to the JackModule::onProces
-  jack.onProcess = [&amplitude, &tremolo](jack_default_audio_sample_t* inBuf,
+  jack.onProcess = [&amplitude](jack_default_audio_sample_t* inBuf,
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      // outBuf[i] = tremolo.processFrame(inBuf[i]) * amplitude;
+      // outBuf[i] = sine.genNextSample() * amplitude;
       outBuf[i] = inBuf[i] * amplitude;
-      std::cout<< inBuf[i] <<std::endl;
+      std::cout<< inBuf[i] * amplitude <<std::endl;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;
