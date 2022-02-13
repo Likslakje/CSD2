@@ -1,10 +1,11 @@
 #include <iostream>
 #include <thread>
-#include "jack_module.h"
+#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
 #include "math.h"
-#include "writeToFile.h"
+#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
+#include "circularBuffer.h"
 #include "tremolo.h"
-#include "sine.h"
+#include "delay.h"
 
 /*
  * NOTE: jack2 needs to be installed
@@ -14,7 +15,7 @@
  * jackd -d coreaudio
  */
 
-#define WRITE_TO_FILE 0
+#define WRITE_TO_FILE 1
 #define WRITE_NUM_SAMPLES 44100
 
 int main(int argc,char **argv)
@@ -25,12 +26,13 @@ int main(int argc,char **argv)
 
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
-  float samplerate = jack.getSamplerate();
+  unsigned int samplerate = jack.getSamplerate();
   float amplitude = 0.5;
 
   // instantiate tremolo effect
-  // Tremolo tremolo(samplerate);
-  // Sine sine(440, samplerate);
+  //samplerate, modDepth, mofFreq, waveform
+  Tremolo tremolo(samplerate);
+  // Delay delay(samplerate);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);
@@ -39,13 +41,11 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #else
   // assign a function to the JackModule::onProces
-  jack.onProcess = [&amplitude](jack_default_audio_sample_t* inBuf,
+  jack.onProcess = [&amplitude, &tremolo](jack_default_audio_sample_t* inBuf,
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      // outBuf[i] = sine.genNextSample() * amplitude;
-      outBuf[i] = inBuf[i] * amplitude;
-      std::cout<< inBuf[i] * amplitude <<std::endl;
+      outBuf[i] = tremolo.processFrame(inBuf[i]) * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;
