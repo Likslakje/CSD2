@@ -8,6 +8,7 @@
 
 class AudioEffect{
   public:
+    AudioEffect();
     //enum in base class cuz can use it as modulation source
     enum WaveformType {
         SINE = 0, // ensure enum starts at 0
@@ -15,23 +16,29 @@ class AudioEffect{
         SQUARE,
         SIZE // 3
     };
-
-    AudioEffect();
-    AudioEffect(unsigned int samplerate, WaveformType waveformType, float modFreq);
+    AudioEffect(unsigned int samplerate, WaveformType waveformType, 
+      float modFreq, float ratio);
     virtual ~AudioEffect();
+    // applies tremolo effect to the input frame
+    virtual float applyEffect(float input) = 0;
+    void calcDryWet(float ratio);
+    float getDrySig();
+    float getWetSig();
+    float getEffectedSample(float directInput);
+    Oscillator* getOscillator();
 
-        // applies tremolo effect to the input frame
-    virtual float processFrame(float input) = 0;
-
-    unsigned int getSamplerate();
-
-private:
-    CircBuf* circularBuffer;
+  private:
+    CircBuf* circBuf;
     Oscillator* osc;
     unsigned int samplerate;
-    float dryWet;
+    float modFreq;
+    // 0 = dry, 1 = wet
+    float ratio;
+    float drySig;
+    float wetSig;
     float gain;
     //true = bypass, false = effect
     bool bypass;
+    float effectedSample;
 
 };

@@ -5,7 +5,9 @@ AudioEffect::AudioEffect(){
 
 }
 
-AudioEffect::AudioEffect(unsigned int samplerate, WaveformType waveformType, float modFreq) : samplerate(samplerate){
+AudioEffect::AudioEffect(unsigned int samplerate, WaveformType waveformType, 
+    float modFreq, float ratio) : samplerate(samplerate), modFreq(modFreq),
+    ratio(ratio){
   std::cout<< "contructor AudioEffect" <<std::endl;
   switch (waveformType){
     case WaveformType::SINE:
@@ -38,6 +40,30 @@ AudioEffect::~AudioEffect(){
   osc = nullptr;
 }
 
-unsigned int AudioEffect::getSamplerate(){
-    return samplerate;
+void AudioEffect::calcDryWet(float ratio){
+    drySig = ratio;
+    wetSig = 1 - ratio;
+}
+
+float AudioEffect::getDrySig(){
+    return drySig;
+}
+
+float AudioEffect::getWetSig(){
+    return wetSig;
+}
+
+float AudioEffect::getEffectedSample(float directInput){
+    float effectOutput = applyEffect(directInput);
+    //dry * luidheid + wet(get from effect) * luidheid
+    //set the amplitude of the dry signal
+    directInput *= drySig;
+    // set amplitude of wet signal
+    effectOutput *= wetSig;
+    float effectedSample = directInput + effectOutput;
+    return effectedSample;
+}
+
+Oscillator* AudioEffect::getOscillator(){
+    return osc;
 }

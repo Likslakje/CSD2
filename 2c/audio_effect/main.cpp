@@ -20,9 +20,10 @@
 
 int main(int argc,char **argv)
 {
-
+ 
   // create a JackModule instance
   JackModule jack;
+  AudioEffect* audioEffect;
 
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
@@ -31,7 +32,7 @@ int main(int argc,char **argv)
 
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
-  Tremolo tremolo(samplerate);
+  Tremolo tremolo(samplerate, 0, 10.0f, 1.0f);
   // Delay delay(samplerate);
 
 #if WRITE_TO_FILE
@@ -45,7 +46,7 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = tremolo.processFrame(inBuf[i]) * amplitude;
+      outBuf[i] = audioEffect.processFrame(inBuf[i]) * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;

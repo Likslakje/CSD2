@@ -1,7 +1,9 @@
 #include <iostream>
 #include "delay.h"
 
-Delay::Delay(unsigned int samplerate) : AudioEffect(samplerate){
+Delay::Delay(unsigned int samplerate, WaveformType waveformType,
+      float modFreq, float ratio) : AudioEffect(samplerate, 
+      waveformType, modFreq, ratio){
     std::cout<< "constructor Delay" <<std::endl;
 }
 
@@ -18,7 +20,7 @@ void Delay::setDelayTime(unsigned int delaySamples){
     delayTime = samplesToMillis(delaySamples);
 }
 
-float Delay::processFrame(float input)
+float Delay::applyEffect(float input)
 {
   return input;
 }
