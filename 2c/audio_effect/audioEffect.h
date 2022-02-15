@@ -9,36 +9,30 @@
 class AudioEffect{
   public:
     AudioEffect();
-    //enum in base class cuz can use it as modulation source
-    enum WaveformType {
-        SINE = 0, // ensure enum starts at 0
-        SAW,
-        SQUARE,
-        SIZE // 3
-    };
-    AudioEffect(unsigned int samplerate, WaveformType waveformType, 
-      float modFreq, float ratio);
+    AudioEffect(unsigned int samplerate, float dryWet, bool bypass);
     virtual ~AudioEffect();
-    // applies tremolo effect to the input frame
-    virtual float applyEffect(float input) = 0;
-    void calcDryWet(float ratio);
-    float getDrySig();
-    float getWetSig();
-    float getEffectedSample(float directInput);
+    //creaets the necessary oscillator dynamicly
+    void selectWaveform(Oscillator::WaveformType waveformType);
     Oscillator* getOscillator();
+    //creates a circular buffer of the selected size
+    void selectBuffer(CircBuf::BufferSizeType bufferType);
+    CircBuf* getBufferType();
+    // apply the effect for each frame
+    virtual float applyEffect(float input) = 0;
+    //get the the effected sample
+    float getEffectedSample(float directInput);
 
   private:
-    CircBuf* circBuf;
     Oscillator* osc;
+    CircBuf* circBuf;
     unsigned int samplerate;
-    float modFreq;
     // 0 = dry, 1 = wet
-    float ratio;
-    float drySig;
-    float wetSig;
-    float gain;
+    //TODO: fix drywet with equal power panning curve
+    float dryWet;
     //true = bypass, false = effect
     bool bypass;
+    //default modfreq is 2 Hz
+    float modFreq = 2;
     float effectedSample;
 
 };

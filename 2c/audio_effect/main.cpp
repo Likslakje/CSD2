@@ -5,7 +5,7 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 #include "circularBuffer.h"
 #include "tremolo.h"
-#include "delay.h"
+// #include "delay.h"
 
 /*
  * NOTE: jack2 needs to be installed
@@ -23,7 +23,7 @@ int main(int argc,char **argv)
  
   // create a JackModule instance
   JackModule jack;
-  AudioEffect* audioEffect;
+  // AudioEffect* audioEffect;
 
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
@@ -32,7 +32,7 @@ int main(int argc,char **argv)
 
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
-  Tremolo tremolo(samplerate, 0, 10.0f, 1.0f);
+  Tremolo tremolo(samplerate,Oscillator::WaveformType::SINE, 0.6, 4.0);
   // Delay delay(samplerate);
 
 #if WRITE_TO_FILE
@@ -46,7 +46,7 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = audioEffect.processFrame(inBuf[i]) * amplitude;
+      outBuf[i] = tremolo.getEffectedSample(inBuf[i]) * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;

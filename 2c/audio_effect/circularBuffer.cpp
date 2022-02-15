@@ -1,33 +1,56 @@
 #include <iostream>
 #include "circularBuffer.h"
 
-CircBuf::CircBuf(int size, int numSamplesDelay) : size(size), numSamplesDelay(numSamplesDelay){
-    std::cout<< "contructor circular buffer" <<std::endl;
-    buffer = new float[size];
-    //make sure  buffer is 0 at every index
-    for(int i = 0; i < size; i ++){
-        buffer[i] = 0;
-    }
+CircBuf::CircBuf(){
+
 }
+
+CircBuf::CircBuf(unsigned int samplerate, int size) : 
+  samplerate(samplerate), size(size){
+  std::cout<< "contructor CircBuf" <<std::endl;
+
+  buffer = new float[size];
+  //make sure theres no shit in the buffer
+  for (int i = 0; i < size; i++){
+    buffer[i] = 0;
+  };
+
+  //set write/read heads to correct starting index
+  numSamplesDelay = millisToSamples(delayTime);
+  writeHead = 0;
+  readHead = size - numSamplesDelay;
+}
+
 
 CircBuf::~CircBuf(){
-    std::cout<< "~destructor circular buffer" <<std::endl;
-    //release the buffer
-    delete [] buffer;
-    buffer = nullptr;
+  std::cout<< "~destructor CircBuf" <<std::endl;
+  //release that bitch
+  delete [] buffer;
+  buffer = nullptr;
 }
 
-void CircBuf::writeToBuf(float value){
-    //somethimng execute sample tick
-        // buffer[i] = value;
+unsigned int CircBuf::millisToSamples(float delayTime){
+  //1000 ms = 44100 samples
+  delayTime *= 44.1f;
+  return delayTime;
 }
 
-float CircBuf::readBuf(){
-    return delayedValue;
+void CircBuf::writeToBuf(float sample){
+  writeHead = wrapHead(writeHead);
+  buffer[writeHead++] = sample;
 }
 
-void CircBuf::wrapWrite(){
-    if(write >= size){
-        write -= size;
-    }
+float CircBuf::readFromBuf(){
+  readHead = wrapHead(readHead);
+  float sample = buffer[readHead++];
+  return sample;
+
 }
+
+int CircBuf::wrapHead(int head){
+  if (head > size) {
+    return 0;
+  }else{
+    return head;
+  }
+} 

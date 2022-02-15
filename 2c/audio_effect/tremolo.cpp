@@ -1,8 +1,9 @@
 #include "tremolo.h"
 
-Tremolo::Tremolo(unsigned int samplerate, WaveformType waveformType = SINE, 
-  float modFreq = 10.0f, float ratio = 1.0f) : AudioEffect(samplerate, waveformType, modFreq, ratio){
+Tremolo::Tremolo(unsigned int samplerate, Oscillator::WaveformType waveformType, 
+  float dryWet, float modFreq) : AudioEffect(samplerate, waveformType, dryWet){
   std::cout<< "constructor Tremolo" <<std::endl;
+  setModFreq(modFreq);
 }
 
 Tremolo::~Tremolo(){

@@ -23,5 +23,6 @@ class CircBuf{
     int size;
     float* buffer;
     int readHead;
+    //make sure the index starts at 0
     int writeHead = 0;
 };

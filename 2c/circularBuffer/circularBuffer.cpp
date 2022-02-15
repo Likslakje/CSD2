@@ -24,6 +24,7 @@ CircBuf::CircBuf(unsigned int samplerate, DelayTimeType delayTimeType,
       break;
     }
     default:
+      //a modderfokking starwars reference
       throw "if an item does not appear in our records, it does not exist";
       break;
     }
