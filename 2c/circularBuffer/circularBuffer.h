@@ -13,12 +13,15 @@ class CircBuf{
       float delayTime);
     ~CircBuf();
     unsigned int millisToSamples(float delayTime);
+    void writeToBuf(float sample);
+    float readFromBuf();
+    int wrapHead(int head);
   private:
     unsigned int samplerate;
+    int numSamplesDelay;
     float delayTime;
     int size;
-    int numSamplesDelay;
     float* buffer;
-    int write;
-    int read;
+    int readHead;
+    int writeHead = 0;
 };

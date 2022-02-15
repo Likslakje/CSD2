@@ -18,7 +18,7 @@ int main(int argc,char **argv){
   CircBuf* circBuf;
   WriteToFile fileWriter("output.csv", true);
 
-  std::cout<< "Please enter delay time type: \n0 = short(2 sec)\n 1 = mid (5 sec) \n 2 = long (10 sec)" 
+  std::cout<< "Please enter delay time type: \n0 = short(2 sec)\n1 = mid (5 sec) \n2 = long (10 sec)" 
     <<std::endl;
   std::string getUserDelayType;
   std::cin>> getUserDelayType;
@@ -43,16 +43,21 @@ int main(int argc,char **argv){
       break;
   }
 
+  // for (int i = 0; i < 200; i++){
+  //   circBuf->writeToBuf(sine.genNextSample());
+  // }
+
 
   // assign a function to the JackModule::onProces
-  jack.onProcess = [&amplitude, &sine, &fileWriter](jack_default_audio_sample_t* inBuf,
+  jack.onProcess = [&amplitude, &sine, &circBuf, &fileWriter](jack_default_audio_sample_t* inBuf,
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = sine.genNextSample() * amplitude;
+      circBuf->writeToBuf(sine.genNextSample());
+      outBuf[i] = circBuf->readFromBuf();
       // ----- write result to file -----
       static int count = 0;
-      if(count < 441000) {
-        fileWriter.write(std::to_string(outBuf[i]) + "\n");
+      if(count < 10000) {
+        fileWriter.write(std::to_string(sine.getSample() + circBuf->readFromBuf()) + "\n");
       } else {
         // log 'Done' message to console, only once
         static bool loggedDone = false;
@@ -84,10 +89,10 @@ int main(int argc,char **argv){
       case 'q':
         running = false;
         jack.end();
-        if(circBuf != nullptr){
-          delete circBuf;
-          circBuf = nullptr;
-        }
+        // if(circBuf != nullptr){
+        //   delete circBuf;
+        //   circBuf = nullptr;
+        // }
         break;
       }
   }

@@ -12,15 +12,15 @@ CircBuf::CircBuf(unsigned int samplerate, DelayTimeType delayTimeType,
   //select the buffer size from enum
   switch (delayTimeType){
     case DelayTimeType::SHORT:{
-      size = 2000 * samplerate;
+      size = 2 * samplerate;
       break;
     }
     case DelayTimeType::MID:{
-      size = 5000 * samplerate;
+      size = 5 * samplerate;
       break;
     }
     case DelayTimeType::LONG:{
-      size = 10000 * samplerate;
+      size = 10 * samplerate;
       break;
     }
     default:
@@ -36,8 +36,8 @@ CircBuf::CircBuf(unsigned int samplerate, DelayTimeType delayTimeType,
 
   //set write/read heads to correct starting index
   numSamplesDelay = millisToSamples(delayTime);
-  write = 0;
-  read = size - numSamplesDelay;
+  writeHead = 0;
+  readHead = size - numSamplesDelay;
 }
 
 
@@ -51,7 +51,25 @@ CircBuf::~CircBuf(){
 unsigned int CircBuf::millisToSamples(float delayTime){
   //1000 ms = 44100 samples
   delayTime *= 44.1f;
-  std::cout<< delayTime <<std::endl;
   return delayTime;
 }
 
+void CircBuf::writeToBuf(float sample){
+  writeHead = wrapHead(writeHead);
+  buffer[writeHead++] = sample;
+}
+
+float CircBuf::readFromBuf(){
+  readHead = wrapHead(readHead);
+  float sample = buffer[readHead++];
+  return sample;
+
+}
+
+int CircBuf::wrapHead(int head){
+  if (head > size) {
+    return 0;
+  }else{
+    return head;
+  }
+} 
