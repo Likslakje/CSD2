@@ -1,16 +1,17 @@
 #include <iostream>
 #include "audioEffect.h"
 
-
 class Delay : public AudioEffect{
-    public:
-        Delay(unsigned int samplerate, WaveformType waveformType,
-      float modFreq, float ratio);
-        ~Delay();
-        float samplesToMillis(unsigned int delaySamples);
-        void setDelayTime(unsigned int delaySamples);
-        float applyEffect(float input) override;
+  public:
+    Delay(unsigned int samplerate, float dryWet, 
+      bool bypass, float delayTime);
+    ~Delay();
+    //creates a circular buffer of the selected size
+    void selectBuffer(BufferSizeType bufferType);
+    CircBuf* getBufferType();
+    float samplesToMillis(unsigned int delaySamples);
 
-    private:
-        float delayTime;
+  private:
+    float delayTime;
+    CircBuf* circBuf;
 };

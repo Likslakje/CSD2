@@ -5,7 +5,7 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 #include "circularBuffer.h"
 #include "tremolo.h"
-// #include "delay.h"
+#include "simpleDelay.h"
 
 /*
  * NOTE: jack2 needs to be installed
@@ -32,8 +32,7 @@ int main(int argc,char **argv)
 
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
-  Tremolo tremolo(samplerate,Oscillator::WaveformType::SINE, 0.6, 4.0);
-  // Delay delay(samplerate);
+  Tremolo tremolo(samplerate, 0.6, false, Modulation::WaveformType::SINE, 2.0);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);
@@ -46,7 +45,7 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = tremolo.getEffectedSample(inBuf[i]) * amplitude;
+      outBuf[i] = tremolo.applyEffect(inBuf[i]) * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;
