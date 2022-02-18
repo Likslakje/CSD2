@@ -33,20 +33,20 @@ int main(int argc,char **argv)
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
   Tremolo tremolo(samplerate, 0.6, false, Modulation::WaveformType::SINE, 2.0);
-  SimpleDelay SimpleDelay(samplerate, 0.6, false, Delay::BufferSizeType::SHORT, 250);
+  SimpleDelay simpleDelay(samplerate, 0.6, false, Delay::BufferSizeType::SHORT, 250);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);
   // assign a function to the JackModule::onProces
-  jack.onProcess = [&amplitude, &tremolo, &fileWriter](jack_default_audio_sample_t* inBuf,
+  jack.onProcess = [&amplitude, &simpleDelay, &fileWriter](jack_default_audio_sample_t* inBuf,
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #else
   // assign a function to the JackModule::onProces
-  jack.onProcess = [&amplitude, &tremolo](jack_default_audio_sample_t* inBuf,
+  jack.onProcess = [&amplitude, &simpleDelay](jack_default_audio_sample_t* inBuf,
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = tremolo.applyEffect(inBuf[i]) * amplitude;
+      outBuf[i] = simpleDelay.applyEffect(inBuf[i]) * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;
