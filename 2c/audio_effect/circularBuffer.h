@@ -3,8 +3,8 @@
 
 class CircBuf{
   public:  
-    CircBuf();
-    CircBuf(unsigned int samplerate, int size);
+    // CircBuf();
+    CircBuf(unsigned int samplerate, int size, float delayTime);
     ~CircBuf();
     unsigned int millisToSamples(float delayTime);
     void writeToBuf(float sample);
@@ -17,7 +17,7 @@ class CircBuf{
     float delayTime;
     int size;
     float* buffer;
-    int readHead;
     //make sure the index starts at 0
     int writeHead = 0;
+    int readHead;
 };

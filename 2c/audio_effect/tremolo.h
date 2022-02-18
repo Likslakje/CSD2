@@ -1,5 +1,4 @@
 #include <iostream>
-#include "audioEffect.h"
 #include "modulation.h"
 
 class Tremolo : public Modulation{

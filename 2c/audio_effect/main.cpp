@@ -3,9 +3,10 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
 #include "math.h"
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
-#include "circularBuffer.h"
+// #include "circularBuffer.h"
 #include "tremolo.h"
 #include "simpleDelay.h"
+#include "circularBuffer.h"
 
 /*
  * NOTE: jack2 needs to be installed
@@ -23,7 +24,6 @@ int main(int argc,char **argv)
  
   // create a JackModule instance
   JackModule jack;
-  // AudioEffect* audioEffect;
 
   // init the jack, use program name as JACK client name
   jack.init(argv[0]);
@@ -32,8 +32,8 @@ int main(int argc,char **argv)
 
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
-  Tremolo tremolo(samplerate, 0.6, false, Modulation::WaveformType::SINE, 2.0);
-  SimpleDelay simpleDelay(samplerate, 0.6, false, Delay::BufferSizeType::SHORT, 250);
+  // Tremolo tremolo(samplerate, 0.6, false, Modulation::WaveformType::SINE, 5.0);
+  SimpleDelay simpleDelay(samplerate, 0.6, false, Delay::BufferSizeType::MID, 1000);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);

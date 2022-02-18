@@ -1,13 +1,18 @@
+#pragma once
 #include <iostream>
 #include "circularBuffer.h"
+//for the debugging
+#include "audioEffect.h"
 
-CircBuf::CircBuf(){
+// CircBuf::CircBuf(){
+  
+// }
 
-}
-
-CircBuf::CircBuf(unsigned int samplerate, int size) : 
+CircBuf::CircBuf(unsigned int samplerate, int size, float delayTime) : 
   samplerate(samplerate), size(size){
-  std::cout<< "contructor CircBuf" <<std::endl;
+  #if DEBUG > 0
+    std::cout<< "contructor CircBuf" <<std::endl;
+  #endif
 
   buffer = new float[size];
   //make sure theres no shit in the buffer
@@ -15,15 +20,17 @@ CircBuf::CircBuf(unsigned int samplerate, int size) :
     buffer[i] = 0;
   };
 
+  millisToSamples(delayTime);
   //set write/read heads to correct starting index
-  numSamplesDelay = millisToSamples(delayTime);
   writeHead = 0;
   readHead = size - numSamplesDelay;
 }
 
 
 CircBuf::~CircBuf(){
-  std::cout<< "~destructor CircBuf" <<std::endl;
+  #if DEBUG > 0
+    std::cout<< "~destructor CircBuf" <<std::endl;
+  #endif
   //release that bitch
   delete [] buffer;
   buffer = nullptr;
@@ -31,17 +38,25 @@ CircBuf::~CircBuf(){
 
 unsigned int CircBuf::millisToSamples(float delayTime){
   //1000 ms = 44100 samples
-  delayTime *= 44.1f;
-  return delayTime;
+  numSamplesDelay = delayTime * 44.1f;
+  #if DEBUG > 1
+    std::cout<< "CircBuf::CircBuf millisToSamps: " << numSamplesDelay <<std::endl;
+  #endif
 }
 
 void CircBuf::writeToBuf(float sample){
   writeHead = wrapHead(writeHead);
+  #if DEBUG > 2
+    std::cout<< "CircBuf::CircBuf writeToBuf : writehead: " << writeHead <<std::endl;
+  #endif
   buffer[writeHead++] = sample;
 }
 
 float CircBuf::readFromBuf(){
   readHead = wrapHead(readHead);
+  #if DEBUG > 2
+    std::cout<< "CircBuf::CircBuf writeToBuf : readHead: " << readHead <<std::endl;
+  #endif
   float sample = buffer[readHead++];
   return sample;
 

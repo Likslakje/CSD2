@@ -8,7 +8,7 @@ Delay::Delay(unsigned int samplerate, float dryWet, bool bypass,
     std::cout<< "contructor Delay" <<std::endl;
   #endif
   //create a Circbuffer object dynamicly
-  selectBuffer(bufferSizeType);
+  selectBuffer(bufferSizeType, delayTime);
 }
 
 Delay::~Delay(){
@@ -20,23 +20,24 @@ Delay::~Delay(){
   circBuf = nullptr;
 }
 
-void Delay::selectBuffer(BufferSizeType bufferType){
+void Delay::selectBuffer(BufferSizeType bufferType, float delayTime){
   //select the buffer size from enum
   unsigned int samplerate = getSamplerate();
+  int size;
   switch (bufferType){
     case BufferSizeType::SHORT:{
-      int size = 2 * samplerate;
-      circBuf = new CircBuf(samplerate, size);
+      size = 2 * samplerate;
+      circBuf = new CircBuf(samplerate, size, delayTime);
       break;
     }
     case BufferSizeType::MID:{
-      int size = 5 * samplerate;
-      circBuf = new CircBuf(samplerate, size);
+      size = 5 * samplerate;
+      circBuf = new CircBuf(samplerate, size, delayTime);
       break;
     }
     case BufferSizeType::LONG:{
-      int size = 10 * samplerate;
-      circBuf = new CircBuf(samplerate, size);
+      size = 10 * samplerate;
+      circBuf = new CircBuf(samplerate, size, delayTime);
       break;
     }
     default:
@@ -44,13 +45,11 @@ void Delay::selectBuffer(BufferSizeType bufferType){
       throw "if an item does not appear in our records, it does not exist";
       break;
   }
+  #if DEBUG > 1
+    std::cout<< "Delay::Delay selectBuffer: " << size <<std::endl;
+  #endif
 }
 
 CircBuf* Delay::getBufferType(){
   return circBuf;
-}
-
-float Delay::samplesToMillis(unsigned int delaySamples){
-    float delayMillis = delaySamples;
-    return delayMillis;
 }
