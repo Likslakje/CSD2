@@ -15,7 +15,7 @@
  * jackd -d coreaudio
  */
 
-#define WRITE_TO_FILE 1
+#define WRITE_TO_FILE 0
 #define WRITE_NUM_SAMPLES 44100
 
 int main(int argc,char **argv)
@@ -33,6 +33,7 @@ int main(int argc,char **argv)
   // instantiate tremolo effect
   //samplerate, modDepth, mofFreq, waveform
   Tremolo tremolo(samplerate, 0.6, false, Modulation::WaveformType::SINE, 2.0);
+  SimpleDelay SimpleDelay(samplerate, 0.6, false, Delay::BufferSizeType::SHORT, 250);
 
 #if WRITE_TO_FILE
   WriteToFile fileWriter("output.csv", true);

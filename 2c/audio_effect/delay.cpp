@@ -2,13 +2,19 @@
 #include "delay.h"
 
 Delay::Delay(unsigned int samplerate, float dryWet, bool bypass,
-  float delayTime) : delayTime(delayTime), AudioEffect(samplerate,
+  BufferSizeType bufferSizeType, float delayTime) : delayTime(delayTime), AudioEffect(samplerate,
   dryWet, bypass){
-  std::cout<< "contructor Delay" <<std::endl;
+  #if DEBUG > 0 
+    std::cout<< "contructor Delay" <<std::endl;
+  #endif
+  //create a Circbuffer object dynamicly
+  selectBuffer(bufferSizeType);
 }
 
 Delay::~Delay(){
-  std::cout<< "~destructor Delay" <<std::endl;
+  #if DEBUG > 0
+    std::cout<< "~destructor Delay" <<std::endl;
+  #endif
   // release dynamically allocated circbuffer object.
   delete circBuf;
   circBuf = nullptr;

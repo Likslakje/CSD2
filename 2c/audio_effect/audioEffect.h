@@ -5,8 +5,8 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/sine.h"
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/square.h"
 #include "circularBuffer.h"
-// 0 = none, 1 = low, 2= mid, 3 = high
-#define DEBUG 3
+// 0 = none, 1 = low, 2= mid, 3 = high, 4 = ur mom's a hoe
+#define DEBUG 0
 
 class AudioEffect{
   public:

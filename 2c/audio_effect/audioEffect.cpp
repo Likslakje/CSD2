@@ -8,7 +8,9 @@ AudioEffect::AudioEffect(){
 AudioEffect::AudioEffect(unsigned int samplerate, float dryWet, 
   bool bypass) : samplerate(samplerate), dryWet(dryWet),
   bypass(bypass){
-  std::cout<< "contructor AudioEffect" <<std::endl;
+  #if DEBUG > 0
+    std::cout<< "contructor AudioEffect" <<std::endl;
+  #endif
 
 }
 
