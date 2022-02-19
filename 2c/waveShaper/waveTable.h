@@ -13,9 +13,11 @@ class Wavetable{
     int sizeTable;
     // initialize it with index 0
     unsigned int wavetableSamplerate;
-    int writeWavetableIndex = 0;
-    int readWavetableIndex = 0;
+    int writeSample = 0;
+    int readSample = 0;
     int sampleCount = 0;
+    // this changes to interpolation later
+    int sampleReadCount = 0;
     unsigned int calcWavetableSamplerate(unsigned int samplerate, int freq);
    
 };

@@ -3,10 +3,6 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
 #include "math.h"
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
-#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/oscillator.h"
-#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/saw.h"
-#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/sine.h"
-#include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/oscillators/square.h"
 #include "waveTable.h"
 
 #define WRITE_TO_FILE 0
@@ -22,17 +18,12 @@ int main(int argc,char **argv)
   jack.init(argv[0]);
   unsigned int samplerate = jack.getSamplerate();
   float amplitude = 0.5;
-  float freq = 440;
-  Sine sine(freq, samplerate);
-  Wavetable wavetableObj(samplerate, 8, freq);
+  Wavetable wavetable(samplerate, 8, Wavetable::WaveformType::SINE, 440);
 
-  for(int i = 0; i < 200; i++){
-    float sineSample = sine.genNextSample();
-    // std::cout<< "sineSample: " << sineSample <<std::endl;
-    wavetableObj.fillWavetable(sineSample);  }
-  for(int i = 0; i < 200; i++){
-    std::cout<< "wavetableObj [i]: " << wavetableObj.getWavetableAtIndex() <<std::endl;
-  }
+ for(int i = 0; i < 8; i++){
+   wavetable.oscToWavetable();
+   std::cout<< wavetable.getSampWavetable() <<std::endl;
+ }
 
 
 // #if WRITE_TO_FILE

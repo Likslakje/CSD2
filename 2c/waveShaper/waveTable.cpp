@@ -8,6 +8,7 @@ Wavetable::Wavetable(unsigned int samplerate, int sizeTable, int freq) :
   wavetable = new float(sizeTable);
   for(int i = 0; i < sizeTable; i++){
     wavetable[i] = 0;
+    std::cout<< "waveTable creation" << wavetable[i] <<std::endl;
   }
 
   wavetableSamplerate = calcWavetableSamplerate(samplerate, freq);
@@ -20,13 +21,18 @@ Wavetable::~Wavetable(){
 }
 
 float Wavetable::getWavetableAtIndex(){
-  if(readWavetableIndex > sizeTable){
-    readWavetableIndex = 0;
-    return wavetable[readWavetableIndex];
+  if(readSample < sizeTable){
+    if(sampleReadCount == wavetableSamplerate){
+      // wavetable[readSample];
+      readSample++;
+    }else{
+      sampleReadCount++;
+    }
   }else{
-    // std::cout<< wavetable[readWavetableIndex++] <<std::endl;
-    return wavetable[readWavetableIndex++];
-  };
+    //wrap
+    readSample = 0;
+  }
+  return wavetable[readSample];
 }
 
 unsigned int Wavetable::calcWavetableSamplerate(unsigned int samplerate, int freq){
@@ -40,15 +46,23 @@ unsigned int Wavetable::calcWavetableSamplerate(unsigned int samplerate, int fre
 
 void Wavetable::fillWavetable(float sample){
   // only add a sample to the wavetable at een certain interval
-  if(writeWavetableIndex < sizeTable){
-    if(sampleCount >= wavetableSamplerate){
-      sampleCount = 0;
-      // the first index (0) is skipped beacause all waveforms start at 0
-      wavetable[writeWavetableIndex] = sample;
-      writeWavetableIndex++;
+  if(writeSample < sizeTable){
+    if(sampleCount == wavetableSamplerate){
+      // std::cout<< "samplecount wavetablesr" << sampleCount << " " << wavetableSamplerate <<std::endl;
+      if(writeSample < sizeTable){
+        // std::cout<< "wavetable writesample" << writeSample <<std::endl;
+        wavetable[writeSample] = sample;
+        // std::cout<< "wavetable write sample" << sample <<std::endl;
+        // std::cout<< "wavetable write index" << wavetable[writeSample] <<std::endl;
+        sampleCount = 0;
+        writeSample++;
+      }
     }else{
       sampleCount++;
     }
+  }else{
+    //wrap
+    // writeSample = 0;
   }
 }
 
