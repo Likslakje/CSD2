@@ -44,3 +44,7 @@ int CircBuf::wrapHead(int head){
     return head;
   }
 } 
+
+float* CircBuf::getBuffer(){
+  return buffer;
+}

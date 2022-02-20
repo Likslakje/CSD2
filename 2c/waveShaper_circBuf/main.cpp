@@ -20,10 +20,11 @@ int main(int argc,char **argv)
   float amplitude = 0.5;
   Wavetable wavetable(samplerate, 8, Wavetable::WaveformType::SINE, 440);
 
- for(int i = 0; i < 8; i++){
-   wavetable.oscToWavetable();
-   std::cout<< wavetable.getSampWavetable() <<std::endl;
+ for(int i = 0; i < 200; i++){
+  //  wavetable.oscToWavetable();
+   std::cout<< "wavetable.getSampWavetable(): " << wavetable.getSampWavetable() <<std::endl;
  }
+ 
 
 
 // #if WRITE_TO_FILE

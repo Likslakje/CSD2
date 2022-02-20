@@ -9,6 +9,7 @@ class CircBuf{
     void writeToBuf(float sample);
     float readFromBuf();
     int wrapHead(int head);
+    float* getBuffer();
   private:
     unsigned int samplerate;
     int size;

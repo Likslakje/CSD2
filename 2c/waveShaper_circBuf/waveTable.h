@@ -19,7 +19,6 @@ class Wavetable{
       WaveformType waveformType, int freq);
     ~Wavetable();
     void selectWaveform(WaveformType waveformType);
-    unsigned int calcWavetableSamplerate(unsigned int samplerate, int freq);
     void oscToWavetable();
     float getSampWavetable();
   private:
@@ -28,5 +27,12 @@ class Wavetable{
     unsigned int samplerate;
     int size;
     float freq;
+    unsigned int calcWavetableSamplerate(unsigned int samplerate, int freq);
+    unsigned int wavetableSamplerate;
+    int writeCount = 0;
+    int samplerateWriteCount = 0;
+    int readCount = 0;
+    int samplerateReadCount = 0;
+    float sample = 0;
 
 };

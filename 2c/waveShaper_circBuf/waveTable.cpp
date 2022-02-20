@@ -12,6 +12,13 @@ Wavetable::Wavetable(unsigned int samplerate, int size,
 
   circBuf = new CircBuf(size);
   selectWaveform(waveformType);
+  wavetableSamplerate = calcWavetableSamplerate(samplerate, freq);
+
+  //this function is executed in the contructor
+  //because we only need to get one cycle, once
+  for(int i = 0; i < samplerate / freq; i++){
+    oscToWavetable();
+  }
 }
 
 Wavetable::~Wavetable(){
@@ -55,12 +62,31 @@ unsigned int Wavetable::calcWavetableSamplerate(unsigned int samplerate, int fre
 }
 
 void Wavetable::oscToWavetable(){
+  //stop writing to the buffer after the buffer had been filled once
+  //this is not needed anymore sinds we can make a complete
+  //wavefrom at the given frequency with just one cycle
   float sample = osc->genNextSample();
-  circBuf->writeToBuf(sample);
+  if(samplerateWriteCount >= wavetableSamplerate){
+    if(writeCount < size){
+      circBuf->writeToBuf(sample);
+      writeCount++;
+    }
+      samplerateWriteCount = 0;
+  }else{
+    samplerateWriteCount++;
+  }
 }
 
 float Wavetable::getSampWavetable(){
-  float sample = circBuf->readFromBuf();
+  //the readhead will return the same sample as many times
+  //as the interval (aka downsampling)
+  if(wavetableSamplerate < samplerateReadCount){
+    sample = circBuf->readFromBuf();
+    samplerateReadCount = 0;
+    return sample;
+  }else{
+    samplerateReadCount++;
+  }
   return sample;
 }
 
