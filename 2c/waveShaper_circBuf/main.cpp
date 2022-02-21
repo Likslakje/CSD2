@@ -5,7 +5,7 @@
 #include "../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 #include "waveTable.h"
 
-#define WRITE_TO_FILE 0
+#define WRITE_TO_FILE 1
 #define WRITE_NUM_SAMPLES 440
 
 int main(int argc,char **argv)
@@ -18,7 +18,7 @@ int main(int argc,char **argv)
   jack.init(argv[0]);
   unsigned int samplerate = jack.getSamplerate();
   float amplitude = 0.5;
-  Wavetable wavetable(samplerate, 8, Wavetable::WaveformType::SINE, 440);
+  Wavetable wavetable(samplerate, 225, Wavetable::WaveformType::SINE, 440);
 
 //  for(int i = 0; i < 200; i++){
 //   //  wavetable.oscToWavetable();
@@ -38,7 +38,7 @@ int main(int argc,char **argv)
     jack_default_audio_sample_t* outBuf, jack_nframes_t nframes) {
 #endif
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = wavetable.getSampWavetable();
+      outBuf[i] = wavetable.getSampWavetable() * amplitude;
       // ----- write result to file -----
 #if WRITE_TO_FILE
       static int count = 0;
