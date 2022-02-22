@@ -18,7 +18,9 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
 
   makeEffect(effect);
   assignAudioCallback();
+  std::cout<< "before auto connect" <<std::endl;
   jack->autoConnect();
+  std::cout<< "after auto connect" <<std::endl;
 
 #endif
 }
@@ -177,21 +179,12 @@ void AudioManager::assignAudioCallback()
 
     // fill output buffer
     for(unsigned int i = 0; i < nframes; i++) {
-
-      // check if we need to set the frequency to the next note
-      // calculate interval can be done more efficient 
-      if(frameIndex >= frameInterval){
-        // reset frameIndex
-        frameIndex = 0;
-      }else{
-        // increment frameindex
-        frameIndex++;
-      }
-
-      // write sample to output
       outBuf[i] = audioEffect->applyEffect(inBuf[i]) * amplitude;
-
     }
     return 0;
   };
+}
+
+void AudioManager::end(){
+  jack->end();
 }

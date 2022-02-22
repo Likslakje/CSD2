@@ -29,6 +29,7 @@ public:
   float setDelayTime();
   void assignAudioCallback();
   void makeEffect(EffectType effect);
+  void end();
 
 protected:
   float amplitude = 0.5;
