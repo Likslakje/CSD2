@@ -18,12 +18,13 @@ Tremolo::~Tremolo(){
 
 float Tremolo::applyEffect(float input){
   float effectedSample;
+  float dryWet = getDryWet();
   bool bypass = getBypass();
   if (bypass == false){
     // transform sine in range [-1, 1] to range [0, 1]
     float modSignal = getOscillator()->genNextSample() * 0.5 + 0.5;
     // apply modulation signal to input
-    effectedSample = input * modSignal;
+    effectedSample = input * (modSignal * dryWet);
   }else{
     effectedSample = input;
   }

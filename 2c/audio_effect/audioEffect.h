@@ -11,8 +11,8 @@ class AudioEffect{
     // apply the effect for each frame
     virtual float applyEffect(float input) = 0;
     unsigned int getSamplerate();
+    float getDryWet();
     bool getBypass();
-
   private:
     unsigned int samplerate;
     // 0 = dry, 1 = wet

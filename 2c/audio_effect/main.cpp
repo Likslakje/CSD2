@@ -11,12 +11,6 @@
  * jackd -d coreaudio
  */
 
-#define WRITE_TO_FILE 1
-#define WRITE_NUM_SAMPLES 44100
-
-int numEffects = 2;
-std::string effectOptions[2] = {"tremolo", "simpleDelay"};
-
 int main(int argc,char **argv)
 {
   AudioManager audioManager(argv);
@@ -35,8 +29,5 @@ int main(int argc,char **argv)
         break;
       }
   }
-
-  //end the program
   return 0;
-
-} // main()
+}

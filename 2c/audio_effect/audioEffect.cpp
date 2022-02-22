@@ -24,6 +24,10 @@ unsigned int AudioEffect::getSamplerate(){
   return samplerate;
 }
 
+float AudioEffect::getDryWet(){
+  return dryWet;
+}
+
 bool AudioEffect::getBypass(){
   #if DEBUG > 2
    std::cout<< "AudioEffect::AudioEffect getBypass : bypass: " << bypass <<std::endl;
