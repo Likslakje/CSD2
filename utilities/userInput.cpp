@@ -69,12 +69,12 @@ int UserInput::retrieveSelectionIndex(std::string selectionOptions[], int numOpt
 
 float UserInput::retrieveValueInRange(float min, float max) {
   std::string input;
-  std::cin>>input;
+  // std::cin>>input;
   float value = 0;
   bool notInRange = true;
 
   while(notInRange) {
-    std::cout << "Please enter a value between " << min << " and " << max
+    std::cout << "Must be value between " << min << " and " << max
       << std::endl;
     // first capture input in input string
     std::cin >> input;

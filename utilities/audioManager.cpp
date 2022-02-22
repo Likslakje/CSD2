@@ -12,63 +12,21 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
 #else
 
   jack = new JackModule();
-  //run Cate bitch...
+  //give program name to jack
   jack->init(argv[0]);
   samplerate = jack->getSamplerate();
 
-  //choose effect
-  // make string of Enum options
-  std::string* effectOptions = new std::string[EffectType::SIZE];
-    for(int i = 0; i < EffectType::SIZE; i++) {
-     effectOptions[i] = effectEnumToString((EffectType)i);
-  }
-  // std::string userSelection = UserInput::retrieveSelection(effectOptions, EffectType::SIZE);
-  // retrieve the user selection in form of an enum
-  EffectType effectType = (EffectType)
-  UserInput::retrieveSelectionIndex(effectOptions, EffectType::SIZE);
-
-  std::cout<< "Please enter dry/wet ratio: " <<std::endl;
-  float dryWet = UserInput::retrieveValueInRange(0, 1);
-
-  bool bypass = false;
-
-  // actual effect choosing
-  switch (effectType){
-    case TREMOLO: {
-      Modulation::WaveformType delayTimeType = waveformTypeSelection();
-      float delayTime = setModFreq();
-      tremolo = new Tremolo(samplerate, dryWet, bypass, 
-        delayTimeType, delayTime);  
-      break;
-    }
-    case SIMPLEDELAY: {
-      Delay::BufferSizeType delayTimeType = delayTimeSelection();
-      float delayTime = setDelayTime();
-      simpeleDelay = new SimpleDelay(samplerate, dryWet, bypass,
-        delayTimeType, delayTime);
-      break;
-    }
-    default:{
-      throw "If it does not appear in our database, it does not excist";
-      break;
-    }
-  }
-  effect = effectType;
-
+  makeEffect(effect);
+  assignAudioCallback();
   jack->autoConnect();
 
-  // //release the string to enum pointer
-  // delete [] effectOptions;
-  // effectOptions = nullptr;
 #endif
 }
 
 AudioManager::~AudioManager()
 {
-  delete tremolo;
-  tremolo = nullptr;
-  delete simpeleDelay;
-  simpeleDelay = nullptr;
+  delete audioEffect;
+  audioEffect = nullptr;
 }
 
 std::string AudioManager::effectEnumToString(EffectType type)
@@ -165,6 +123,51 @@ float AudioManager::setDelayTime(){
   return delayTime;
 }
 
+void AudioManager::makeEffect(EffectType effect){
+    //choose effect
+  // make string of Enum options
+  std::string* effectOptions = new std::string[EffectType::SIZE];
+    for(int i = 0; i < EffectType::SIZE; i++) {
+     effectOptions[i] = effectEnumToString((EffectType)i);
+  }
+  // std::string userSelection = UserInput::retrieveSelection(effectOptions, EffectType::SIZE);
+  // retrieve the user selection in form of an enum
+  EffectType effectType = (EffectType)
+  UserInput::retrieveSelectionIndex(effectOptions, EffectType::SIZE);
+
+  std::cout<< "Please enter dry/wet ratio: " <<std::endl;
+  float dryWet = UserInput::retrieveValueInRange(0, 1);
+
+  bool bypass = false;
+
+  // actual effect choosing
+  switch (effectType){
+    case TREMOLO: {
+      Modulation::WaveformType delayTimeType = waveformTypeSelection();
+      float modFreq = setModFreq();
+      audioEffect = new Tremolo(samplerate, dryWet, bypass, 
+        delayTimeType, modFreq);  
+      break;
+    }
+    case SIMPLEDELAY: {
+      Delay::BufferSizeType delayTimeType = delayTimeSelection();
+      float delayTime = setDelayTime();
+      audioEffect = new SimpleDelay(samplerate, dryWet, bypass,
+        delayTimeType, delayTime);
+      break;
+    }
+    default:{
+      throw "If it does not appear in our database, it does not excist";
+      break;
+    }
+  }
+  effect = effectType;
+
+  //release the string to enum pointer
+  delete [] effectOptions;
+  effectOptions = nullptr;
+}
+
 void AudioManager::assignAudioCallback()
 {
   // assign a function to the JackModule::onProces
@@ -186,7 +189,7 @@ void AudioManager::assignAudioCallback()
       }
 
       // write sample to output
-      outBuf[i] = effect->applyEffect(inBuf[i]) * amplitude;
+      outBuf[i] = audioEffect->applyEffect(inBuf[i]) * amplitude;
 
     }
     return 0;

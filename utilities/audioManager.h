@@ -28,13 +28,14 @@ public:
   float setModFreq();
   float setDelayTime();
   void assignAudioCallback();
-  void makeEffect();
+  void makeEffect(EffectType effect);
 
 protected:
   float amplitude = 0.5;
   JackModule* jack;
-  Tremolo* tremolo;
-  SimpleDelay* simpeleDelay;
+  // Tremolo* tremolo;
+  // SimpleDelay* simpeleDelay;
+  AudioEffect* audioEffect;
   //var
   double samplerate;
   double masterAmp;
