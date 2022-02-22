@@ -1,4 +1,4 @@
-//All credits for AudioManger go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/xx_eindopdrachtExamples/07_choicesSynth
+//Original credits for AudioManger go to Ciska Vriezenga https://github.com/ciskavriezenga/CSD_21-22/tree/taylorSwift/csd2b/theorie/xx_eindopdrachtExamples/07_choicesSynth
 
 #include "audioManager.h"
 #define WRITE_TO_FILE 0
@@ -18,9 +18,7 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
 
   makeEffect(effect);
   assignAudioCallback();
-  std::cout<< "before auto connect" <<std::endl;
   jack->autoConnect();
-  std::cout<< "after auto connect" <<std::endl;
 
 #endif
 }
@@ -98,12 +96,12 @@ Modulation::WaveformType AudioManager::waveformTypeSelection(){
 
 Delay::BufferSizeType AudioManager::delayTimeSelection(){
     //make string of Enum options
-  std::string* delayTimeOptions = new std::string[Delay::BufferSizeType ::SIZE];
-    for(int i = 0; i < Delay::BufferSizeType ::SIZE; i++) {
+  std::string* delayTimeOptions = new std::string[Delay::BufferSizeType::SIZE];
+    for(int i = 0; i < Delay::BufferSizeType::SIZE; i++) {
     delayTimeOptions[i] = delayTimeEnumToString((Delay::BufferSizeType )i);
   }
   // retrieve the user selection in form of an enum
-  Delay::BufferSizeType delayTimeType = (Delay::BufferSizeType )
+  Delay::BufferSizeType delayTimeType = (Delay::BufferSizeType)
   UserInput::retrieveSelectionIndex(delayTimeOptions, Delay::BufferSizeType::SIZE);
 
   delete [] delayTimeOptions;
@@ -118,10 +116,11 @@ float AudioManager::setModFreq(){
   return modFreq;
 }
 
-float AudioManager::setDelayTime(){
+float AudioManager::setDelayTime(Delay::BufferSizeType delayTimeType){
   std::cout<< "Please set delay time: " <<std::endl;
-  //TODO: get size of enum type for max range
-  float delayTime = UserInput::retrieveValueInRange(0, 10000);
+  //get size of enum type for max range
+  int maxSize = Delay::selectSize(samplerate, delayTimeType);
+  float delayTime = UserInput::retrieveValueInRange(0, maxSize);
   return delayTime;
 }
 
@@ -153,7 +152,8 @@ void AudioManager::makeEffect(EffectType effect){
     }
     case SIMPLEDELAY: {
       Delay::BufferSizeType delayTimeType = delayTimeSelection();
-      float delayTime = setDelayTime();
+      //give the delayTimeType to the function so ze can set the max
+      float delayTime = setDelayTime(delayTimeType);
       audioEffect = new SimpleDelay(samplerate, dryWet, bypass,
         delayTimeType, delayTime);
       break;

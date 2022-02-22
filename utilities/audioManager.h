@@ -5,6 +5,8 @@
 #include "userInput.h"
 #include "../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
 #include "../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
+//we need the delay base class for its static function
+#include "../2c/audio_effect/delay.h"
 #include "../2c/audio_effect/simpleDelay.h"
 #include "../2c/audio_effect/tremolo.h"
 
@@ -26,7 +28,7 @@ public:
   Modulation::WaveformType waveformTypeSelection();
   Delay::BufferSizeType delayTimeSelection();
   float setModFreq();
-  float setDelayTime();
+  float setDelayTime(Delay::BufferSizeType delayTimeType);
   void assignAudioCallback();
   void makeEffect(EffectType effect);
   void end();

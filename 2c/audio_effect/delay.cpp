@@ -20,10 +20,38 @@ Delay::~Delay(){
   circBuf = nullptr;
 }
 
+int Delay::selectSize(unsigned int samplerate, BufferSizeType bufferType){
+  //this function is used in the Audiomanger setDelayTime function
+  //to set the max value of the user input
+  //select the buffer size from enum
+  static int sizeBuf;
+  switch (bufferType){
+    case BufferSizeType::SHORT:{
+      sizeBuf = 2000;
+      break;
+    }
+    case BufferSizeType::MID:{
+      sizeBuf = 5000;
+      break;
+    }
+    case BufferSizeType::LONG:{
+      sizeBuf = 10000;
+      break;
+    }
+    default:
+      //a modderfokking starwars reference
+      throw "if an item does not appear in our records, it does not exist";
+      break;
+  }
+  #if DEBUG > 1
+    std::cout<< "Delay::Delay selectBuffer: " << size <<std::endl;
+  #endif
+  return sizeBuf;
+}
+
 void Delay::selectBuffer(BufferSizeType bufferType, float delayTime){
   //select the buffer size from enum
   unsigned int samplerate = getSamplerate();
-  int size;
   switch (bufferType){
     case BufferSizeType::SHORT:{
       size = 2 * samplerate;
