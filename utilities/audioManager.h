@@ -7,8 +7,7 @@
 #include "../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 //we need the delay base class for its static function
 #include "../2c/audio_effect/delay.h"
-#include "../2c/audio_effect/simpleDelay.h"
-#include "../2c/audio_effect/tremolo.h"
+#include "../2c/audio_effect/modulation.h"
 
 class AudioManager
 {
@@ -17,6 +16,8 @@ public:
   enum EffectType {
     TREMOLO = 0,
     SIMPLEDELAY,
+    CHORUS,
+    WAVESHAPER,
     SIZE, // 2s
     NONE
   };
@@ -29,6 +30,7 @@ public:
   Delay::BufferSizeType delayTimeSelection();
   float setModFreq();
   float setDelayTime(Delay::BufferSizeType delayTimeType);
+  float setDelayFeedback();
   void assignAudioCallback();
   void makeEffect(EffectType effect);
   void end();

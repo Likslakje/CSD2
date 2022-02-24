@@ -12,16 +12,19 @@ class Delay : public AudioEffect{
     SIZE // 3
   };
     Delay(unsigned int samplerate, float dryWet, 
-      bool bypass, BufferSizeType bufferSizeType, float delayTime);
+      bool bypass, BufferSizeType bufferSizeType, float delayTime,
+      float feedback);
     ~Delay();
-    //creates a circular buffer of the selected size
     // selectSize sperate cuz we need it for retrieveValueInRange functions max
     static int selectSize(unsigned int samplerate, BufferSizeType bufferType);
+    //creates a circular buffer of the selected size
     void selectBuffer(BufferSizeType bufferType, float delayTime);
-    CircBuf* getBufferType();
+    float applyEffect(float input) override;
 
-  private:
+  protected:
     float delayTime;
+    float feedback;
+    float delayedSignal = 0;
     CircBuf* circBuf;
     //make static cuz it needs to be accessed from AudioManager
     int size;

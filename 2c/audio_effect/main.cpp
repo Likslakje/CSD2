@@ -11,6 +11,9 @@
  * jackd -d coreaudio
  */
 
+//default modulation = tremolo (am) 
+//default delay = simple delay
+
 int main(int argc,char **argv)
 {
   AudioManager audioManager(argv);

@@ -2,8 +2,9 @@
 #include "delay.h"
 
 Delay::Delay(unsigned int samplerate, float dryWet, bool bypass,
-  BufferSizeType bufferSizeType, float delayTime) : delayTime(delayTime), AudioEffect(samplerate,
-  dryWet, bypass){
+  BufferSizeType bufferSizeType, float delayTime, float feedback) : 
+  delayTime(delayTime), feedback(feedback),
+  AudioEffect(samplerate, dryWet, bypass){
   #if DEBUG > 0 
     std::cout<< "contructor Delay" <<std::endl;
   #endif
@@ -51,7 +52,6 @@ int Delay::selectSize(unsigned int samplerate, BufferSizeType bufferType){
 
 void Delay::selectBuffer(BufferSizeType bufferType, float delayTime){
   //select the buffer size from enum
-  unsigned int samplerate = getSamplerate();
   switch (bufferType){
     case BufferSizeType::SHORT:{
       size = 2 * samplerate;
@@ -78,6 +78,20 @@ void Delay::selectBuffer(BufferSizeType bufferType, float delayTime){
   #endif
 }
 
-CircBuf* Delay::getBufferType(){
-  return circBuf;
+float Delay::applyEffect(float input){
+  #if DEBUG > 2
+    std::cout<< "SimpleDdelay::SimpleDelay applyEffect : bypass: " << bypass <<std::endl;
+  #endif
+  float effectedSample;
+  if (bypass == false){
+    circBuf->writeToBuf(input + (delayedSignal * feedback));
+    delayedSignal = circBuf->readFromBuf();
+    effectedSample = input + (delayedSignal * dryWet);
+  }else{
+    effectedSample = input;
+  }
+  #if DEBUG > 2
+    std::cout<< "SimpleDelay::SimpleDelay effectedSample: " << effectedSample <<std::endl;
+  #endif
+  return effectedSample;
 }

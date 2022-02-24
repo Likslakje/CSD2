@@ -33,10 +33,14 @@ std::string AudioManager::effectEnumToString(EffectType type)
 {
   //Return selected synth from enum as string
   switch(type) {
-  case TREMOLO:
+    case TREMOLO:
       return "tremolo";
     case SIMPLEDELAY:
       return "simpleDelay";
+    case CHORUS:
+      return "chorus";
+    case WAVESHAPER:
+      return "waveshaper";
     default:
       return "Invalid effect";
   }
@@ -124,6 +128,12 @@ float AudioManager::setDelayTime(Delay::BufferSizeType delayTimeType){
   return delayTime;
 }
 
+float AudioManager::setDelayFeedback(){
+  std::cout<< "Please set feedback amount: " <<std::endl;
+  float feedback = UserInput::retrieveValueInRange(0, 1);
+  return feedback;
+}
+
 void AudioManager::makeEffect(EffectType effect){
     //choose effect
   // make string of Enum options
@@ -146,7 +156,7 @@ void AudioManager::makeEffect(EffectType effect){
     case TREMOLO: {
       Modulation::WaveformType delayTimeType = waveformTypeSelection();
       float modFreq = setModFreq();
-      audioEffect = new Tremolo(samplerate, dryWet, bypass, 
+      audioEffect = new Modulation(samplerate, dryWet, bypass, 
         delayTimeType, modFreq);  
       break;
     }
@@ -154,8 +164,9 @@ void AudioManager::makeEffect(EffectType effect){
       Delay::BufferSizeType delayTimeType = delayTimeSelection();
       //give the delayTimeType to the function so ze can set the max
       float delayTime = setDelayTime(delayTimeType);
-      audioEffect = new SimpleDelay(samplerate, dryWet, bypass,
-        delayTimeType, delayTime);
+      float feedback = setDelayFeedback();
+      audioEffect = new Delay(samplerate, dryWet, bypass,
+        delayTimeType, delayTime, feedback);
       break;
     }
     default:{
