@@ -24,6 +24,9 @@ class Delay : public AudioEffect{
   protected:
     float delayTime;
     float feedback;
+    //delayedSignal must be initialized with 0
+    //cuz the first sample that written to the circular buffer
+    //= the input sample + the delayed sample
     float delayedSignal = 0;
     CircBuf* circBuf;
     //make static cuz it needs to be accessed from AudioManager
