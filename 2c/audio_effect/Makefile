@@ -2,7 +2,7 @@ CXX= g++
 CXXFLAGS = -I/usr/local/include -Wall -std=c++1z
 LDFLAGS=-ljack
 # the cpp files from the current project to include
-SRC_PROJECT =audioEffect.cpp circularBuffer.cpp modulation.cpp delay.cpp ../../utilities/userInput.cpp ../../utilities/audioManager.cpp main.cpp
+SRC_PROJECT =audioEffect.cpp circularBuffer.cpp modulation.cpp delay.cpp modDelay.cpp ../../utilities/userInput.cpp ../../utilities/audioManager.cpp main.cpp
 # the directory to the folder with the shared modules
 SHAREDCODE_PATH = ../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/
 # the modules to include

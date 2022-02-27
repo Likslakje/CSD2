@@ -6,10 +6,11 @@ class CircBuf{
     // CircBuf();
     CircBuf(unsigned int samplerate, int size, float delayTime);
     ~CircBuf();
-    unsigned int millisToSamples(float delayTime);
+    void millisToSamples(float delayTime);
     void writeToBuf(float sample);
     float readFromBuf();
     int wrapHead(int head);
+    void setModulation(int modulation);
     
   private:
     unsigned int samplerate;
@@ -20,4 +21,6 @@ class CircBuf{
     //make sure the index starts at 0
     int writeHead = 0;
     int readHead;
+    //default is set to 0 cause its not allways used
+    int modulation = 0;
 };

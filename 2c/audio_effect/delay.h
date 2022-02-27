@@ -19,6 +19,7 @@ class Delay : public AudioEffect{
     static int selectSize(unsigned int samplerate, BufferSizeType bufferType);
     //creates a circular buffer of the selected size
     void selectBuffer(BufferSizeType bufferType, float delayTime);
+    void modulateDelayTime(float modulation);
     float applyEffect(float input) override;
 
   protected:

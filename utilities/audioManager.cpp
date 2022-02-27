@@ -37,8 +37,8 @@ std::string AudioManager::effectEnumToString(EffectType type)
       return "tremolo";
     case SIMPLEDELAY:
       return "simpleDelay";
-    case CHORUS:
-      return "chorus";
+    case MODDELAY:
+      return "modDelay";
     case WAVESHAPER:
       return "waveshaper";
     default:
@@ -146,9 +146,9 @@ void AudioManager::makeEffect(EffectType effect){
   EffectType effectType = (EffectType)
   UserInput::retrieveSelectionIndex(effectOptions, EffectType::SIZE);
 
-  std::cout<< "Please enter dry/wet ratio: " <<std::endl;
-  float dryWet = UserInput::retrieveValueInRange(0, 1);
-
+  // std::cout<< "Please enter dry/wet ratio: " <<std::endl;
+  // float dryWet = UserInput::retrieveValueInRange(0, 1);
+  float dryWet = 0.6;
   bool bypass = false;
 
   // actual effect choosing
@@ -167,6 +167,11 @@ void AudioManager::makeEffect(EffectType effect){
       float feedback = setDelayFeedback();
       audioEffect = new Delay(samplerate, dryWet, bypass,
         delayTimeType, delayTime, feedback);
+      break;
+    }
+    case MODDELAY: {
+      audioEffect = new ModDelay(samplerate, dryWet, bypass, 
+        Delay::BufferSizeType::SHORT, 250.0, 0.0);
       break;
     }
     default:{
@@ -198,4 +203,6 @@ void AudioManager::assignAudioCallback()
 
 void AudioManager::end(){
   jack->end();
+  delete audioEffect;
+  audioEffect = nullptr;
 }

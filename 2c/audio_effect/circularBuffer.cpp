@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include "circularBuffer.h"
 //for the debugging
@@ -36,7 +35,7 @@ CircBuf::~CircBuf(){
   buffer = nullptr;
 }
 
-unsigned int CircBuf::millisToSamples(float delayTime){
+void CircBuf::millisToSamples(float delayTime){
   //1000 ms = 44100 samples
   numSamplesDelay = delayTime * 44.1f;
   #if DEBUG > 1
@@ -57,7 +56,7 @@ float CircBuf::readFromBuf(){
   #if DEBUG > 2
     std::cout<< "CircBuf::CircBuf writeToBuf : readHead: " << readHead <<std::endl;
   #endif
-  float sample = buffer[readHead++];
+  float sample = buffer[modulation + readHead++];
   return sample;
 
 }
@@ -69,3 +68,7 @@ int CircBuf::wrapHead(int head){
     return head;
   }
 } 
+
+void CircBuf::setModulation(int modulation){
+  this->modulation = modulation;
+}

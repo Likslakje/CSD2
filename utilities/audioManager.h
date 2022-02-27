@@ -8,6 +8,7 @@
 //we need the delay base class for its static function
 #include "../2c/audio_effect/delay.h"
 #include "../2c/audio_effect/modulation.h"
+#include "../2c/audio_effect/modDelay.h"
 
 class AudioManager
 {
@@ -16,7 +17,7 @@ public:
   enum EffectType {
     TREMOLO = 0,
     SIMPLEDELAY,
-    CHORUS,
+    MODDELAY,
     WAVESHAPER,
     SIZE, // 2s
     NONE

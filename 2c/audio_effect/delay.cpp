@@ -78,6 +78,10 @@ void Delay::selectBuffer(BufferSizeType bufferType, float delayTime){
   #endif
 }
 
+void Delay::modulateDelayTime(float modulation){
+  circBuf;
+}
+
 float Delay::applyEffect(float input){
   #if DEBUG > 2
     std::cout<< "SimpleDdelay::SimpleDelay applyEffect : bypass: " << bypass <<std::endl;
@@ -86,9 +90,9 @@ float Delay::applyEffect(float input){
   if (bypass == false){
     circBuf->writeToBuf(input + (delayedSignal * feedback));
     delayedSignal = circBuf->readFromBuf();
-    effectedSample = input + (delayedSignal * dryWet);
+      effectedSample = input + (delayedSignal * dryWet);
   }else{
-    effectedSample = input;
+      effectedSample = input;
   }
   #if DEBUG > 2
     std::cout<< "SimpleDelay::SimpleDelay effectedSample: " << effectedSample <<std::endl;
