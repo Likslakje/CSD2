@@ -39,8 +39,8 @@ std::string AudioManager::effectEnumToString(EffectType type)
       return "simpleDelay";
     case MODDELAY:
       return "modDelay";
-    case WAVESHAPER:
-      return "waveshaper";
+    case CHORUS:
+      return "chorus";
     default:
       return "Invalid effect";
   }
@@ -134,6 +134,35 @@ float AudioManager::setDelayFeedback(){
   return feedback;
 }
 
+float AudioManager::setModDelayTime(Delay::BufferSizeType delayTimeType){
+  std::cout<< "Please set delay time: " <<std::endl;
+  //get size of enum type for max range
+  int maxSize = Delay::selectSize(samplerate, delayTimeType);
+  float delayTime = UserInput::retrieveValueInRange(0, maxSize);
+  return delayTime;
+}
+
+float AudioManager::setModDelayFeedback(){
+  std::cout<< "Please set feedback amount: " <<std::endl;
+  float feedback = UserInput::retrieveValueInRange(0, 1);
+  return feedback;
+}
+
+float AudioManager::setmodDelayModDepth(Delay::BufferSizeType delayTimeType){
+   std::cout<< "Please set modulation depth: " <<std::endl;
+  int maxSize = Delay::selectSize(samplerate, delayTimeType);
+  float modDepth = UserInput::retrieveValueInRange(0, maxSize);
+  return modDepth;
+}
+
+float AudioManager::setChorusBufferSize(){
+  //get size of enum type for max range
+  //buffer is always short
+  int maxSize = Delay::selectSize(samplerate, Delay::BufferSizeType::SHORT);
+  float modDepth = UserInput::retrieveValueInRange(0, maxSize);
+  return modDepth;
+}
+
 void AudioManager::makeEffect(EffectType effect){
     //choose effect
   // make string of Enum options
@@ -170,9 +199,19 @@ void AudioManager::makeEffect(EffectType effect){
       break;
     }
     case MODDELAY: {
+      Delay::BufferSizeType delayTimeType = delayTimeSelection();
+      //give the delayTimeType to the function so ze can set the max
+      float delayTime = setModDelayTime(delayTimeType);
+      float feedback = setModDelayFeedback();
+      float modFreq = setModFreq();
+      float modDepth = setmodDelayModDepth(delayTimeType);
       audioEffect = new ModDelay(samplerate, dryWet, bypass, 
-        Delay::BufferSizeType::SHORT, 250.0, 0.0);
+        Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
       break;
+    }
+    case CHORUS: {
+      // audioEffect = new Chorus(samplerate, dryWet, bypass,
+      // Delay::BufferSizeType::SHORT, 250, 0.0, 5, 80);
     }
     default:{
       throw "If it does not appear in our database, it does not excist";

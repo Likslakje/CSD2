@@ -18,7 +18,7 @@ public:
     TREMOLO = 0,
     SIMPLEDELAY,
     MODDELAY,
-    WAVESHAPER,
+    CHORUS,
     SIZE, // 2s
     NONE
   };
@@ -32,6 +32,10 @@ public:
   float setModFreq();
   float setDelayTime(Delay::BufferSizeType delayTimeType);
   float setDelayFeedback();
+  float setModDelayTime(Delay::BufferSizeType delayTimeType);
+  float setModDelayFeedback();
+  float setmodDelayModDepth(Delay::BufferSizeType delayTimeType);
+  float setChorusBufferSize();
   void assignAudioCallback();
   void makeEffect(EffectType effect);
   void end();
