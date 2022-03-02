@@ -19,3 +19,13 @@ AudioEffect::~AudioEffect(){
     std::cout<< "~destructor AudioEffect" <<std::endl;
   #endif
 }
+
+float AudioEffect::bypassOrApply(float input){
+  float effectedSample;
+  if(bypass == false){
+    effectedSample = applyEffect(input);
+  }else{
+    effectedSample = input;
+  }
+  return effectedSample;
+}

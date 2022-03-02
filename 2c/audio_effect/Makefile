@@ -4,7 +4,7 @@ LDFLAGS=-ljack
 # the cpp files from the current project to include
 SRC_PROJECT =audioEffect.cpp circularBuffer.cpp modulation.cpp delay.cpp modDelay.cpp ../../utilities/userInput.cpp ../../utilities/audioManager.cpp main.cpp
 # the directory to the folder with the shared modules
-SHAREDCODE_PATH = ../../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/
+SHAREDCODE_PATH = ../../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/
 # the modules to include
 MODULES = oscillators utilities
 

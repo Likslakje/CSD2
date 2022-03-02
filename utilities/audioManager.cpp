@@ -134,21 +134,7 @@ float AudioManager::setDelayFeedback(){
   return feedback;
 }
 
-float AudioManager::setModDelayTime(Delay::BufferSizeType delayTimeType){
-  std::cout<< "Please set delay time: " <<std::endl;
-  //get size of enum type for max range
-  int maxSize = Delay::selectSize(samplerate, delayTimeType);
-  float delayTime = UserInput::retrieveValueInRange(0, maxSize);
-  return delayTime;
-}
-
-float AudioManager::setModDelayFeedback(){
-  std::cout<< "Please set feedback amount: " <<std::endl;
-  float feedback = UserInput::retrieveValueInRange(0, 1);
-  return feedback;
-}
-
-float AudioManager::setmodDelayModDepth(Delay::BufferSizeType delayTimeType){
+float AudioManager::setModDelayModDepth(Delay::BufferSizeType delayTimeType){
    std::cout<< "Please set modulation depth: " <<std::endl;
   int maxSize = Delay::selectSize(samplerate, delayTimeType);
   float modDepth = UserInput::retrieveValueInRange(0, maxSize);
@@ -201,17 +187,22 @@ void AudioManager::makeEffect(EffectType effect){
     case MODDELAY: {
       Delay::BufferSizeType delayTimeType = delayTimeSelection();
       //give the delayTimeType to the function so ze can set the max
-      float delayTime = setModDelayTime(delayTimeType);
-      float feedback = setModDelayFeedback();
+      float delayTime = setDelayTime(delayTimeType);
+      float feedback = setDelayFeedback();
       float modFreq = setModFreq();
-      float modDepth = setmodDelayModDepth(delayTimeType);
+      float modDepth = setModDelayModDepth(delayTimeType);
       audioEffect = new ModDelay(samplerate, dryWet, bypass, 
-        Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
+        delayTimeType, delayTime, feedback, modFreq, modDepth);
       break;
     }
     case CHORUS: {
-      // audioEffect = new Chorus(samplerate, dryWet, bypass,
-      // Delay::BufferSizeType::SHORT, 250, 0.0, 5, 80);
+      //bufferSize = always short
+      float delayTime = setDelayTime(Delay::BufferSizeType::SHORT);
+      float feedback = setDelayFeedback();
+      float modFreq = setModFreq();
+      float modDepth = setModDelayModDepth(Delay::BufferSizeType::SHORT);
+      audioEffect = new ModDelay(samplerate, dryWet, bypass,
+      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
     }
     default:{
       throw "If it does not appear in our database, it does not excist";
@@ -234,7 +225,7 @@ void AudioManager::assignAudioCallback()
 
     // fill output buffer
     for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = audioEffect->applyEffect(inBuf[i]) * amplitude;
+      outBuf[i] = audioEffect->bypassOrApply(inBuf[i]) * amplitude;
     }
     return 0;
   };

@@ -3,8 +3,8 @@
 #pragma once
 #include <iostream>
 #include "userInput.h"
-#include "../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
-#include "../../CSD2_pull_voorbeelden/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
+#include "../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
+#include "../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 //we need the delay base class for its static function
 #include "../2c/audio_effect/delay.h"
 #include "../2c/audio_effect/modulation.h"
@@ -19,7 +19,7 @@ public:
     SIMPLEDELAY,
     MODDELAY,
     CHORUS,
-    SIZE, // 2s
+    SIZE,
     NONE
   };
   AudioManager(char **argv);
@@ -32,9 +32,7 @@ public:
   float setModFreq();
   float setDelayTime(Delay::BufferSizeType delayTimeType);
   float setDelayFeedback();
-  float setModDelayTime(Delay::BufferSizeType delayTimeType);
-  float setModDelayFeedback();
-  float setmodDelayModDepth(Delay::BufferSizeType delayTimeType);
+  float setModDelayModDepth(Delay::BufferSizeType delayTimeType);
   float setChorusBufferSize();
   void assignAudioCallback();
   void makeEffect(EffectType effect);

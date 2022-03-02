@@ -87,13 +87,9 @@ float Delay::applyEffect(float input){
     std::cout<< "SimpleDdelay::SimpleDelay applyEffect : bypass: " << bypass <<std::endl;
   #endif
   float effectedSample;
-  if (bypass == false){
-    circBuf->writeToBuf(input + (delayedSignal * feedback));
-    delayedSignal = circBuf->readFromBuf();
-      effectedSample = input + (delayedSignal * dryWet);
-  }else{
-      effectedSample = input;
-  }
+  circBuf->writeToBuf(input + (delayedSignal * feedback));
+  delayedSignal = circBuf->readFromBuf();
+  effectedSample = input + (delayedSignal * dryWet);
   #if DEBUG > 2
     std::cout<< "SimpleDelay::SimpleDelay effectedSample: " << effectedSample <<std::endl;
   #endif

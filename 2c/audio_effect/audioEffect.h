@@ -9,6 +9,7 @@ class AudioEffect{
     AudioEffect(unsigned int samplerate, float dryWet, bool bypass);
     virtual ~AudioEffect();
     // apply the effect for each frame
+    float bypassOrApply(float input);
     virtual float applyEffect(float input) = 0;
     protected:
     unsigned int samplerate;
