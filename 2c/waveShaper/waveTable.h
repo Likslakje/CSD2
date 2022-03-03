@@ -1,23 +1,37 @@
 #pragma once
 #include <iostream>
+#include "../../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/oscillators/oscillator.h"
+#include "../../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/oscillators/saw.h"
+#include "../../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/oscillators/sine.h"
+#include "../../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/oscillators/square.h"
 
 class Wavetable{
   public:
-    Wavetable(unsigned int samplerate, int sizeTable, int freq);
+    Wavetable();
+    enum WaveformType {
+      SINE = 0, // ensure enum starts at 0
+      SAW,
+      SQUARE,
+      SIZE // 3
+    };
+    Wavetable(unsigned int samplerate, int size, 
+      WaveformType waveformType, int freq);
     ~Wavetable();
-    float getWavetableAtIndex();
-    void fillWavetable(float sample);
-
-    float* wavetable;
+    void selectWaveform(WaveformType waveformType);
+    void oscToWavetable();
+    float getSampWavetable();
   private:
-    int sizeTable;
-    // initialize it with index 0
-    unsigned int wavetableSamplerate;
-    int writeSample = 0;
-    int readSample = 0;
-    int sampleCount = 0;
-    // this changes to interpolation later
-    int sampleReadCount = 0;
+    float* buffer;
+    Oscillator* osc;
+    unsigned int samplerate;
+    int size;
+    float freq;
     unsigned int calcWavetableSamplerate(unsigned int samplerate, int freq);
-   
+    unsigned int wavetableSamplerate;
+    int writeCount = 0;
+    int bufferWriteIndex = 0;
+    int readCount = 0;
+    int bufferReadIndex = 0;
+
+
 };
