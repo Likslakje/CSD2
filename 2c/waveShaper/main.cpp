@@ -20,13 +20,7 @@ int main(int argc,char **argv)
   unsigned int samplerate = jack.getSamplerate();
   std::cout<< "main sr " << samplerate <<std::endl;
   float amplitude = 0.5;
-  Wavetable wavetable(samplerate, 8, Wavetable::WaveformType::SINE, 440);
-
-//  for(int i = 0; i < 200; i++){
-//   //  wavetable.oscToWavetable();
-//    std::cout<< "wavetable.getSampWavetable(): " << wavetable.getSampWavetable() <<std::endl;
-//  }
- 
+  Wavetable wavetable(samplerate, 8, Wavetable::WaveformType::SINE, 200);
 
 
 #if WRITE_TO_FILE

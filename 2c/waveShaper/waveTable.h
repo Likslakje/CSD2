@@ -25,8 +25,8 @@ class Wavetable{
     Oscillator* osc;
     unsigned int samplerate;
     int size;
+    int oneCycle;
     float freq;
-    unsigned int calcWavetableSamplerate(unsigned int samplerate, int freq);
     unsigned int wavetableSamplerate;
     int writeCount = 0;
     int bufferWriteIndex = 0;
