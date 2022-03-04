@@ -3,7 +3,8 @@
 #pragma once
 #include <iostream>
 #include "userInput.h"
-#include "../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/utilities/jack_module.h"
+#include "../../CSD2_pull/Marc/stereo_jack/jack_module.h"
+#include "../../CSD2_pull/Marc/stereo_jack/ringbuffer.h"
 #include "../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
 //we need the delay base class for its static function
 #include "../2c/audio_effect/delay.h"
@@ -40,9 +41,10 @@ public:
 
 protected:
   float amplitude = 0.5;
+  float chunkSize = 2048;
   JackModule* jack;
-  // Tremolo* tremolo;
-  // SimpleDelay* simpeleDelay;
+  float* inbuf;
+  float* outbuf;
   AudioEffect* audioEffect;
   //var
   double samplerate;

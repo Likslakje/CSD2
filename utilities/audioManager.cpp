@@ -19,6 +19,8 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
   makeEffect(effect);
   assignAudioCallback();
   jack->autoConnect();
+  float* inBuf = new float[chunkSize];
+  float* outBuf = new float[chunkSize];
 
 #endif
 }
