@@ -2,7 +2,6 @@
 #include <thread>
 #include "math.h"
 #include "../../utilities/audioManager.h"
-
 /*
  * NOTE: jack2 needs to be installed
  * jackd invokes the JACK audio server daemon
@@ -24,6 +23,7 @@ int main(int argc,char **argv)
   bool running = true;
   while (running)
   {
+    audioManager.assignAudioCallback();
     switch (std::cin.get())
     {
       case 'q':
@@ -33,4 +33,5 @@ int main(int argc,char **argv)
       }
   }
   return 0;
+
 }

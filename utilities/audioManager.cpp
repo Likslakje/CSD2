@@ -10,17 +10,27 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
   WriteToFile fileWriter("output.csv", true);
   samplerate = 44100;
 #else
+  //create a new jack module
 
-  jack = new JackModule();
+
+  // inbuf = (float*) malloc(chunkSize * sizeof(float));
+  // memset (inbuf, 0, chunkSize * sizeof(float));
+  // outbuf = (float*) malloc(chunkSize * sizeof(float));
+  // memset (outbuf, 0, chunkSize * sizeof(float));
+
+  jack = new JackModuleStereo();
+
+  //set output and input channels
+  jack->setNumberOfInputChannels(1);
+  jack->setNumberOfOutputChannels(2);
+
   //give program name to jack
   jack->init(argv[0]);
   samplerate = jack->getSamplerate();
 
-  makeEffect(effect);
-  assignAudioCallback();
+  // makeEffect(effect);
+  // assignAudioCallback();
   jack->autoConnect();
-  float* inBuf = new float[chunkSize];
-  float* outBuf = new float[chunkSize];
 
 #endif
 }
@@ -171,10 +181,15 @@ void AudioManager::makeEffect(EffectType effect){
   // actual effect choosing
   switch (effectType){
     case TREMOLO: {
-      Modulation::WaveformType delayTimeType = waveformTypeSelection();
+      Modulation::WaveformType waveformType = waveformTypeSelection();
       float modFreq = setModFreq();
+      std::cout<< "samplerate " << samplerate <<std::endl;
+      std::cout<< "drywet " << dryWet <<std::endl;
+      std::cout<< "bypass " << bypass <<std::endl;
+      std::cout<< "waveformType " << waveformType <<std::endl;
+      std::cout<< "modFreq " << modFreq <<std::endl;
       audioEffect = new Modulation(samplerate, dryWet, bypass, 
-        delayTimeType, modFreq);  
+        waveformType, modFreq);  
       break;
     }
     case SIMPLEDELAY: {
@@ -220,17 +235,21 @@ void AudioManager::makeEffect(EffectType effect){
 
 void AudioManager::assignAudioCallback()
 {
-  // assign a function to the JackModule::onProces
-  // NOTE: an empty process loop, just to log current synth
-  jack->onProcess = [this](jack_default_audio_sample_t *inBuf,
-    jack_default_audio_sample_t *outBuf, jack_nframes_t nframes) {
-
-    // fill output buffer
-    for(unsigned int i = 0; i < nframes; i++) {
-      outBuf[i] = audioEffect->bypassOrApply(inBuf[i]) * amplitude;
-    }
-    return 0;
-  };
+  std::cout<< "inside audiocCallback " <<std::endl;
+  std::cout<< "inbuf " << inbuf <<std::endl;
+  jack->readSamples(inbuf, chunkSize);
+  std::cout<< "chunksize " << chunkSize <<std::endl;
+  for(unsigned int i = 0; i < chunkSize; i ++){
+    std::cout<< inbuf[i] <<std::endl;
+    //left channel
+    // outbuf[i], outbuf[i + 1] = audioEffect->bypassOrApply(inbuf[i]);
+    outbuf[2 * i] = inbuf[i];
+    outbuf[2 * i + 1] = inbuf[i];
+    // outbuf[i + 1] = inbuf[i];
+    //right channel
+    // outbuf[i + 1] = audioEffect->bypassOrApply(inbuf[i]);
+  }
+  jack->writeSamples(outbuf,chunkSize *2);
 }
 
 void AudioManager::end(){
