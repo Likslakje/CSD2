@@ -22,6 +22,17 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
   jack->init(argv[0]);
   samplerate = jack->getSamplerate();
 
+  //TODO: make an array the size of the number of output channels
+  //of the type AudioEffect* pointer
+  //so the amount of effects needed for each channel is dynamic
+  //ex: AudioEffect* audioEffect in header
+  //int numChannels = jack->getNumOutputChannels
+  // AudioEffect* audioEffect = new AudioEffect[numChannels]
+  // assignAudioCallback(){}
+  // for(int i = 0; i < chunkSize; i++){}
+  // for(int j = 0; j < numChannels; j++){}
+  // outputBuf[i + j] = audioEffect[i]->applyEffect(input)
+
   makeEffect(effect);
 
   jack->autoConnect();
@@ -180,11 +191,6 @@ void AudioManager::makeEffect(EffectType effect){
     case TREMOLO: {
       Modulation::WaveformType waveformType = waveformTypeSelection();
       float modFreq = setModFreq();
-      std::cout<< "samplerate " << samplerate <<std::endl;
-      std::cout<< "drywet " << dryWet <<std::endl;
-      std::cout<< "bypass " << bypass <<std::endl;
-      std::cout<< "waveformType " << waveformType <<std::endl;
-      std::cout<< "modFreq " << modFreq <<std::endl;
       audioEffectL = new Modulation(samplerate, dryWet, bypass, 
         waveformType, modFreq);
       audioEffectR = audioEffectL;  
@@ -221,7 +227,7 @@ void AudioManager::makeEffect(EffectType effect){
       audioEffectL = new ModDelay(samplerate, dryWet, bypass,
       Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
       audioEffectR = new ModDelay(samplerate, dryWet, bypass,
-      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq * 1.5, modDepth);
+      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
     }
     default:{
       throw "If it does not appear in our database, it does not excist";
@@ -237,27 +243,13 @@ void AudioManager::makeEffect(EffectType effect){
 
 void AudioManager::assignAudioCallback()
 {
-
-  // inbuf = (float*) malloc(chunkSize * sizeof(float));
-  // memset (inbuf, 0, chunkSize * sizeof(float));
-  // outbuf = (float*) malloc(chunkSize * sizeof(float));
-  // memset (outbuf, 0, chunkSize * sizeof(float));
-  std::cout<< "inside audiocCallback " <<std::endl;
   float* inbuf = new float[chunkSize];
   float* outbuf = new float[chunkSize];
  while(true){
   jack->readSamples(inbuf, chunkSize);
-  // std::cout<< "chunksize " << chunkSize <<std::endl;
   for(unsigned int i = 0; i < chunkSize; i ++){
-    std::cout<< "inbuf " << inbuf[i] <<std::endl;
-    //left channel
     outbuf[2 * i] = audioEffectL->bypassOrApply(inbuf[i]);
     outbuf[2 * i + 1] = audioEffectR->bypassOrApply(inbuf[i]);
-    // outbuf[2 * i] = inbuf[i];
-    // outbuf[2 * i + 1] = inbuf[i];
-    // outbuf[i + 1] = inbuf[i];
-    //right channel
-
   }
   jack->writeSamples(outbuf,chunkSize *2);
  }
