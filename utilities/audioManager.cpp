@@ -32,8 +32,10 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
 
 AudioManager::~AudioManager()
 {
-  delete audioEffect;
-  audioEffect = nullptr;
+  delete audioEffectL;
+  audioEffectL = nullptr;
+  delete audioEffectR;
+  audioEffectR = nullptr;
 }
 
 std::string AudioManager::effectEnumToString(EffectType type)
@@ -183,8 +185,9 @@ void AudioManager::makeEffect(EffectType effect){
       std::cout<< "bypass " << bypass <<std::endl;
       std::cout<< "waveformType " << waveformType <<std::endl;
       std::cout<< "modFreq " << modFreq <<std::endl;
-      audioEffect = new Modulation(samplerate, dryWet, bypass, 
-        waveformType, modFreq);  
+      audioEffectL = new Modulation(samplerate, dryWet, bypass, 
+        waveformType, modFreq);
+      audioEffectR = audioEffectL;  
       break;
     }
     case SIMPLEDELAY: {
@@ -192,8 +195,9 @@ void AudioManager::makeEffect(EffectType effect){
       //give the delayTimeType to the function so ze can set the max
       float delayTime = setDelayTime(delayTimeType);
       float feedback = setDelayFeedback();
-      audioEffect = new Delay(samplerate, dryWet, bypass,
+      audioEffectL = new Delay(samplerate, dryWet, bypass,
         delayTimeType, delayTime, feedback);
+        audioEffectR = audioEffectL; 
       break;
     }
     case MODDELAY: {
@@ -203,8 +207,9 @@ void AudioManager::makeEffect(EffectType effect){
       float feedback = setDelayFeedback();
       float modFreq = setModFreq();
       float modDepth = setModDelayModDepth(delayTimeType);
-      audioEffect = new ModDelay(samplerate, dryWet, bypass, 
+      audioEffectL = new ModDelay(samplerate, dryWet, bypass, 
         delayTimeType, delayTime, feedback, modFreq, modDepth);
+        audioEffectR = audioEffectL; 
       break;
     }
     case CHORUS: {
@@ -213,8 +218,10 @@ void AudioManager::makeEffect(EffectType effect){
       float feedback = setDelayFeedback();
       float modFreq = setModFreq();
       float modDepth = setModDelayModDepth(Delay::BufferSizeType::SHORT);
-      audioEffect = new ModDelay(samplerate, dryWet, bypass,
+      audioEffectL = new ModDelay(samplerate, dryWet, bypass,
       Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
+      audioEffectR = new ModDelay(samplerate, dryWet, bypass,
+      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq * 1.5, modDepth);
     }
     default:{
       throw "If it does not appear in our database, it does not excist";
@@ -244,13 +251,12 @@ void AudioManager::assignAudioCallback()
   for(unsigned int i = 0; i < chunkSize; i ++){
     std::cout<< "inbuf " << inbuf[i] <<std::endl;
     //left channel
-    float sample = audioEffect->bypassOrApply(inbuf[i]);
+    outbuf[2 * i] = audioEffectL->bypassOrApply(inbuf[i]);
+    outbuf[2 * i + 1] = audioEffectR->bypassOrApply(inbuf[i]);
     // outbuf[2 * i] = inbuf[i];
     // outbuf[2 * i + 1] = inbuf[i];
     // outbuf[i + 1] = inbuf[i];
     //right channel
-    outbuf[2 * i] = sample;
-    outbuf[2 * i + 1] = sample;
 
   }
   jack->writeSamples(outbuf,chunkSize *2);
@@ -259,6 +265,8 @@ void AudioManager::assignAudioCallback()
 
 void AudioManager::end(){
   jack->end();
-  delete audioEffect;
-  audioEffect = nullptr;
+  delete audioEffectL;
+  audioEffectL = nullptr;
+  delete audioEffectR;
+  audioEffectR = nullptr;
 }

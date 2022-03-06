@@ -44,7 +44,8 @@ protected:
   JackModuleStereo* jack;
   float* inbuf;
   float* outbuf;
-  AudioEffect* audioEffect;
+  AudioEffect* audioEffectL;
+  AudioEffect* audioEffectR;
   //var
   double samplerate;
   double masterAmp;
