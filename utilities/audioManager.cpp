@@ -10,13 +10,7 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
   WriteToFile fileWriter("output.csv", true);
   samplerate = 44100;
 #else
-  //create a new jack module
 
-
-  // inbuf = (float*) malloc(chunkSize * sizeof(float));
-  // memset (inbuf, 0, chunkSize * sizeof(float));
-  // outbuf = (float*) malloc(chunkSize * sizeof(float));
-  // memset (outbuf, 0, chunkSize * sizeof(float));
 
   jack = new JackModuleStereo();
 
@@ -28,9 +22,10 @@ AudioManager::AudioManager(char **argv) : effect(EffectType::NONE)
   jack->init(argv[0]);
   samplerate = jack->getSamplerate();
 
-  // makeEffect(effect);
-  // assignAudioCallback();
+  makeEffect(effect);
+
   jack->autoConnect();
+  assignAudioCallback();
 
 #endif
 }
@@ -235,21 +230,31 @@ void AudioManager::makeEffect(EffectType effect){
 
 void AudioManager::assignAudioCallback()
 {
+
+  // inbuf = (float*) malloc(chunkSize * sizeof(float));
+  // memset (inbuf, 0, chunkSize * sizeof(float));
+  // outbuf = (float*) malloc(chunkSize * sizeof(float));
+  // memset (outbuf, 0, chunkSize * sizeof(float));
   std::cout<< "inside audiocCallback " <<std::endl;
-  std::cout<< "inbuf " << inbuf <<std::endl;
+  float* inbuf = new float[chunkSize];
+  float* outbuf = new float[chunkSize];
+ while(true){
   jack->readSamples(inbuf, chunkSize);
-  std::cout<< "chunksize " << chunkSize <<std::endl;
+  // std::cout<< "chunksize " << chunkSize <<std::endl;
   for(unsigned int i = 0; i < chunkSize; i ++){
-    std::cout<< inbuf[i] <<std::endl;
+    std::cout<< "inbuf " << inbuf[i] <<std::endl;
     //left channel
-    // outbuf[i], outbuf[i + 1] = audioEffect->bypassOrApply(inbuf[i]);
-    outbuf[2 * i] = inbuf[i];
-    outbuf[2 * i + 1] = inbuf[i];
+    float sample = audioEffect->bypassOrApply(inbuf[i]);
+    // outbuf[2 * i] = inbuf[i];
+    // outbuf[2 * i + 1] = inbuf[i];
     // outbuf[i + 1] = inbuf[i];
     //right channel
-    // outbuf[i + 1] = audioEffect->bypassOrApply(inbuf[i]);
+    outbuf[2 * i] = sample;
+    outbuf[2 * i + 1] = sample;
+
   }
   jack->writeSamples(outbuf,chunkSize *2);
+ }
 }
 
 void AudioManager::end(){

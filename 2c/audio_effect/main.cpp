@@ -23,14 +23,13 @@ int main(int argc,char **argv)
   bool running = true;
   while (running)
   {
-    audioManager.assignAudioCallback();
     switch (std::cin.get())
     {
       case 'q':
         running = false;
         audioManager.end();
         break;
-      }
+    }
   }
   return 0;
 
