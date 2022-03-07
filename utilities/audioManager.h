@@ -2,6 +2,7 @@
 
 #pragma once
 #include <iostream>
+#include <thread>
 #include "userInput.h"
 #include "../../CSD2_pull/Marc/stereo_jack/jack_module_stereo.h"
 #include "../../CSD2_pull/Ciska/CSD_21-22/csd2c/sharedCode/utilities/writeToFile.h"
@@ -34,6 +35,7 @@ public:
   float setDelayFeedback();
   float setModDelayModDepth(Delay::BufferSizeType delayTimeType);
   float setChorusBufferSize();
+  float setChorusLRRatio();
   void assignAudioCallback();
   void makeEffect(EffectType effect);
   void end();

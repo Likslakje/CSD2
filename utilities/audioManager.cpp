@@ -169,6 +169,12 @@ float AudioManager::setChorusBufferSize(){
   return modDepth;
 }
 
+float AudioManager::setChorusLRRatio(){
+  std::cout<< "Please set stereo offset: " <<std::endl;
+  float ratio = UserInput::retrieveValueInRange(0, 100);
+  return ratio;
+}
+
 void AudioManager::makeEffect(EffectType effect){
     //choose effect
   // make string of Enum options
@@ -224,10 +230,12 @@ void AudioManager::makeEffect(EffectType effect){
       float feedback = setDelayFeedback();
       float modFreq = setModFreq();
       float modDepth = setModDelayModDepth(Delay::BufferSizeType::SHORT);
+      float ratio = setChorusLRRatio();
       audioEffectL = new ModDelay(samplerate, dryWet, bypass,
       Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
       audioEffectR = new ModDelay(samplerate, dryWet, bypass,
-      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq, modDepth);
+      Delay::BufferSizeType::SHORT, delayTime, feedback, modFreq * ratio, modDepth);
+      break;
     }
     default:{
       throw "If it does not appear in our database, it does not excist";
